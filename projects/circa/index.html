@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover Cirvanova's Circa Project. An exploration of the philosophy that every tool is a mirror, and every glitch is a human reflection.">
+<meta name="keywords" content="artist statement, Circanova, philosophy, digital art, ghost in the machine, art theory, every tool is a mirror, digital archaeology">
+<meta name="author" content="Circanova">
+
+<meta property="og:type" content="article">
+<meta property="article:author" content="Circanova">
+<meta property="og:url" content="https://circanova.im/projects/circa/index.html">
+<meta property="og:title" content="The Circa Project | The Circanova Project">
+<meta property="og:description" content="An exploration of the philosophy that every tool is a mirror, and every glitch is a human reflection.">
+<meta property="og:image" content="https://circanova.im/social_preview.png">
+
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://circanova.im/projects/circa/index.html">
+<meta property="twitter:title" content="The Circa Project | The Circanova Project">
+<meta property="twitter:description" content="An exploration of the philosophy that every tool is a mirror, and every glitch is a human reflection.">
+<meta property="twitter:image" content="https://circanova.im/social_preview.png">
+    <title>The Circa Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #121212;
+            --text-color: rgba(230, 230, 230, 0.7);
+            --heading-color: rgba(230, 230, 230, 0.9);
+            --accent-color: #BDB7AB;
+            --border-color: rgba(230, 230, 230, 0.1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4rem;
+        }
+
+        header h1 {
+            font-family: 'Lora', serif;
+            font-weight: 400;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            color: var(--heading-color);
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 1.5rem auto 0 auto;
+            line-height: 1.7;
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: rgba(230, 230, 230, 0.6);
+        }
+        
+        .header-links {
+            margin-top: 2.5rem;
+        }
+        
+        .header-links a {
+            font-family: 'Inter', sans-serif;
+            font-style: normal;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .header-links a:hover {
+            background-color: rgba(189, 183, 171, 0.1);
+            color: white;
+        }
+
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .year-card {
+            display: block;
+            text-decoration: none;
+            color: var(--text-color);
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            position: relative;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .year-card:hover {
+            background-color: rgba(189, 183, 171, 0.05);
+            border-color: rgba(189, 183, 171, 0.3);
+        }
+
+        .year-card .year {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 3rem;
+            color: var(--heading-color);
+            margin: 0 0 1rem 0;
+        }
+
+        .year-card .subtitle {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 0;
+            color: var(--accent-color);
+        }
+        
+        .status-tag {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(230, 230, 230, 0.4);
+        }
+
+        .placeholder {
+            border-style: dashed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(230, 230, 230, 0.2);
+        }
+         .placeholder:hover {
+            background-color: transparent;
+            border-color: var(--border-color);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 6rem;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        footer a {
+            color: var(--text-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color);
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .footer-links {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>The Circa Project</h1>
+            <p>An ongoing archive of history, interpreted through the lens of its technological failures. Each artifact is a reflection of a specific moment's unique signal and its inherent glitch—the ghost in the machine that reveals the memory of the process.</p>
+            <div class="header-links">
+                <a href="./statement.html">[ Read the Artist Statement ]</a>
+            </div>
+        </header>
+
+        <main class="archive-grid">
+            <a href="./2020/index.html" class="year-card">
+                <span class="status-tag">Complete</span>
+                <h2 class="year">2020</h2>
+                <p class="subtitle">An Index of a Year in Overload</p>
+            </a>
+            
+            <a href="./2021/index.html" class="year-card">
+                 <span class="status-tag">Complete</span>
+                <h2 class="year">2021</h2>
+                <p class="subtitle">An Index of a Year's Aftershocks</p>
+            </a>
+            
+            <a href="./2022/index.html" class="year-card">
+                 <span class="status-tag">Complete</span>
+                <h2 class="year">2022</h2>
+                <p class="subtitle">An Index of an Overloaded Signal</p>
+            </a>
+
+            <div class="year-card placeholder">
+                <p>Future signals awaiting archival...</p>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="footer-links">
+                 <a href="./index.html">[ Return to Main Gallery ]</a>
+            </div>
+            <p>a project by <a href="https://unearth.im/" target="_blank" rel="noopener noreferrer">unearth.im</a></p>
+        </footer>
+    </div>
+</body>
+</html>

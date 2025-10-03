@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2021.03: The System Jam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c1a1e; /* Canal water color */
+            --text-color: rgba(210, 220, 225, 0.7);
+            --heading-color: rgba(210, 220, 225, 0.9);
+            --blockage-color: #d4a373; /* Sandy color of the Ever Given */
+            --packet-color: #a2b9bc;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: wait;
+        }
+
+        #jamCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: none;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 26, 30, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 220, 225, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong {
+            color: var(--blockage-color);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="jamCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Mar 2021 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: March 2021</h2>
+            <p><strong>Myanmar's Brutal Crackdown Intensifies</strong>: The military crackdown on anti-coup protesters reached its deadliest peak, with reports of <strong>38 protesters shot dead</strong> in a single day. A campaign manager for Aung San Suu Kyi's party died in police custody.</p>
+            <p><strong>COVID-19 Vaccine Campaigns Face Hurdles</strong>: While vaccine campaigns expanded globally in countries like Nigeria and Rwanda, setbacks occurred. <strong>Hong Kong and Macao suspended BioNTech vaccines</strong> due to packaging defects, and India experienced a massive surge of 260,000 new cases in one week.</p>
+            <p><strong>US Passes Massive Relief Package</strong>: The US Senate passed President Biden's <strong>$1.9 trillion relief package</strong> as the economic fallout from the pandemic continued, with Brazil's economy shrinking by 4.1% in 2020.</p>
+            <p><strong>Violence and Protests Erupt Globally</strong>: Explosions in Equatorial Guinea killed at least 20, fighting in Yemen killed 90 in 24 hours, and protests against the restriction of women's rights and protest rights turned violent in Turkey and the UK.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The System Jam</h2>
+            <p>The signal for March 2021 was one of catastrophic, physical blockage. For a week, the entire abstract system of global trade—a flow of data, currency, and goods—was brought to a grinding halt by a single, massive object physically stuck in the Suez Canal. It was a perfect, almost comical, metaphor for the jams occurring elsewhere: stalled vaccine rollouts, legislative gridlock, and the brutal suppression of democratic movements.</p>
+            <p>The glitch for this era is the <strong>System Jam</strong>. It's the moment a digital, abstract world is reminded of its clumsy, physical reality. It's the failure of flow.</p>
+            <p>This artifact simulates that global data jam. Information packets representing the month's headlines flow across the screen, a river of data, until they hit the immovable blockage and pile up in a chaotic mess. The ghost in this machine is the illusion of frictionless progress. Your cursor is a futile attempt to apply pressure, to push the signal through the bottleneck, but the system is simply too congested. It is a reflection on how a single point of failure can cause a cascading, systemic collapse.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('jamCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const packetData = [
+            "MYANMAR CRACKDOWN", "VACCINE ROLLOUT", "$1.9 TRILLION",
+            "SUEZ BLOCKED", "EVER GIVEN", "SYSTEM FAILURE", "YEMEN WAR",
+            "TURKEY PROTESTS", "NIGERIA VACCINATES", "38 DEAD"
+        ];
+
+        let particles = [];
+        const blockage = { x: width * 0.6, width: 50, y: height * 0.2, height: height * 0.6 };
+        const mouse = { x: 0, y: 0 };
+        
+        class Particle {
+            constructor() {
+                this.x = -50;
+                this.y = Math.random() * height;
+                this.vx = 2 + Math.random() * 2;
+                this.vy = 0;
+                this.text = packetData[Math.floor(Math.random() * packetData.length)];
+                this.stuck = false;
+                this.color = `hsl(${185 + Math.random() * 20}, 30%, ${60 + Math.random() * 10}%)`;
+            }
+
+            update() {
+                if (!this.stuck) {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    // Collision with blockage
+                    if (this.x > blockage.x && this.x < blockage.x + blockage.width && this.y > blockage.y && this.y < blockage.y + blockage.height) {
+                        this.stuck = true;
+                        this.vx = 0;
+                    }
+
+                    // Collision with other stuck particles
+                    for (const other of particles) {
+                        if (other.stuck && !this.stuck) {
+                            const dist = Math.hypot(this.x - other.x, this.y - other.y);
+                            if (dist < 20) {
+                                this.stuck = true;
+                                this.vx = 0;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if (this.x > width) {
+                       this.x = -50;
+                       this.y = Math.random() * height;
+                    }
+
+                } else {
+                    // Apply mouse pressure
+                    const dist = Math.hypot(this.x - mouse.x, this.y - mouse.y);
+                    if (dist < 100) {
+                        const angle = Math.atan2(this.y - mouse.y, this.x - mouse.x);
+                        this.x += Math.cos(angle) * (1 - dist/100) * 0.5;
+                        this.y += Math.sin(angle) * (1 - dist/100) * 0.5;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.font = `500 12px 'Roboto Mono', monospace`;
+                ctx.fillStyle = this.color;
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 300; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(12, 26, 30, 0.25)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw blockage
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--blockage-color').trim();
+            ctx.fillRect(blockage.x, blockage.y, blockage.width, blockage.height);
+            ctx.font = `bold 700 14px 'Roboto Mono', monospace`;
+            ctx.fillStyle = '#4a371c';
+            ctx.save();
+            ctx.translate(blockage.x + blockage.width / 2, blockage.y + blockage.height / 2);
+            ctx.rotate(Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.fillText("GLOBAL TRADE", 0, 0);
+            ctx.restore();
+
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            blockage.x = width * 0.6;
+            blockage.y = height * 0.2;
+            blockage.height = height * 0.6;
+            init();
+        });
+        
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'pointer';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'wait';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'wait';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>
+

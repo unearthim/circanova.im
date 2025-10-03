@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2020: The System Overload</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.8);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: move;
+        }
+
+        #scene-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(10, 9, 12, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: white;
+        }
+
+        .modal-content strong {
+            color: #ff5555;
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="scene-container"></div>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View 2020 Signal Synthesis ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: A Synthesis of 2020</h2>
+            <p><strong>The Pandemic That Defined Everything</strong>: COVID-19 emerged as the defining global crisis, killing over 1.8 million people, triggering the worst recession since the Great Depression, and reshaping society. The year ended with the paradox of vaccine breakthroughs amidst the deadliest surges.</p>
+            <p><strong>Global Uprising for Racial Justice</strong>: The death of George Floyd sparked the largest civil rights movement in US history, with protests spreading to over 60 countries, forcing a global reckoning with systemic racism and police brutality.</p>
+            <p><strong>Democratic Upheaval and Authoritarian Advances</strong>: The US election became a stress test for democracy with an unprecedented refusal to concede. Simultaneously, Hong Kong's autonomy was dismantled and Belarus erupted in sustained pro-democracy protests against a dictator.</p>
+            <p><strong>International Conflicts & Security Crises</strong>: The US and Iran were brought to the brink of war. A full-scale war erupted between Armenia and Azerbaijan over Nagorno-Karabakh. Afghanistan was rocked by devastating attacks, including one on a maternity ward.</p>
+            <p><strong>Environmental Catastrophes</strong>: Apocalyptic wildfires turned the skies of the US West Coast orange, Australia's bushfires killed billions of animals, and Siberian heatwaves accelerated permafrost melt, highlighting the escalating climate crisis.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The System Overload</h2>
+            <p>To capture an entire year like 2020 is to capture not one glitch, but a dozen simultaneous system failures. The signal was not a single, corrupted frequency, but a cacophony of overlapping, contradictory, and urgent crises all demanding attention at once.</p>
+            <p>The glitch for this era is this "system overload." It is the experience of total sensory and informational saturation, where focusing on one crisis means losing sight of another. It's the memory of a machine trying to render all of its active processes onto one screen, resulting in a chaotic, unresolvable data storm.</p>
+            <p>This artifact simulates a three-dimensional memory dump of that year. Each layer—the pandemic, the protests, the politics, the fires—is a different signal competing for space. Your cursor is your point of view, a fragile lens attempting to find focus within the storm. You can navigate it, but you can never see it all clearly at once. The ghost in this machine is the memory of a world where all the signals turned to static at the same time.</p>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        let scene, camera, renderer;
+        let textSprites = [];
+        let particles;
+        const mouse = new THREE.Vector2();
+        const targetRotation = new THREE.Vector2();
+
+        const headlines = [
+            'COVID-19 PANDEMIC', '1.8 MILLION DEAD', 'BLACK LIVES MATTER',
+            'GEORGE FLOYD', 'I CAN\'T BREATHE', 'US ELECTION', 'STOP THE STEAL',
+            'HONG KONG SECURITY LAW', 'BEIRUT EXPLOSION', 'AUSTRALIA BURNS',
+            'ORANGE SKIES', 'VACCINE BREAKTHROUGH', 'SYSTEMIC RACISM',
+            'NAGORNO-KARABAKH WAR', 'QASEM SOLEIMANI'
+        ];
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 300;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x0a090c, 1);
+            document.getElementById('scene-container').appendChild(renderer.domElement);
+
+            // Create text sprites
+            headlines.forEach(text => {
+                const sprite = createTextSprite(text);
+                sprite.position.set(
+                    (Math.random() - 0.5) * 500,
+                    (Math.random() - 0.5) * 500,
+                    (Math.random() - 0.5) * 500
+                );
+                scene.add(sprite);
+                textSprites.push(sprite);
+            });
+
+            // Create particle system for background noise
+            const particleCount = 5000;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount; i++) {
+                positions[i * 3] = (Math.random() - 0.5) * 1000;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 1000;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 1000;
+                
+                const color = new THREE.Color();
+                const randomChoice = Math.random();
+                if(randomChoice < 0.33) color.set(0xff5555); // Red
+                else if (randomChoice < 0.66) color.set(0x5555ff); // Blue
+                else color.set(0xaaaaaa); // White/Gray
+
+                colors[i * 3] = color.r;
+                colors[i * 3 + 1] = color.g;
+                colors[i * 3 + 2] = color.b;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            
+            const material = new THREE.PointsMaterial({ size: 1.5, vertexColors: true, transparent: true, opacity: 0.7 });
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            window.addEventListener('resize', onWindowResize, false);
+            document.addEventListener('mousemove', onMouseMove, false);
+        }
+
+        function createTextSprite(message) {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            const fontSize = 48;
+            context.font = `bold ${fontSize}px "Roboto Mono", monospace`;
+            
+            const metrics = context.measureText(message);
+            const textWidth = metrics.width;
+            canvas.width = textWidth + 20;
+            canvas.height = fontSize + 20;
+            
+            context.font = `bold ${fontSize}px "Roboto Mono", monospace`;
+            context.fillStyle = "rgba(210, 200, 182, 0.9)";
+            context.fillText(message, 10, fontSize);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(canvas.width * 0.5, canvas.height * 0.5, 1.0);
+            return sprite;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            targetRotation.y = mouse.x * 0.5;
+            targetRotation.x = mouse.y * 0.5;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const time = Date.now() * 0.0001;
+
+            scene.rotation.x += (targetRotation.x - scene.rotation.x) * 0.05;
+            scene.rotation.y += (targetRotation.y - scene.rotation.y) * 0.05;
+            
+            particles.rotation.y = time * 0.5;
+            
+            textSprites.forEach((sprite, i) => {
+                sprite.position.y += Math.sin(time * 10 + i) * 0.1;
+                 const d = camera.position.distanceTo(sprite.position);
+                 const opacity = Math.max(0, 1 - (d - 200) / 300);
+                 sprite.material.opacity = opacity * opacity;
+            });
+            
+            renderer.render(scene, camera);
+        }
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                 document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                 document.body.style.cursor = 'move';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                     document.body.style.cursor = 'move';
+                }
+            });
+        }
+        
+        init();
+        animate();
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2021.10: The Uneven Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(210, 220, 225, 0.7);
+            --heading-color: rgba(210, 220, 225, 0.9);
+            --progress-color: #00aaff;
+            --regress-color: #ff3b3b;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: ew-resize;
+        }
+
+        #signalCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 20, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 20, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 220, 225, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content .progress { color: var(--progress-color); }
+        .modal-content .regress { color: var(--regress-color); }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="signalCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Oct 2021 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: October 2021</h2>
+            <p><strong class="regress">Sudan's Democratic Government Overthrown in Military Coup</strong>: The military dissolved the civilian government, arresting the Prime Minister and ending a fragile democratic transition, sparking deadly protests.</p>
+            <p><strong class="progress">Barbados Elects First President</strong>: In a historic vote, Barbados elected its first president, officially removing Queen Elizabeth II as head of state and becoming a republic.</p>
+            <p><strong class="regress">Ethiopia's Tigray Conflict Escalates with Airstrikes</strong>: Government airstrikes hit residential areas in the Tigray region, killing civilians, including children, in a major escalation of the year-long civil war.</p>
+            <p><strong class="progress">WHO Endorses World's First Malaria Vaccine</strong>: In a landmark achievement, the WHO recommended widespread use of the first-ever vaccine against malaria, a breakthrough that could save tens of thousands of children's lives annually in Africa.</p>
+            <p><strong class="regress">Stark Global COVID-19 Vaccine Inequality</strong>: The WHO reported that over 50 countries, most in Africa, had failed to vaccinate even 10% of their populations, while wealthier nations discussed booster shots.</p>
+             <p><strong class="progress">Nobel Prize for Climate Science</strong>: Climate scientists won the Nobel Prize in Physics for their foundational work on climate models, a crucial recognition of the science behind understanding global warming.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Uneven Signal</h2>
+            <p>October 2021 was a month of profound, almost violent, divergence. The signal was not singular; it was a split transmission. One channel broadcasted news of progress, of breakthroughs, of peaceful and historic transitions. The other broadcasted news of regression, of coups, airstrikes, and systemic inequality.</p>
+            <p>The glitch for this era is this "Uneven Signal." It is the experience of watching a system update that fails to apply universally. It is a world where one nation can peacefully become a republic while another's democracy is extinguished by force. It is the paradox of a breakthrough vaccine for one disease arriving in a world that refuses to equitably distribute the vaccine for another.</p>
+            <p>This artifact simulates that fractured reality. The screen is a global network, but it is bifurcated. Your cursor is the dividing line. On one side, the signal is clean, orderly, and progressive. On the other, it is chaotic, corrupted, and regressive. The ghost in this machine is the uncomfortable truth of proximity—that progress and collapse are not separate events, but neighbors, separated by a line that is as thin and as arbitrary as the position of your cursor.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('signalCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const progressSnippets = ["FIRST PRESIDENT", "BREAKTHROUGH", "NOBEL PRIZE", "VACCINE ENDORSED", "WINDOWS 11"];
+        const regressSnippets = ["MILITARY COUP", "AIRSTRIKE", "CENSORSHIP", "INEQUALITY", "PROTESTS"];
+        
+        const mouse = { x: width / 2 };
+        let particles = [];
+
+        class Particle {
+            constructor(side) {
+                this.side = side;
+                this.x = (this.side === 'progress') ? Math.random() * mouse.x : mouse.x + Math.random() * (width - mouse.x);
+                this.y = Math.random() * height;
+                this.vx = (this.side === 'progress') ? Math.random() * 0.5 + 0.1 : (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.text = (this.side === 'progress') ? progressSnippets[Math.floor(Math.random() * progressSnippets.length)] : regressSnippets[Math.floor(Math.random() * regressSnippets.length)];
+                this.alpha = 1;
+            }
+
+            update() {
+                if (this.side === 'progress') {
+                    this.y += this.vy;
+                    if (this.y < 0 || this.y > height) this.y = Math.random() * height;
+                    if (this.x > mouse.x) this.reset('progress');
+                } else { // regress
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.y < 0 || this.y > height) this.y = Math.random() * height;
+                    if (this.x < mouse.x || this.x > width) this.reset('regress');
+                }
+            }
+
+            reset(newSide) {
+                this.side = newSide;
+                this.x = (this.side === 'progress') ? Math.random() * mouse.x : mouse.x + Math.random() * (width - mouse.x);
+                this.y = Math.random() * height;
+                this.text = (this.side === 'progress') ? progressSnippets[Math.floor(Math.random() * progressSnippets.length)] : regressSnippets[Math.floor(Math.random() * regressSnippets.length)];
+            }
+
+            draw() {
+                if (this.side === 'progress') {
+                    ctx.font = `300 12px 'Roboto Mono', monospace`;
+                    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--progress-color').trim();
+                    ctx.fillText(this.text, this.x, this.y);
+                } else { // regress
+                    ctx.font = `700 12px 'Roboto Mono', monospace`;
+                    let displayText = this.text;
+                    if (Math.random() < 0.1) {
+                        const i = Math.floor(Math.random() * displayText.length);
+                        displayText = displayText.substring(0, i) + '█' + displayText.substring(i + 1);
+                    }
+                    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--regress-color').trim();
+                    ctx.fillText(displayText, this.x, this.y);
+                }
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 150; i++) {
+                particles.push(new Particle(Math.random() > 0.5 ? 'progress' : 'regress'));
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(12, 10, 20, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw dividing line
+            ctx.strokeStyle = `rgba(255, 255, 255, 0.5)`;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(mouse.x, 0);
+            ctx.lineTo(mouse.x, height);
+            ctx.stroke();
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'pointer';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'ew-resize';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'ew-resize';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

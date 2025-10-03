@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022.10: The Retaliatory Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(220, 210, 230, 0.7);
+            --heading-color: rgba(220, 210, 230, 0.9);
+            --grid-color: rgba(220, 210, 230, 0.1);
+            --strike-color: #ff3b3b;
+            --target-color: #4a90e2;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: crosshair;
+        }
+
+        #retaliationCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 14, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 14, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(220, 210, 230, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(220, 210, 230, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="retaliationCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Oct 2022 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: October 2022</h2>
+            <p><strong>Russia Escalates Ukraine War with Massive Missile Strikes:</strong> Following the bombing of the Crimean Bridge, Putin responded with the largest coordinated missile strikes since the war began, targeting civilian infrastructure across Ukrainian cities and killing at least 19 people.</p>
+            <p><strong>Iranian Protests Enter Critical Phase:</strong> The nationwide protests sparked by Mahsa Amini's death continued to intensify, with security forces laying siege to universities as the government's violent crackdown continued.</p>
+            <p><strong>Devastating Disasters Strike Multiple Continents:</strong> A stampede following a football match in Indonesia killed at least 130 people, a mass shooting at a nursery in Thailand shocked the nation, and the death toll from Hurricane Ian continued to rise.</p>
+            <p><strong>UN General Assembly Condemns Russia's "Illegal Annexation":</strong> The UN passed a resolution condemning Russia's "attempted illegal annexation" of four Ukrainian regions, with only four countries siding with Russia.</p>
+            <p><strong>North Korea Launches Ballistic Missile Over Japan:</strong> In a major escalation, North Korea fired a ballistic missile that flew over Japan, prompting emergency alerts and international condemnation.</p>
+            <div class="modal-footer">
+               <a href="22.10.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Retaliatory Signal</h2>
+            <p>October 2022 was a month defined by the brutal physics of action and reaction. The signal was not a steady crisis, but a series of violent, retaliatory spikes that overloaded the system. The bombing of the Crimean Bridge—itself a reaction—triggered a massive, indiscriminate missile barrage against Ukrainian cities. The ongoing protests in Iran were met with escalating state violence. Each event was a harsh echo of a preceding one.</p>
+            <p>The glitch for this era is this "Retaliatory Signal." It is the experience of a system trapped in a destructive feedback loop, where every input results in a disproportionately violent output. It's the logic of escalation made manifest.</p>
+            <p>This artifact simulates a strategic map caught in this cycle. The city grids represent the civilian infrastructure targeted during the month. The ghost in this machine is the initial act of aggression. Your click is the catalyst—the bridge bombing, the protest, the initial transgression. It triggers a retaliatory strike from off-screen, a barrage that scars the landscape. The system then remains volatile, glitching and sparking, waiting for the next inevitable strike in a chain reaction with no clear end.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('retaliationCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const gridSize = 40;
+        let impacts = [];
+        let sparks = [];
+
+        function drawGrid() {
+            ctx.strokeStyle = `rgba(220, 210, 230, 0.1)`;
+            ctx.lineWidth = 0.5;
+            for (let x = 0; x < width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+        }
+
+        class Impact {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 0;
+                this.maxRadius = 50 + Math.random() * 50;
+                this.life = 300;
+            }
+            update() {
+                this.radius += (this.maxRadius - this.radius) * 0.1;
+                this.life--;
+            }
+            draw() {
+                const alpha = this.life / 300;
+                ctx.fillStyle = `rgba(255, 59, 59, ${alpha * 0.1})`;
+                ctx.strokeStyle = `rgba(255, 59, 59, ${alpha * 0.5})`;
+                ctx.lineWidth = 2;
+                
+                ctx.beginPath();
+                // Core Refusal: Not a circle. A fractured, geometric shape.
+                const sides = 5 + Math.floor(Math.random() * 3);
+                for(let i=0; i<sides; i++){
+                    const angle = (i/sides) * Math.PI * 2;
+                    const r = this.radius * (0.8 + Math.random()*0.4);
+                    const px = this.x + Math.cos(angle) * r;
+                    const py = this.y + Math.sin(angle) * r;
+                    if(i === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+
+        class Spark {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 4;
+                this.vy = (Math.random() - 0.5) * 4;
+                this.life = 50;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(74, 144, 226, ${this.life / 50})`;
+                ctx.fillRect(this.x, this.y, 2, 2);
+            }
+        }
+
+        function createRetaliation(originX, originY) {
+            impacts = []; // Clear previous impacts
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const targetX = Math.random() * width;
+                    const targetY = Math.random() * height;
+                    impacts.push(new Impact(targetX, targetY));
+                    for(let j=0; j<20; j++) {
+                        sparks.push(new Spark(targetX, targetY));
+                    }
+                }, Math.random() * 1000);
+            }
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            drawGrid();
+
+            impacts.forEach((impact, index) => {
+                impact.update();
+                impact.draw();
+                if (impact.life <= 0) {
+                    impacts.splice(index, 1);
+                }
+            });
+
+            sparks.forEach((spark, index) => {
+                spark.update();
+                spark.draw();
+                if (spark.life <= 0) {
+                    sparks.splice(index, 1);
+                }
+            });
+            
+            if (impacts.length > 0 && Math.random() < 0.2) {
+                 const randomImpact = impacts[Math.floor(Math.random()*impacts.length)];
+                 sparks.push(new Spark(randomImpact.x + (Math.random()-0.5)*50, randomImpact.y + (Math.random()-0.5)*50));
+            }
+
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        window.addEventListener('click', (e) => {
+            createRetaliation(e.clientX, e.clientY);
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'crosshair';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'crosshair';
+                }
+            });
+        }
+        
+        animate();
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>

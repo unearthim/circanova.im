@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2020.07: The Dissonant Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --signal-a-color: #4a6c9b; /* US/China Cold War Blue */
+            --signal-b-color: #b33a3a; /* Violence/Tragedy Red */
+            --signal-c-color: #3d9a98; /* COVID Green */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #signalCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: none;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.95);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong {
+            color: var(--signal-a-color);
+        }
+         .modal-content em {
+            color: var(--signal-c-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="signalCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Jul 2020 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: July 2020</h2>
+            <p><strong>China-US Relations Hit New Lows</strong>: In a dramatic escalation, <strong>China ordered the US consulate in Chengdu closed</strong> in retaliation for the US closing China's Houston consulate. The UK suspended its extradition treaty with Hong Kong after Beijing implemented its new national security law.</p>
+            <p><strong>COVID-19 Pandemic Creates Regional Hotspots</strong>: The pandemic evolved into a series of regional crises. <em>Northern Spain placed 200,000 on lockdown</em>, <em>Australia isolated 6.6 million in Victoria</em>, and <em>China implemented a "wartime" lockdown in Urumqi</em>. France made masks mandatory in all indoor public spaces.</p>
+            <p><strong>Tragic Violence Across Continents</strong>: At least <strong>81 protesters were killed</strong> by military forces in Ethiopia. A mass shooting at a drug rehab center in Mexico killed 24. A church in South Africa was taken hostage, leaving five dead.</p>
+            <p><strong>Cultural Reckoning Continues</strong>: The <strong>Washington Redskins</strong> NFL team announced it would drop its name and logo following decades of criticism.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Dissonant Signal</h2>
+            <p>July 2020 was the month the world decoupled. The sense of a shared global crisis splintered into a series of parallel, dissonant emergencies. One region faced a "wartime" lockdown while another was consumed by a diplomatic cold war. The glitch is this dissonance—a system trying to display multiple, conflicting realities at once, resulting in a jammed, incoherent signal.</p>
+            <p>This artifact simulates a geopolitical monitor fracturing under the strain of these competing data streams. Each colored band represents a different crisis—geopolitical tensions, regional lockdowns, violent conflicts—vying for attention.</p>
+            <p>The ghost in this machine is the loss of a shared narrative. Your cursor is a faulty decoder; you can try to focus on one signal, but it's constantly corrupted by the static of the others. It reflects a moment when the world could no longer agree on what the most important story was, leaving only a cacophony of broken signals.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('signalCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const signals = [
+            { color: '#4a6c9b', snippets: ["CONSULATE CLOSED", "SIGNAL JAMMED", "TREATY SUSPENDED", "ACCESS DENIED"] },
+            { color: '#b33a3a', snippets: ["FATALITIES: 81", "24 DEAD", "HOSTAGE CRISIS", "SYSTEM FAILURE"] },
+            { color: '#3d9a98', snippets: ["QUARANTINE ZONE", "LOCKDOWN IN EFFECT", "MASKS MANDATORY", "CASES SURGING"] }
+        ];
+
+        let bands = [];
+        const mouse = { x: width / 2, y: height / 2 };
+
+        class Band {
+            constructor(y, h, signalIndex) {
+                this.y = y;
+                this.h = h;
+                this.signal = signals[signalIndex];
+                this.particles = [];
+                this.opacity = 0.5;
+            }
+
+            update() {
+                const dist = Math.abs((this.y + this.h / 2) - mouse.y);
+                this.opacity = 0.2 + 0.8 * Math.max(0, 1 - dist / (height / 2));
+
+                if (Math.random() < 0.1 * this.opacity && this.particles.length < 20) {
+                    this.particles.push({
+                        x: Math.random() * width,
+                        y: this.y + Math.random() * this.h,
+                        text: this.signal.snippets[Math.floor(Math.random() * this.signal.snippets.length)],
+                        life: 100
+                    });
+                }
+            }
+
+            draw() {
+                // Band color
+                ctx.fillStyle = this.signal.color;
+                ctx.globalAlpha = 0.1 + this.opacity * 0.2;
+                ctx.fillRect(0, this.y, width, this.h);
+                ctx.globalAlpha = 1;
+
+                // Particles (text)
+                this.particles.forEach((p, index) => {
+                    ctx.font = `500 14px 'Roboto Mono', monospace`;
+                    ctx.fillStyle = this.signal.color;
+                    ctx.globalAlpha = p.life / 100 * this.opacity;
+                    ctx.fillText(p.text, p.x, p.y);
+                    p.life -= 1;
+                    if (p.life <= 0) {
+                        this.particles.splice(index, 1);
+                    }
+                });
+                ctx.globalAlpha = 1;
+
+                // Scanline effect
+                if(Math.random() > 0.95) {
+                    ctx.fillStyle = `rgba(255,255,255,${0.1 * this.opacity})`;
+                    ctx.fillRect(0, this.y + Math.random() * this.h, width, 1);
+                }
+            }
+        }
+        
+        function init() {
+            bands = [];
+            let currentY = 0;
+            while(currentY < height) {
+                const bandHeight = Math.random() * (height / 5) + (height / 10);
+                const signalIndex = Math.floor(Math.random() * signals.length);
+                bands.push(new Band(currentY, bandHeight, signalIndex));
+                currentY += bandHeight;
+            }
+        }
+        
+        function animate() {
+            ctx.fillStyle = '#0a090c';
+            ctx.fillRect(0, 0, width, height);
+
+            bands.forEach(band => {
+                band.update();
+                band.draw();
+            });
+
+            // Global static
+             for (let i = 0; i < 50; i++) {
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.05})`;
+                ctx.fillRect(Math.random() * width, Math.random() * height, 1, 1);
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

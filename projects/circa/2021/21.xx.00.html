@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2021: The Resilient Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(210, 220, 225, 0.7);
+            --heading-color: rgba(210, 220, 225, 0.9);
+            --crack-color: rgba(210, 220, 225, 0.1);
+            --light-color: #a0d2eb; /* Hesperian blue */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+        
+        #resilientCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cursor-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(160, 210, 235, 0.1) 0%, rgba(160, 210, 235, 0) 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 20, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 20, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 220, 225, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong { color: var(--light-color); }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor-light"></div>
+    <canvas id="resilientCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View 2021 Resilient Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: A Synthesis of Resilience in 2021</h2>
+            <p><strong>Historic Malaria Vaccine Approval</strong>: The WHO approved the world's first malaria vaccine, a "historic moment" with the potential to save tens of thousands of children's lives annually, based on extensive pilot programs in Africa.</p>
+            <p><strong>Record Global Vaccination Achievement</strong>: Over 8.47 billion COVID-19 vaccinations were administered globally, marking the most extensive and rapid vaccination initiative in human history and demonstrating unprecedented scientific cooperation.</p>
+            <p><strong>Environmental and Conservation Victories</strong>: Renewable energy accounted for 90% of all new energy projects. Giant pandas were reclassified from endangered to vulnerable after a 30-year conservation success, and courts worldwide delivered landmark rulings in favor of climate action.</p>
+            <p><strong>Scientific and Space Achievements</strong>: NASA's Perseverance rover successfully collected its first rock samples from Mars, a "momentous" achievement in the search for ancient life.</p>
+            <p><strong>Social Progress and Workplace Empowerment</strong>: The "Great Resignation" saw workers worldwide reclaim their rights and demand better conditions. LGBTQ+ rights and gender equality advanced in multiple countries, and cultural representation saw systemic progress.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Resilient Signal</h2>
+            <p>This artifact is a direct counterpoint to "The Shattered Signal," which interpreted 2021 as a year of aftershocks and profound fragility. If that piece was about viewing the world through a broken mirror, this piece is about the light that shines through the cracks.</p>
+            <p>The signal of crisis does not exist in a vacuum; it is always met by a counter-signal of human resilience, innovation, and repair. The glitch here is not the breaking, but the mending.</p>
+            <p>The artifact uses the same shattered landscape as its predecessor. But here, the ghost in the machine is not instability, but restoration. Your cursor is not an aftershock but a source of light. As you move it across the fragments, you don't agitate them with chaos; you illuminate them, revealing the coherent signals of hope and progress that were forged within the fractures. The light mends the cracks as it passes, showing a system not just breaking, but actively healing itself.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('resilientCanvas');
+        const ctx = canvas.getContext('2d');
+        const cursorLight = document.querySelector('.cursor-light');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const positiveHeadlines = [
+            "MALARIA VACCINE", "8.47 BILLION DOSES", "PERSEVERANCE ON MARS",
+            "GIANT PANDAS RECLASSIFIED", "RENEWABLE ENERGY SURGE", "GREAT RESIGNATION",
+            "COMMUNITY SOLIDARITY", "DEMOCRATIC RESILIENCE"
+        ];
+        
+        let shards = [];
+        const mouse = { x: width / 2, y: height / 2 };
+        
+        class Shard {
+            constructor(vertices, center) {
+                this.vertices = vertices;
+                this.center = center;
+                this.text = positiveHeadlines[Math.floor(Math.random() * positiveHeadlines.length)];
+                this.illumination = 0;
+            }
+
+            update() {
+                const dist = Math.hypot(this.center.x - mouse.x, this.center.y - mouse.y);
+                const maxDist = 200;
+                this.illumination = Math.max(0, (1 - dist / maxDist));
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.vertices[0].x, this.vertices[0].y);
+                for (let i = 1; i < this.vertices.length; i++) {
+                    ctx.lineTo(this.vertices[i].x, this.vertices[i].y);
+                }
+                ctx.closePath();
+                
+                // Mending the cracks with light
+                const crackColor = getComputedStyle(document.documentElement).getPropertyValue('--crack-color').trim();
+                const lightColor = getComputedStyle(document.documentElement).getPropertyValue('--light-color').trim();
+                
+                ctx.strokeStyle = `rgba(160, 210, 235, ${0.1 + this.illumination * 0.9})`;
+                ctx.lineWidth = 1 + this.illumination * 2;
+                ctx.stroke();
+
+                ctx.fillStyle = `rgba(12, 10, 20, 0.8)`;
+                ctx.fill();
+
+                if(this.illumination > 0.1) {
+                    ctx.font = `500 13px 'Roboto Mono', monospace`;
+                    ctx.fillStyle = `rgba(160, 210, 235, ${this.illumination})`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.text, this.center.x, this.center.y);
+                }
+            }
+        }
+
+        // Using the same simplified Voronoi logic as "Shattered Signal" for consistency
+        function createVoronoiShards() {
+            const points = [];
+            for (let i = 0; i < 30; i++) {
+                points.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height
+                });
+            }
+
+            for (let i = 0; i < points.length; i++) {
+                let vertices = [];
+                const p = points[i];
+                const angleStep = Math.PI * 2 / (Math.floor(Math.random()*4) + 5);
+                for(let a=0; a < Math.PI*2; a+= angleStep){
+                     let closestDist = Infinity;
+                     points.forEach((other, j) => {
+                         if(i===j) return;
+                         const dist = Math.hypot(p.x - other.x, p.y-other.y);
+                         if(dist < closestDist) closestDist = dist;
+                     });
+                     const radius = closestDist * (Math.random() * 0.4 + 0.4);
+                     vertices.push({
+                         x: p.x + Math.cos(a) * radius,
+                         y: p.y + Math.sin(a) * radius
+                     });
+                }
+                shards.push(new Shard(vertices, p));
+            }
+        }
+
+        function init() {
+            shards = [];
+            createVoronoiShards();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            shards.forEach(s => {
+                s.update();
+                s.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            cursorLight.style.left = `${e.clientX}px`;
+            cursorLight.style.top = `${e.clientY}px`;
+        });
+        
+        window.addEventListener('mouseout', () => {
+             mouse.x = -1000;
+             mouse.y = -1000;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'pointer';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

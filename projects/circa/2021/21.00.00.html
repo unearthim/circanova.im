@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2021: The Shattered Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(210, 220, 225, 0.7);
+            --heading-color: rgba(210, 220, 225, 0.9);
+            --crack-color: rgba(210, 220, 225, 0.1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: crosshair;
+        }
+
+        #shatteredCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 20, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 20, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 220, 225, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong { color: var(--heading-color); }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="shatteredCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View 2021 Signal Synthesis ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: A Synthesis of 2021</h2>
+            <p><strong>The Great Withdrawal & Afghanistan's Collapse</strong>: The year was defined by the stunning collapse of Afghanistan, the chaotic US withdrawal, and the Taliban's rapid return to power, reshaping geopolitics and marking a retreat of Western influence.</p>
+            <p><strong>Democracy Under Siege</strong>: The year began with the January 6th US Capitol insurrection. This was followed by a wave of military coups that overthrew democratic governments in Myanmar, Guinea, and Sudan, highlighting a global authoritarian surge.</p>
+            <p><strong>Pandemic Evolution - Vaccines vs. Variants</strong>: 2021 was a story of hope and despair, as rapid vaccine rollouts were constantly challenged by the emergence of new, more dangerous variants like Delta and Omicron, while stark vaccine inequality left poorer nations vulnerable.</p>
+            <p><strong>Climate Crisis Reaches Tipping Points</strong>: Unprecedented and catastrophic climate events became undeniable realities, from apocalyptic wildfires in the US, Australia, and Siberia to devastating, deadly floods in Western Europe.</p>
+             <p><strong>Economic Recovery & Inflation Surge</strong>: Global economies faced a fragile recovery, hampered by severe supply chain disruptions (epitomized by the Suez Canal blockage) and a persistent surge in inflation that fueled social unrest.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Shattered Signal</h2>
+            <p>2021 was the year of the aftershock. It was not defined by a single, new crisis, but by the violent consequences of the cracks that formed in the year prior. The signal was not overloaded; it was shattered. The world was operating in a state of profound fragility.</p>
+            <p>The glitch for this era is this "Shattered Signal." It is the experience of seeing reality through a broken mirror, where each fragment reflects its own isolated crisis, yet all are part of the same fractured whole. The lines between them are the scars of past impacts.</p>
+            <p>This artifact simulates that shattered mirror. The headlines of the year are etched onto the broken pieces. The ghost in this machine is the lingering instability of the system. Your cursor is the aftershock—a ripple of energy from the previous year's events. As you move, you send tremors through the fragments, disturbing their fragile equilibrium and causing the signals etched upon them to glitch and tremble. It reveals a world where nothing is truly stable, and the consequences of one failure continue to reverberate through all the broken pieces.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('shatteredCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const headlines = [
+            "CAPITOL BREACHED", "MYANMAR COUP", "AFGHANISTAN COLLAPSES",
+            "DELTA SURGE", "OMICRON VARIANT", "SUEZ CANAL BLOCKED",
+            "CLIMATE EMERGENCY", "SYSTEMS FRAGILE"
+        ];
+        
+        let shards = [];
+        const mouse = { x: width / 2, y: height / 2 };
+        
+        class Shard {
+            constructor(vertices, center) {
+                this.vertices = vertices;
+                this.center = center;
+                this.originalVertices = vertices.map(v => ({...v}));
+                this.text = headlines[Math.floor(Math.random() * headlines.length)];
+                this.tremor = 0;
+            }
+
+            update() {
+                const dist = Math.hypot(this.center.x - mouse.x, this.center.y - mouse.y);
+                const maxDist = Math.min(width, height) / 2;
+                this.tremor = Math.max(0, (1 - dist / maxDist)) * 10;
+
+                this.vertices = this.originalVertices.map(v => {
+                    return {
+                        x: v.x + (Math.random() - 0.5) * this.tremor,
+                        y: v.y + (Math.random() - 0.5) * this.tremor
+                    }
+                });
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.vertices[0].x, this.vertices[0].y);
+                for (let i = 1; i < this.vertices.length; i++) {
+                    ctx.lineTo(this.vertices[i].x, this.vertices[i].y);
+                }
+                ctx.closePath();
+                
+                ctx.strokeStyle = `rgba(210, 220, 225, ${0.1 + this.tremor * 0.05})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                ctx.fillStyle = `rgba(12, 10, 20, ${0.5 + Math.random()*0.2})`;
+                ctx.fill();
+
+                if(this.tremor > 1) {
+                    ctx.font = `500 12px 'Roboto Mono', monospace`;
+                    let alpha = Math.min(1, this.tremor/5);
+                    let color = Math.random() > 0.5 ? '#ff3b3b' : '#00aaff';
+                    ctx.fillStyle = `rgba(${parseInt(color.slice(1,3),16)},${parseInt(color.slice(3,5),16)},${parseInt(color.slice(5,7),16)}, ${alpha})`;
+                    ctx.textAlign = 'center';
+                    
+                    let textToDraw = this.text;
+                    if(this.tremor > 5 && Math.random() > 0.5){
+                         const i = Math.floor(Math.random() * textToDraw.length);
+                         textToDraw = textToDraw.substring(0, i) + '░' + textToDraw.substring(i + 1);
+                    }
+                    ctx.fillText(textToDraw, this.center.x, this.center.y);
+                }
+            }
+        }
+
+        function createVoronoiShards() {
+            const points = [];
+            for (let i = 0; i < 30; i++) {
+                points.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height
+                });
+            }
+
+            for (let i = 0; i < points.length; i++) {
+                let vertices = [];
+                // This is a simplified approximation, not a real Voronoi algorithm
+                // It creates plausible shard-like polygons
+                const p = points[i];
+                const angleStep = Math.PI * 2 / (Math.floor(Math.random()*4) + 5);
+                for(let a=0; a < Math.PI*2; a+= angleStep){
+                     let closestDist = Infinity;
+                     points.forEach((other, j) => {
+                         if(i===j) return;
+                         const dist = Math.hypot(p.x - other.x, p.y-other.y);
+                         if(dist < closestDist) closestDist = dist;
+                     });
+                     const radius = closestDist * (Math.random() * 0.4 + 0.4);
+                     vertices.push({
+                         x: p.x + Math.cos(a) * radius,
+                         y: p.y + Math.sin(a) * radius
+                     });
+                }
+                shards.push(new Shard(vertices, p));
+            }
+        }
+
+
+        function init() {
+            shards = [];
+            createVoronoiShards();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            shards.forEach(s => {
+                s.update();
+                s.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'pointer';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'crosshair';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'crosshair';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

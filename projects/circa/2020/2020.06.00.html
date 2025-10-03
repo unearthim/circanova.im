@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2020.06: The Signal Bleed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --map-color: #1a1a1d;
+            --covid-color: #3d9a98;
+            --protest-color: #c94040;
+            --protest-text-color: rgba(230, 230, 230, 0.9);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #mapCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: none;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.95);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong {
+            color: var(--protest-color);
+        }
+         .modal-content em {
+            color: var(--covid-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="mapCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Jun 2020 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: June 2020</h2>
+            <p><strong>Global Black Lives Matter Movement Spreads</strong>: Protests went global, with massive demonstrations in Europe, Australia, and Canada. <strong>Prime Minister Justin Trudeau took a knee</strong> with protesters. In the UK, tens of thousands demonstrated, and <strong>NASCAR banned the Confederate flag</strong>.</p>
+            <p><strong>China-India Border Clash Turns Deadly</strong>: At least <strong>20 Indian soldiers and an unknown number of Chinese soldiers were killed</strong> in a violent clash in the Himalayas, the deadliest confrontation between the two nations in decades. Reports indicated soldiers were "beaten to death."</p>
+            <p><strong>COVID-19 Pandemic Developments</strong>: <em>Worldwide cases surpassed 7 million</em>. <em>Brazil's government was accused of altering its death toll reporting</em>, and a court ordered President Bolsonaro to wear a mask. <em>India surpassed Italy</em> to have the sixth-highest number of cases.</p>
+            <p><strong>Environmental Disaster in Russia</strong>: <strong>20,000 tons of fuel spilled</strong> into a river in the Arctic, prompting President Putin to declare a state of emergency.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Signal Bleed</h2>
+            <p>June 2020 was the month the fractured signal became a global flood. The energy from the protests didn't just compete with the pandemic narrative—it began to overwrite it. The glitch is this "signal bleed," where one dataset becomes so powerful it corrupts and colors another, forcing a new interpretation of reality.</p>
+            <p>This artifact simulates a global mapping system trying to display two urgent, simultaneous crises. The cool, clinical blue dots of the pandemic are still present, a persistent background reality. But the fiery, energetic red of the protest locations bleeds through, staining the map. The system can no longer show one without showing the influence of the other.</p>
+            <p>The ghost in this machine is the re-prioritization of crisis. Your cursor acts as a lens for this new focus, intensifying the protest signal wherever you point it. It shows that even when multiple emergencies exist, our collective attention inevitably flows to the one that burns the brightest, changing the landscape for all other data.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('mapCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const protestSnippets = [
+            "TAKE A KNEE", "BLACK LIVES MATTER", "GLOBAL SOLIDARITY",
+            "NO JUSTICE NO PEACE", "PROHIBIT THE FLAG"
+        ];
+        
+        // Simplified world map coordinates (Mercator-like)
+        // [ [ [x,y], [x,y]... ], [ [x,y], [x,y]... ]... ]
+        const mapPaths = [[[[0.1,0.4],[0.15,0.45],[0.2,0.4],[0.25,0.45],[0.25,0.3],[0.15,0.25],[0.1,0.4]]],[[[0.28,0.4],[0.35,0.45],[0.35,0.3],[0.3,0.3],[0.28,0.4]]],[[[0.45,0.7],[0.5,0.75],[0.55,0.7],[0.6,0.6],[0.5,0.5],[0.45,0.7]]],[[[0.4,0.4],[0.45,0.45],[0.55,0.45],[0.6,0.4],[0.55,0.3],[0.45,0.3],[0.4,0.4]]],[[[0.65,0.4],[0.7,0.45],[0.8,0.4],[0.85,0.3],[0.7,0.25],[0.65,0.4]]],[[[0.8,0.6],[0.85,0.65],[0.9,0.6],[0.85,0.55],[0.8,0.6]]]];
+        const covidPoints = [];
+        const protestPoints = [
+            { x: 0.18, y: 0.35, intensity: 1 }, // US East
+            { x: 0.15, y: 0.4, intensity: 1 },  // US West
+            { x: 0.48, y: 0.35, intensity: 1 }, // UK
+            { x: 0.5, y: 0.4, intensity: 1 },   // France/Germany
+            { x: 0.3, y: 0.6, intensity: 1 },   // Brazil
+            { x: 0.85, y: 0.65, intensity: 1 }  // Australia
+        ];
+        
+        let textParticles = [];
+        const mouse = { x: 0, y: 0, activity: 0 };
+        
+        class TextParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.text = protestSnippets[Math.floor(Math.random() * protestSnippets.length)];
+                this.life = 150;
+                this.fontSize = 12 + Math.random() * 8;
+            }
+
+            update() {
+                this.life -= 1;
+            }
+
+            draw() {
+                ctx.font = `700 ${this.fontSize}px 'Roboto Mono', monospace`;
+                ctx.fillStyle = `rgba(230, 230, 230, ${this.life / 150 * 0.8})`;
+                ctx.textAlign = 'center';
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+
+        function init() {
+            // Generate some random covid points
+            for(let i=0; i<200; i++) {
+                covidPoints.push({
+                    x: Math.random(),
+                    y: Math.random(),
+                    radius: Math.random() * 1.5 + 0.5
+                })
+            }
+        }
+
+        let frame = 0;
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = '#0a090c';
+            ctx.fillRect(0,0,width,height);
+
+            // Draw map
+            ctx.strokeStyle = '#1a1a1d';
+            ctx.fillStyle = '#1a1a1d';
+            ctx.lineWidth = 2;
+            mapPaths.forEach(continent => {
+                continent.forEach(path => {
+                    ctx.beginPath();
+                    ctx.moveTo(path[0][0] * width, path[0][1] * height);
+                    for(let i = 1; i < path.length; i++) {
+                        ctx.lineTo(path[i][0] * width, path[i][1] * height);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                });
+            });
+
+            // Draw COVID points
+            covidPoints.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x * width, p.y * height, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(61, 154, 152, ${0.3 + Math.sin(frame * 0.05 + p.y) * 0.2})`;
+                ctx.fill();
+            });
+
+            // Draw Protest bleed
+            protestPoints.forEach(p => {
+                const gradient = ctx.createRadialGradient(
+                    p.x * width, p.y * height, 0,
+                    p.x * width, p.y * height, 100 + p.intensity * 50
+                );
+                gradient.addColorStop(0, `rgba(201, 64, 64, ${0.1 + p.intensity * 0.1})`);
+                gradient.addColorStop(1, 'rgba(201, 64, 64, 0)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+
+                // grow intensity
+                if (p.intensity < 5 && frame % 10 == 0) p.intensity += 0.05;
+            });
+            
+            // Draw text particles
+            textParticles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                if (p.life <= 0) {
+                    textParticles.splice(index, 1);
+                }
+            });
+
+            if (mouse.activity > 1 && textParticles.length < 50 && Math.random() < 0.5) {
+                textParticles.push(new TextParticle(mouse.x, mouse.y));
+            }
+            mouse.activity *= 0.98;
+            
+            frame++;
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            mouse.activity = Math.min(mouse.activity + 2, 20);
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2021.11: The Pressure Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(210, 220, 225, 0.7);
+            --heading-color: rgba(210, 220, 225, 0.9);
+            --gauge-bg: rgba(210, 220, 225, 0.05);
+            --gauge-safe: #00aaff;
+            --gauge-warn: #ffcc00;
+            --gauge-danger: #ff3b3b;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #pressureCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .gauge-container {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            width: 90%;
+            max-width: 1000px;
+        }
+        
+        .gauge {
+            width: 200px;
+            height: 100px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .gauge-label {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-color);
+            text-align: center;
+            width: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 20, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 20, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 220, 225, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong { color: var(--gauge-danger); }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="pressureCanvas"></canvas>
+    <div class="gauge-container">
+        <div class="gauge" data-id="climate">
+            <div class="gauge-label">CLIMATE</div>
+        </div>
+        <div class="gauge" data-id="ethiopia">
+             <div class="gauge-label">ETHIOPIA</div>
+        </div>
+        <div class="gauge" data-id="migration">
+             <div class="gauge-label">MIGRATION</div>
+        </div>
+         <div class="gauge" data-id="security">
+             <div class="gauge-label">SECURITY</div>
+        </div>
+    </div>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Nov 2021 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: November 2021</h2>
+            <p><strong>COP26 Climate Summit Addresses Global Crisis</strong>: World leaders gathered in Glasgow, but the final climate deal was widely criticized as insufficient to meet the urgency of the climate emergency, highlighting immense global pressure and strain.</p>
+            <p><strong>Ethiopia Declares State of Emergency as Tigray War Escalates</strong>: The nation was pushed to the brink of collapse as rebel forces advanced toward the capital, Addis Ababa. Authorities told citizens to arm themselves, and a UN report accused all sides of war crimes.</p>
+            <p><strong>Poland-Belarus Border Crisis Intensifies</strong>: Poland deployed <strong>15,000 troops</strong> to its border as Belarus was accused of manufacturing a migrant crisis, pushing thousands into frozen forests and creating a humanitarian emergency under extreme pressure.</p>
+            <p><strong>Multiple Terrorist Attacks Rock Global Security</strong>: A deadly hospital bombing in Kabul killed 25, suicide bombings in Uganda killed 3, and a massacre in Niger killed 69, demonstrating a widespread increase in security pressure.</p>
+            <p><strong>Sudan's Political Crisis Continues</strong>: Following a coup, at least 10 anti-coup protesters were shot dead, yet the military chief later reinstated the civilian Prime Minister in a fragile, high-pressure political deal.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Pressure Signal</h2>
+            <p>November 2021 was a month of intolerable strain. The signals were not of collapse, but of systems buckling under immense, sustained pressure. The climate, a nation-state, a border, the concept of security itself—all were being pushed to their breaking points.</p>
+            <p>The glitch for this era is this "Pressure Signal." It's the experience of watching a system's integrity fail, visualized through the universal language of a pressure gauge needle pushed deep into the red. It is the moment just before the explosion, the point of maximum stress.</p>
+            <p>This artifact simulates a control room monitoring these escalating crises. Each gauge represents a pressure point from the month's headlines. As the background events unfold, the pressure on each system builds. The ghost in this machine is your attention. Your cursor is a point of focus that amplifies the pressure on any single crisis, causing the system to overload and vent static. It shows how focusing on one failing component can reveal the fragility of the entire network.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('pressureCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const gaugeElements = document.querySelectorAll('.gauge');
+        const mouse = { x: -1000, y: -1000 };
+        let staticParticles = [];
+
+        const gauges = {
+            climate: { value: 0.6, target: 0.85, label: "CLIMATE" },
+            ethiopia: { value: 0.5, target: 0.9, label: "ETHIOPIA" },
+            migration: { value: 0.4, target: 0.95, label: "MIGRATION" },
+            security: { value: 0.7, target: 0.8, label: "SECURITY" }
+        };
+
+        function drawGauge(gaugeEl) {
+            const rect = gaugeEl.getBoundingClientRect();
+            if (rect.width === 0) return; 
+
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height;
+            const radius = rect.width / 2;
+            
+            const gaugeData = gauges[gaugeEl.dataset.id];
+            
+            // Background Arc
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI, 0);
+            ctx.strokeStyle = 'rgba(210, 220, 225, 0.1)';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+
+            // Value Arc
+            const endAngle = Math.PI + (gaugeData.value * Math.PI);
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI, endAngle);
+            let color;
+            if (gaugeData.value < 0.5) color = getComputedStyle(document.documentElement).getPropertyValue('--gauge-safe').trim();
+            else if (gaugeData.value < 0.8) color = getComputedStyle(document.documentElement).getPropertyValue('--gauge-warn').trim();
+            else color = getComputedStyle(document.documentElement).getPropertyValue('--gauge-danger').trim();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 10;
+            ctx.stroke();
+            
+             // Needle
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(gaugeData.value * Math.PI);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-radius, 0);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.restore();
+        }
+        
+        function updateGauges() {
+            Object.values(gauges).forEach(data => {
+                if (Math.random() < 0.01) {
+                    data.target = Math.random() * 0.4 + 0.6; // New target pressure
+                }
+                data.value += (data.target - data.value) * 0.02;
+
+                const gaugeEl = document.querySelector(`.gauge[data-id="${data.label.toLowerCase()}"]`);
+                const rect = gaugeEl.getBoundingClientRect();
+                const dist = Math.hypot(mouse.x - (rect.left + rect.width / 2), mouse.y - (rect.top + rect.height / 2));
+                if (dist < 100) {
+                     data.value = Math.min(1, data.value + 0.05);
+                     if (data.value > 0.9 && staticParticles.length < 200) {
+                         for(let i=0; i<5; i++) {
+                             staticParticles.push({
+                                 x: Math.random() * width,
+                                 y: Math.random() * height,
+                                 life: 50
+                             });
+                         }
+                     }
+                }
+            });
+        }
+
+        function drawStatic() {
+             staticParticles.forEach((p, index) => {
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.life / 50 * 0.5})`;
+                ctx.fillRect(p.x, p.y, 2, 2);
+                p.life--;
+                if(p.life <= 0) {
+                    staticParticles.splice(index, 1);
+                }
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            updateGauges();
+            gaugeElements.forEach(drawGauge);
+            drawStatic();
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+        
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'pointer';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'pointer';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'pointer';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        animate();
+    </script>
+</body>
+</html>

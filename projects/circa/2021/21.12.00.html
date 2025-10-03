@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2021.12: The Recursive Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(210, 220, 225, 0.7);
+            --heading-color: rgba(210, 220, 225, 0.9);
+            --loop-color: #00aaff;
+            --glitch-color: #ff3b3b;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #recursiveCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 20, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 20, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 220, 225, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong { color: var(--loop-color); }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="recursiveCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Dec 2021 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: December 2021</h2>
+            <p><strong>Omicron Variant Sparks Global COVID-19 Resurgence</strong>: Just as the world adapted to Delta, the new Omicron variant triggered another global wave, forcing new lockdowns and restrictions, and shattering case records in a recursive pattern of pandemic response.</p>
+            <p><strong>Russia-Ukraine Crisis Escalates</strong>: Russia amassed troops on Ukraine's border, and a tense call between Putin and Biden echoed Cold War-era diplomacy, signaling a return to a familiar geopolitical standoff.</p>
+            <p><strong>Myanmar's "Christmas Massacre" Shocks World</strong>: The military junta's massacre of at least 30 civilians, including humanitarian workers, demonstrated a brutal and repeating cycle of violence against its own people since the coup.</p>
+            <p><strong>Taliban Imposes New Restrictions on Afghan Women</strong>: The Taliban banned women from long-distance solo travel and banned music in vehicles, a direct echo of their previous oppressive rule from the 1990s.</p>
+            <p><strong>Archbishop Desmond Tutu Dies at 90</strong>: The death of the anti-apartheid icon marked the end of an era and served as a powerful reminder of past struggles for freedom, even as new cycles of oppression began elsewhere.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Recursive Signal</h2>
+            <p>December 2021 was the month the signal began to loop. The year did not end with a new crisis, but with the haunting return of old ones. The emergence of a new variant, the echo of Cold War tensions on the Ukrainian border, the reimposition of familiar oppression in Afghanistan—all felt like a system caught in a recursive, corrupted feedback loop.</p>
+            <p>The glitch for this era is this "Recursive Signal." It's the experience of being trapped in a system that has stopped progressing and has begun to repeat its own errors, spiraling inward. It is the visual of a signal feeding back into itself, endlessly.</p>
+            <p>This artifact simulates that feedback loop. The headlines of the month are drawn into a spiraling vortex, a visual metaphor for history folding back on itself. The ghost in this machine is the possibility of escape. Your cursor is an anomaly in the data stream. By introducing your presence, you disrupt the recursive pattern, causing the signal to glitch and momentarily break its cycle, offering a fleeting glimpse of a different potential outcome.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('recursiveCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const headlines = "OMICRON RESURGENCE LOCKDOWN FOR UNVACCINATED CHRISTMAS MASSACRE TENSIONS WITH UKRAINE TALIBAN BANS MUSIC DESMOND TUTU DIES AUNG SAN SUU KYI SENTENCED ";
+        let particles = [];
+        const mouse = { x: width / 2, y: height / 2 };
+        
+        class Particle {
+            constructor(char, angle, radius) {
+                this.char = char;
+                this.angle = angle;
+                this.radius = radius;
+                this.x = 0;
+                this.y = 0;
+                this.targetRadius = radius;
+            }
+
+            update() {
+                this.radius += (this.targetRadius - this.radius) * 0.05;
+                
+                const centerX = width / 2;
+                const centerY = height / 2;
+
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const dist = Math.hypot(dx, dy);
+                
+                let force = 0;
+                if(dist < 100) {
+                   force = (1 - dist / 100) * 20;
+                }
+
+                this.x = centerX + Math.cos(this.angle) * (this.radius + force);
+                this.y = centerY + Math.sin(this.angle) * (this.radius + force);
+                this.angle += 0.002;
+            }
+
+            draw() {
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const dist = Math.hypot(dx, dy);
+
+                if(dist < 100) {
+                     ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--glitch-color').trim();
+                     ctx.font = `bold 14px 'Roboto Mono', monospace`;
+                } else {
+                     ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--loop-color').trim();
+                     ctx.font = `normal 12px 'Roboto Mono', monospace`;
+                }
+                
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle + Math.PI / 2);
+                ctx.fillText(this.char, 0, 0);
+                ctx.restore();
+            }
+        }
+
+        function init() {
+            particles = [];
+            const fullText = headlines.repeat(10);
+            const totalChars = fullText.length;
+            const maxRadius = Math.min(width, height) * 0.45;
+
+            for (let i = 0; i < totalChars; i++) {
+                const angle = (i / totalChars) * Math.PI * 10;
+                const radius = (i / totalChars) * maxRadius;
+                particles.push(new Particle(fullText[i], angle, radius));
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(12, 10, 20, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'pointer';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

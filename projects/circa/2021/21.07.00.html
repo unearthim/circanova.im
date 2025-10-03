@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2021.07: The Phantom Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(210, 220, 225, 0.7);
+            --heading-color: rgba(210, 220, 225, 0.9);
+            --olympic-blue: #0081C8;
+            --static-red: #E4032C;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #broadcastCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 20, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 20, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 220, 225, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content .olympic { color: var(--olympic-blue); }
+        .modal-content .static { color: var(--static-red); }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="broadcastCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Jul 2021 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: July 2021</h2>
+            <p><strong class="static">Assassination of Haitian President</strong>: President Jovenel Moïse was assassinated at his home by a group of foreign mercenaries, plunging the nation into a severe political crisis and power vacuum.</p>
+            <p><strong class="olympic">Tokyo Olympics Open Without Spectators</strong>: After a year-long delay, the Summer Olympics began in a state of emergency, with empty stadiums and arenas, a global spectacle held in a void.</p>
+            <p><strong class="static">Global COVID-19 Delta Variant Surge</strong>: The Delta variant drove a devastating resurgence of the pandemic, with countries like Indonesia, Bangladesh, and Russia reporting record-breaking daily death tolls.</p>
+            <p><strong class="static">South Africa Erupts in Deadly Unrest</strong>: The jailing of former President Jacob Zuma sparked the worst violence and looting in the country since the end of apartheid, leading to military deployment.</p>
+            <p><strong class="static">Afghanistan Security Collapse Accelerates</strong>: As the US accelerated its withdrawal, the Taliban captured vast swathes of territory, and hundreds of Afghan troops were forced to flee into neighboring countries.</p>
+            <p><strong class="static">Catastrophic Flooding in Europe</strong>: Germany and Belgium were hit by some of the worst flooding in decades, resulting in hundreds of deaths and widespread destruction.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Phantom Signal</h2>
+            <p>July 2021 was a month of profound and unsettling voids. The primary signal was a spectacle with no audience—the empty Olympics. It was a broadcast of normalcy into a world that was anything but normal. This phantom signal created a vacuum, which was violently filled by the raw static of reality: an assassination, the collapse of a state, deadly riots, and a surging pandemic.</p>
+            <p>The glitch for this era is this "Phantom Signal." It is the eerie experience of watching a broadcast from an empty room, where the silence is louder than the event itself, and the static of the real world constantly threatens to break through.</p>
+            <p>This artifact simulates that haunted broadcast. The clean, empty lines of the Olympic venue represent the hollow signal. The ghost in this machine is the viewer's own attention. As your cursor moves, you are not changing the channel, but revealing the noise that haunts the broadcast. The more you search the empty space, the more the phantom signals of the month's other crises corrupt the feed, revealing the true state of the world outside the stadium.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('broadcastCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const staticSnippets = ["ASSASSINATION", "DELTA SURGE", "STATE OF EMERGENCY", "UNREST", "COLLAPSE", "POWER VACUUM", "FLOODING"];
+        
+        const mouse = { x: 0, y: 0, intensity: 0 };
+        let particles = [];
+
+        class StaticParticle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.text = staticSnippets[Math.floor(Math.random() * staticSnippets.length)];
+                this.alpha = 0;
+            }
+
+            draw() {
+                ctx.font = `700 12px 'Roboto Mono', monospace`;
+                ctx.fillStyle = `rgba(228, 3, 44, ${this.alpha * mouse.intensity})`;
+                ctx.fillText(this.text, this.x, this.y);
+                this.alpha = Math.random();
+            }
+        }
+
+        function drawVenue() {
+            ctx.strokeStyle = `rgba(0, 129, 200, ${0.5 - mouse.intensity * 0.4})`;
+            ctx.lineWidth = 2;
+
+            // Simple representation of a track
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const trackWidth = Math.min(width, height) * 0.3;
+            const trackHeight = trackWidth * 0.5;
+
+            for (let i = 0; i < 8; i++) {
+                const offset = i * 10;
+                ctx.beginPath();
+                ctx.ellipse(centerX, centerY, trackWidth + offset, trackHeight + offset, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+            
+             ctx.beginPath();
+             ctx.moveTo(centerX - trackWidth, centerY - trackHeight - 40);
+             ctx.lineTo(centerX - trackWidth, centerY + trackHeight + 40);
+             ctx.stroke();
+             
+             ctx.beginPath();
+             ctx.moveTo(centerX + trackWidth, centerY - trackHeight - 40);
+             ctx.lineTo(centerX + trackWidth, centerY + trackHeight + 40);
+             ctx.stroke();
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push(new StaticParticle());
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(12, 10, 20, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            drawVenue();
+            
+            // Draw static/glitches based on mouse intensity
+            if (mouse.intensity > 0.1) {
+                particles.forEach(p => p.draw());
+
+                if (Math.random() < mouse.intensity * 0.5) {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.1})`;
+                    const h = Math.random() * 20;
+                    ctx.fillRect(0, Math.random() * height, width, h);
+                }
+            }
+
+            // Chromatic aberration effect
+             if (mouse.intensity > 0.2 && Math.random() < 0.5) {
+                const x = (Math.random() - 0.5) * mouse.intensity * 20;
+                const y = (Math.random() - 0.5) * mouse.intensity * 20;
+                ctx.globalCompositeOperation = 'lighter';
+                ctx.drawImage(canvas, x, y);
+                ctx.globalCompositeOperation = 'source-over';
+            }
+
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            // Intensity is higher near the edges (the "empty stands")
+            const dx = Math.abs(mouse.x - width / 2) / (width / 2);
+            const dy = Math.abs(mouse.y - height / 2) / (height / 2);
+            mouse.intensity = Math.min(1, Math.max(dx, dy) * 1.5);
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'pointer';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

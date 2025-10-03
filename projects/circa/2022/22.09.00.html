@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022.09: The Unraveling Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #1a1a1a;
+            --text-color: rgba(220, 210, 230, 0.7);
+            --heading-color: rgba(220, 210, 230, 0.9);
+            --thread-color: rgba(220, 210, 230, 0.2);
+            --unravel-color: #ff4d6d;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #unravelCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(26, 26, 26, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 26, 26, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(220, 210, 230, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(220, 210, 230, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="unravelCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Sep 2022 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: September 2022</h2>
+            <p><strong>Queen Elizabeth II Dies, Ending Historic 70-Year Reign:</strong> The death of the world's most recognizable monarch marked the end of an era, triggering a profound global moment of transition and reflection on the stability she represented.</p>
+            <p><strong>Iran Erupts in Nationwide Protests:</strong> The death of Mahsa Amini in police custody sparked the largest anti-government protests in years, challenging the authority of the Islamic Republic as the government responded with deadly force and internet blackouts.</p>
+            <p><strong>Putin Orders Partial Military Mobilization:</strong> In a major escalation, Putin announced Russia's first mobilization since WWII, calling up 300,000 reservists and triggering mass emigration of Russian men fleeing the draft.</p>
+            <p><strong>Ukraine's Stunning Counteroffensive Liberates Territory:</strong> In a lightning advance, Ukrainian forces recaptured vast swathes of territory in the Kharkiv region, forcing a chaotic Russian retreat and signaling a potential turning point in the war.</p>
+            <p><strong>Hurricane Ian Devastates Florida:</strong> The powerful Category 4 storm caused catastrophic damage across Florida and knocked out Puerto Rico's entire power grid, highlighting systemic vulnerability to climate-fueled disasters.</p>
+            <div class="modal-footer">
+              <a href="22.09.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Unraveling Signal</h2>
+            <p>September 2022 was a month where the tightly woven fabric of the old order began to visibly unravel. This was not a singular, violent tear, but a systemic fraying at the edges. The death of a monarch who represented a 70-year constant, the eruption of revolutionary protests against a decades-old theocracy, and a stunning military collapse all pointed to systems losing their coherence.</p>
+            <p>The glitch for this era is this "Unraveling Signal." It is the experience of watching a complex pattern—a social contract, a geopolitical balance, a line on a map—dissolve back into the chaotic threads from which it was made.</p>
+            <p>This artifact simulates that process. A grid of headlines, representing the established order, is woven across the screen. The ghost in this machine is entropy. Your cursor is a point of friction, and as you move it over the threads, you pull them loose. The orderly text dissolves into chaotic particles, revealing the raw, untamed data that lies just beneath the surface of any system. It is a reflection on how quickly stability can come undone when the right pressures are applied.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('unravelCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const mouse = { x: width / 2, y: height / 2 };
+        
+        const headlines = [
+            "QUEEN ELIZABETH II DIES AT 96", "MAHSA AMINI PROTESTS ERUPT",
+            "PUTIN ORDERS MOBILIZATION", "UKRAINE COUNTEROFFENSIVE",
+            "END OF AN ERA", "IRAN REGIME CHALLENGED", "HURRICANE IAN"
+        ];
+        
+        let threads = [];
+        let particles = [];
+
+        class Thread {
+            constructor(y) {
+                this.y = y;
+                this.points = [];
+                this.text = headlines[Math.floor(Math.random() * headlines.length)].repeat(5);
+                for (let x = 0; x < width; x += 10) {
+                    this.points.push({ x: x, y: y, originalY: y });
+                }
+            }
+
+            update() {
+                this.points.forEach(p => {
+                    const dist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+                    if (dist < 100) {
+                        const angle = Math.atan2(p.y - mouse.y, p.x - mouse.x);
+                        p.x += Math.cos(angle) * 2;
+                        p.y += Math.sin(angle) * 2;
+
+                        if (Math.random() > 0.95) {
+                            for (let i = 0; i < 2; i++) {
+                                particles.push(new Particle(p.x, p.y));
+                            }
+                        }
+                    } else {
+                        // Return to original position
+                        p.y += (p.originalY - p.y) * 0.1;
+                    }
+                });
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.points[0].x, this.points[0].y);
+                for (let i = 1; i < this.points.length; i++) {
+                    ctx.lineTo(this.points[i].x, this.points[i].y);
+                }
+                ctx.strokeStyle = `rgba(220, 210, 230, 0.1)`;
+                ctx.stroke();
+
+                ctx.font = `500 10px 'Roboto Mono'`;
+                ctx.fillStyle = `rgba(220, 210, 230, 0.4)`;
+                for (let i = 0; i < this.points.length; i++) {
+                     const p = this.points[i];
+                     const charIndex = Math.floor(p.x / 10) % this.text.length;
+                     ctx.fillText(this.text[charIndex], p.x, p.y);
+                }
+            }
+        }
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 3;
+                this.vy = (Math.random() - 0.5) * 3;
+                this.life = 100;
+                this.color = `hsla(349, 100%, 65%, ${Math.random()})`;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.life / 100;
+                ctx.fillRect(this.x, this.y, 2, 2);
+                ctx.globalAlpha = 1;
+            }
+        }
+        
+        function init() {
+            threads = [];
+            for (let y = 0; y < height; y += 20) {
+                threads.push(new Thread(y));
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(26, 26, 26, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            threads.forEach(t => {
+                t.update();
+                t.draw();
+            });
+            
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                if(p.life <= 0) {
+                    particles.splice(index, 1);
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+        
+        init();
+        animate();
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>

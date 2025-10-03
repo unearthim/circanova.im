@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circanova - Circa 2022</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #121212;
+            --text-color: rgba(230, 230, 230, 0.7);
+            --heading-color: rgba(230, 230, 230, 0.9);
+            --accent-color: #BDB7AB;
+            --border-color: rgba(230, 230, 230, 0.1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        header h1 {
+            font-family: 'Lora', serif;
+            font-weight: 400;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            color: var(--heading-color);
+            margin: 0 0 1rem 0;
+        }
+
+        header .subtitle {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: rgba(230, 230, 230, 0.6);
+            margin: 0;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 2rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid var(--border-color);
+            font-family: 'Lora', serif;
+            font-style: italic;
+        }
+
+        .links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(189, 183, 171, 0.3);
+            padding-bottom: 0.2rem;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .links a:hover {
+            color: white;
+            border-color: white;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .entry-link {
+            display: block;
+            text-decoration: none;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .entry-link:hover {
+            background-color: rgba(189, 183, 171, 0.05);
+            border-color: rgba(189, 183, 171, 0.3);
+        }
+
+        .entry-link .month {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .entry-link .title {
+            font-family: 'Lora', serif;
+            font-size: 2rem;
+            color: var(--heading-color);
+            margin-bottom: 0.75rem;
+        }
+        
+        .entry-link .description {
+            font-family: 'Lora', serif;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .placeholder {
+            border-style: dashed;
+            text-align: center;
+            padding: 4rem 2rem;
+            color: rgba(230, 230, 230, 0.2);
+            font-family: 'Lora', serif;
+            font-style: italic;
+        }
+         .placeholder:hover {
+            background-color: transparent;
+            border-color: var(--border-color);
+        }
+        
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+        
+        footer a {
+            color: rgba(230, 230, 230, 0.5);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        footer a:hover {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Circa 2022</h1>
+            <p class="subtitle">An Index of a Broken Transmission</p>
+        </header>
+
+        <div class="links">
+             <a href="../../index.html">Main Gallery</a>
+             <a href="../../biography.html">Artist Biography</a>
+        </div>
+
+        <main class="timeline">
+            <a href="./2022.01.00.html" class="entry-link">
+                <div class="month">January</div>
+                <div class="title">The Tension Signal</div>
+                <p class="description">A geopolitical network under extreme tension, vibrating with the energy of a world on the brink of conflict.</p>
+            </a>
+            
+            <a href="./2022.02.00.html" class="entry-link">
+                <div class="month">February</div>
+                <div class="title">The Broken Transmission</div>
+                <p class="description">A global broadcast hijacked by the raw, overwhelming signal of a major war, corrupting all other narratives.</p>
+            </a>
+
+            <a href="./2022.03.00.html" class="entry-link">
+                <div class="month">March</div>
+                <div class="title">The Signal of Force</div>
+                <p class="description">A system being consumed by the raw, elemental power of conflict, where information is overwritten by fire.</p>
+            </a>
+
+            <a href="./2022.04.00.html" class="entry-link">
+                <div class="month">April</div>
+                <div class="title">The Signal of Atrocity</div>
+                <p class="description">The experience of viewing a corrupted image file, a record of an event so horrific that the data itself seems to protest.</p>
+            </a>
+
+            <a href="./2022.05.00.html" class="entry-link">
+                <div class="month">May</div>
+                <div class="title">The Signal of Realignment</div>
+                <p class="description">A strategic map being violently redrawn in real-time as new, hard lines of force are established.</p>
+            </a>
+
+             <a href="./2022.06.00.html" class="entry-link">
+                <div class="month">June</div>
+                <div class="title">The Reversal Signal</div>
+                <p class="description">A system's core programming being rewritten, flickering between an established past and an uncertain future.</p>
+            </a>
+
+            <a href="./2022.07.00.html" class="entry-link">
+                <div class="month">July</div>
+                <div class="title">The Signal of Collapse</div>
+                <p class="description">A power vacuum visualized, as multiple pillars of the global order crumble simultaneously into a void.</p>
+            </a>
+
+            <div class="entry-link placeholder">
+                <p>Future signals for 2022 awaiting archival...</p>
+            </div>
+        </main>
+        
+        <footer>
+            <a href="https://unearth.im" target="_blank" rel="noopener noreferrer">a project by unearth.im</a>
+        </footer>
+    </div>
+</body>
+</html>
+

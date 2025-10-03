@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2021.08: The Withdrawal Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(210, 220, 225, 0.7);
+            --heading-color: rgba(210, 220, 225, 0.9);
+            --grid-color: rgba(100, 110, 120, 0.1);
+            --evac-safe-color: #3ded97;
+            --evac-fail-color: #dd3d57;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: crosshair;
+        }
+
+        #evacuationCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #progress-bar-container {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            max-width: 400px;
+            height: 20px;
+            border: 1px solid var(--text-color);
+            z-index: 5;
+        }
+
+        #progress-bar {
+            width: 100%;
+            height: 100%;
+            background-color: var(--evac-fail-color);
+            transform-origin: left;
+            animation: countdown 60s linear forwards;
+        }
+
+        #progress-text {
+            position: fixed;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 20, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 20, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 220, 225, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content .fail { color: var(--evac-fail-color); }
+        .modal-content .hope { color: var(--evac-safe-color); }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        @keyframes countdown {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="evacuationCanvas"></canvas>
+    <div id="progress-text">EVACUATION WINDOW CLOSING...</div>
+    <div id="progress-bar-container"><div id="progress-bar"></div></div>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Aug 2021 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: August 2021</h2>
+            <p><strong class="fail">Afghanistan's Complete Collapse</strong>: In a stunningly rapid offensive, the Taliban captured Kabul, forcing the president to flee and ending the 20-year US military presence. The collapse triggered a chaotic and desperate evacuation at Kabul airport, where the US warned it could not guarantee safe passage.</p>
+            <p><strong class="fail">Haiti Devastated by Major Earthquake</strong>: A catastrophic 7.2 magnitude earthquake struck Haiti, killing over 300 people and injuring thousands, compounding the nation's severe political crisis following the assassination of its president a month earlier.</p>
+            <p><strong class="fail">COVID-19 Delta Variant Drives Global Surge</strong>: The Delta variant continued to devastate nations, with Thailand and Iran setting new daily death and case records. New York City became the first in the US to mandate vaccines for indoor activities.</p>
+            <p><strong class="hope">Zambia's Democratic Transition</strong>: In a rare positive development, Zambian President Edgar Lungu conceded defeat in a landslide election, marking a peaceful and democratic transfer of power driven by a massive youth turnout.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Withdrawal Signal</h2>
+            <p>August 2021 was a month defined by collapse and retreat. The signal was not one of system failure, but of a system being violently unplugged. The defining images were of the desperate scramble to escape before the connection was severed completely.</p>
+            <p>The glitch for this era is this "Withdrawal Signal." It's the experience of a mass data exfiltration from a failing server, a frantic attempt to save what can be saved before the power is cut. Each particle is a person, a piece of data, a hope, streaming towards the single, narrowing point of exit.</p>
+            <p>The ghost in this machine is the chaos of the gatekeepers. Your cursor is not a tool of control, but an agent of that chaos. As you move it over the exit point, you disrupt the flow, scattering the data. Some packets are corrupted; some are lost. It's a reflection of a moment when safe passage could not be guaranteed, and the evacuation itself became the crisis. The countdown is not just a timer; it's the closing window on an entire era, leaving behind a vacuum filled with the data that couldn't escape.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('evacuationCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        let particles = [];
+        const mouse = { x: width / 2, y: height / 2, radius: 100 };
+        const exitPoint = { x: width - 50, y: height / 2 };
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width * 0.2;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 1;
+                this.speed = Math.random() * 1.5 + 0.5;
+                this.state = 'safe'; // 'safe', 'corrupted', 'lost'
+                this.trail = [];
+            }
+
+            update() {
+                const angle = Math.atan2(exitPoint.y - this.y, exitPoint.x - this.x);
+                let vx = Math.cos(angle) * this.speed;
+                let vy = Math.sin(angle) * this.speed;
+                
+                const distToMouse = Math.hypot(this.x - mouse.x, this.y - mouse.y);
+                if(distToMouse < mouse.radius && this.state === 'safe') {
+                    const repelAngle = Math.atan2(this.y - mouse.y, this.x - mouse.x);
+                    const repelForce = (1 - distToMouse / mouse.radius) * 2;
+                    vx += Math.cos(repelAngle) * repelForce;
+                    vy += Math.sin(repelAngle) * repelForce;
+                    if(Math.random() < 0.05) {
+                        this.state = 'corrupted';
+                    }
+                }
+
+                this.x += vx;
+                this.y += vy;
+
+                this.trail.push({x: this.x, y: this.y});
+                if (this.trail.length > 10) this.trail.shift();
+
+                const distToExit = Math.hypot(this.x - exitPoint.x, this.y - exitPoint.y);
+                if (distToExit < 20) {
+                    this.reset();
+                }
+                
+                if (this.x > width || this.x < 0 || this.y > height || this.y < 0) {
+                     this.state = 'lost';
+                }
+            }
+            
+            reset() {
+                this.x = Math.random() * width * 0.2;
+                this.y = Math.random() * height;
+                this.state = 'safe';
+                this.trail = [];
+            }
+
+            draw() {
+                let color;
+                switch(this.state) {
+                    case 'safe':
+                        color = getComputedStyle(document.documentElement).getPropertyValue('--evac-safe-color').trim();
+                        break;
+                    case 'corrupted':
+                         color = getComputedStyle(document.documentElement).getPropertyValue('--evac-fail-color').trim();
+                        break;
+                    case 'lost':
+                        color = 'rgba(100, 110, 120, 0.5)';
+                        break;
+                }
+                
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                if(this.state === 'safe' || this.state === 'corrupted') {
+                    ctx.strokeStyle = `${color}80`; // Add alpha
+                    ctx.beginPath();
+                    if(this.trail.length > 0) {
+                         ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                         for(let i = 1; i < this.trail.length; i++) {
+                             ctx.lineTo(this.trail[i].x, this.trail[i].y);
+                         }
+                         ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 400; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(12, 10, 20, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw Exit Zone
+            ctx.strokeStyle = `rgba(61, 237, 151, 0.3)`;
+            ctx.lineWidth = 2;
+            ctx.setLineDash([10,10]);
+            ctx.beginPath();
+            ctx.arc(exitPoint.x, exitPoint.y, 30, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            exitPoint.x = width - 50;
+            exitPoint.y = height / 2;
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'pointer';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'crosshair';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'crosshair';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

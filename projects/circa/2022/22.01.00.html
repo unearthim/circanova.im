@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022.01: The Tension Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --russia-color: #b33a3a;
+            --nato-color: #4a6c9b;
+            --kazakhstan-color: #ff6a00;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #tensionCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(10, 9, 12, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+
+        .modal-content strong {
+            font-weight: bold;
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(210, 200, 182, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="tensionCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Jan 2022 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: January 2022</h2>
+            <p><strong>Russia-Ukraine Tensions Reach Breaking Point:</strong> US President Biden warned that Russia may invade Ukraine within the next month. Russia built up massive forces along the border while denying invasion plans, centering the dispute on Ukraine's potential NATO membership. The UN Security Council held its first meeting to push for a diplomatic solution.</p>
+            <p><strong>Kazakhstan Erupts in Nationwide Uprising:</strong> The country faced its worst civil unrest since independence, as protests over fuel prices escalated into a nationwide revolt. A state of emergency was declared, the government resigned, and President Tokayev requested military assistance from the Russian-led CSTO alliance to suppress what he called "terrorist gangs."</p>
+            <p><strong>Burkina Faso Military Coup:</strong> Military forces staged a coup, following a similar pattern to neighboring Mali. The move, while condemned internationally, was popular domestically due to the government's failure to address security threats from extremist groups.</p>
+            <p><strong>North Korea Resumes Missile Testing:</strong> North Korea launched a new series of missile tests designed to circumvent US and Japanese defense systems, escalating regional tensions.</p>
+            <div class="modal-footer">
+                <a href="22.01.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Tension Signal</h2>
+            <p>January 2022 was a month where the world held its breath. The signal was not one of collapse, but of immense, building pressure. On one side of the globe, the rhetoric and military build-up between Russia and NATO were escalating towards a breaking point. On the other, the nation of Kazakhstan was experiencing a violent internal rupture that required foreign military intervention.</p>
+            <p>The glitch of this era is this "Tension Signal." It is the experience of watching multiple systems being pushed to their absolute limits, a visualization of the strain on a network that is about to snap.</p>
+            <p>This artifact simulates a geopolitical network under this extreme tension. Lines of force connect the major actors, pulling and vibrating with energy. The ghost in this machine is the fragility of peace. Your cursor is a disruptive force, a point of instability. As you move it, you increase the tension on the lines, causing them to vibrate more violently and the system to glitch, revealing the raw data—the headlines of a world on the brink.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('tensionCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const mouse = { x: width / 2, y: height / 2 };
+
+        const nodes = {
+            russia: { x: width * 0.8, y: height * 0.3, color: '#b33a3a', text: "RUSSIA" },
+            ukraine: { x: width * 0.65, y: height * 0.4, color: '#F2D335', text: "UKRAINE" },
+            nato: { x: width * 0.2, y: height * 0.5, color: '#4a6c9b', text: "NATO" },
+            kazakhstan: { x: width * 0.7, y: height * 0.7, color: '#ff6a00', text: "KAZAKHSTAN" },
+            nk: {x: width * 0.9, y: height * 0.6, color: '#FFFFFF', text: "NORTH KOREA"}
+        };
+        
+        const headlines = [
+            "BIDEN WARNS OF INVASION", "STATE OF EMERGENCY", "CSTO DEPLOYED",
+            "GOVERNMENT RESIGNS", "NO ALTERNATIVE TO DIPLOMACY", "MISSILE TESTS",
+            "BURKINA FASO COUP"
+        ];
+
+        class TensionLine {
+            constructor(nodeA, nodeB) {
+                this.nodeA = nodeA;
+                this.nodeB = nodeB;
+                this.tension = 0;
+            }
+
+            update() {
+                const distA = Math.hypot(this.nodeA.x - mouse.x, this.nodeA.y - mouse.y);
+                const distB = Math.hypot(this.nodeB.x - mouse.x, this.nodeB.y - mouse.y);
+                const midX = (this.nodeA.x + this.nodeB.x) / 2;
+                const midY = (this.nodeA.y + this.nodeB.y) / 2;
+                const distMid = Math.hypot(midX - mouse.x, midY - mouse.y);
+                
+                const influence = Math.max(0, 1 - distMid / (width / 2));
+                this.tension = influence * 20;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.nodeA.x, this.nodeA.y);
+                const cpX = (this.nodeA.x + this.nodeB.x) / 2 + (Math.random() - 0.5) * this.tension;
+                const cpY = (this.nodeA.y + this.nodeB.y) / 2 + (Math.random() - 0.5) * this.tension;
+                ctx.quadraticCurveTo(cpX, cpY, this.nodeB.x, this.nodeB.y);
+                
+                ctx.strokeStyle = `rgba(210, 200, 182, ${0.1 + this.tension / 25})`;
+                ctx.lineWidth = 0.5 + this.tension / 20;
+                ctx.stroke();
+            }
+        }
+        
+        const lines = [
+            new TensionLine(nodes.russia, nodes.nato),
+            new TensionLine(nodes.russia, nodes.ukraine),
+            new TensionLine(nodes.nato, nodes.ukraine),
+            new TensionLine(nodes.russia, nodes.kazakhstan),
+            new TensionLine(nodes.russia, nodes.nk)
+        ];
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 9, 12, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            lines.forEach(line => {
+                line.update();
+                line.draw();
+            });
+            
+            for(const key in nodes) {
+                const node = nodes[key];
+                const dist = Math.hypot(node.x - mouse.x, node.y - mouse.y);
+                const alpha = Math.min(1, 0.2 + (1 - dist / (width/2)) * 5);
+
+                ctx.font = `700 14px 'Roboto Mono', monospace`;
+                ctx.fillStyle = node.color;
+                ctx.globalAlpha = alpha;
+                ctx.fillText(node.text, node.x + 15, node.y);
+                
+                ctx.beginPath();
+                // Core Refusal: Not a circle, but an irregular geometric shape
+                ctx.moveTo(node.x + 5, node.y);
+                ctx.lineTo(node.x, node.y - 5);
+                ctx.lineTo(node.x - 5, node.y);
+                ctx.lineTo(node.x, node.y + 5);
+                ctx.closePath();
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+
+            // Draw glitchy headlines
+            const totalTension = lines.reduce((sum, line) => sum + line.tension, 0);
+            if (totalTension > 10 && Math.random() < totalTension / 100) {
+                const text = headlines[Math.floor(Math.random() * headlines.length)];
+                ctx.font = `500 ${10 + totalTension}px 'Roboto Mono', monospace`;
+                ctx.fillStyle = `rgba(255, 106, 0, ${Math.random() * 0.5 + 0.5})`;
+                ctx.fillText(text, Math.random() * width, Math.random() * height);
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            // Update node positions based on new dimensions
+            nodes.russia.x = width * 0.8; nodes.russia.y = height * 0.3;
+            nodes.ukraine.x = width * 0.65; nodes.ukraine.y = height * 0.4;
+            nodes.nato.x = width * 0.2; nodes.nato.y = height * 0.5;
+            nodes.kazakhstan.x = width * 0.7; nodes.kazakhstan.y = height * 0.7;
+            nodes.nk.x = width * 0.9; nodes.nk.y = height * 0.6;
+        });
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2020.04: The Mortality Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --monitor-glow: #3d9a98;
+            --alert-color: #b33a3a;
+            --static-color: rgba(210, 200, 182, 0.5);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #monitorCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: none;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.95);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong {
+            color: var(--alert-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="monitorCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Apr 2020 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: April 2020</h2>
+            <p><strong>Pandemic Peaks Globally</strong>: The US became the country with the highest death toll, surpassing <strong>20,000</strong>. It became the first nation to document over <strong>2,100 deaths in a single day</strong>. The UK's death toll passed 10,000, while France reported 1,417 deaths in one day.</p>
+            <p><strong>Boris Johnson Hospitalized</strong>: The UK Prime Minister spent several days in <strong>intensive care</strong> battling COVID-19, creating leadership uncertainty.</p>
+            <p><strong>Lockdowns and Protests</strong>: Japan declared a state of emergency and NYC closed schools for the rest of the year. Simultaneously, the first <strong>anti-lockdown protests</strong> began in US state capitals, with healthcare workers counter-protesting.</p>
+            <p><strong>Economic and Energy Crisis</strong>: OPEC and its allies agreed to the largest-ever oil production cut amidst a devastating price war.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Mortality Signal</h2>
+            <p>April 2020 was the month of the count. The world, locked inside, was reduced to a stream of devastating statistics. This artifact simulates a vital signs monitor, a machine designed to measure life. But the machine is broken; its glitch is that it no longer tracks a heartbeat, but a "deathbeat." The numbers are not pulse rates, but the relentless, climbing tally of the dead.</p>
+            <p>The primary signal is this grim, repeating data. It is cold, clinical, and overwhelming.</p>
+            <p>The ghost in this machine is the first sign of social friction. As you move your cursor, the static of anti-lockdown protests interferes with the monitor's signal. It represents the moment the shared trauma of quarantine began to fracture, creating a new, dissonant noise that would define the next phase of the crisis. It is the sound of one reality pushing against another.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('monitorCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const protestSnippets = [
+            "END THE LOCKDOWN", "OPEN THE ECONOMY", "MY BODY MY CHOICE",
+            "FREEDOM IS ESSENTIAL", "STOP THE TYRANNY", "WE WILL NOT COMPLY"
+        ];
+        let deathToll = 18000;
+        let linePoints = [];
+        const maxPoints = width / 2;
+        const mouse = { x: 0, y: 0, activity: 0 };
+        
+        function init() {
+            linePoints = [];
+            for (let i = 0; i < maxPoints; i++) {
+                linePoints.push(height / 2);
+            }
+            deathToll = 18000 + Math.floor(Math.random()*1000);
+        }
+
+        function animate() {
+            // Background
+            ctx.fillStyle = 'rgba(10, 9, 12, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Grid
+            ctx.strokeStyle = 'rgba(61, 154, 152, 0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < width; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, height);
+                ctx.stroke();
+            }
+            for (let i = 0; i < height; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(width, i);
+                ctx.stroke();
+            }
+
+            // Line
+            ctx.strokeStyle = 'rgba(61, 154, 152, 1)';
+            ctx.lineWidth = 2;
+            ctx.shadowColor = 'rgba(61, 154, 152, 0.8)';
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.moveTo(0, linePoints[0]);
+            for (let i = 1; i < linePoints.length; i++) {
+                ctx.lineTo(i * 2, linePoints[i]);
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Update line
+            linePoints.shift();
+            let nextPoint = height/2;
+            if (Math.random() < 0.05) { // Spike
+                nextPoint += (Math.random() - 0.5) * height * 0.4;
+            } else if (Math.random() < 0.02) { // Flatline
+                 // stay at height/2
+            } else {
+                 nextPoint += (Math.random() - 0.5) * 20;
+            }
+            linePoints.push(nextPoint);
+
+
+            // Vitals Display
+            ctx.font = `bold 700 clamp(2rem, 5vw, 4rem) 'Roboto Mono', monospace`;
+            ctx.fillStyle = `rgba(179, 58, 58, ${0.5 + Math.random() * 0.5})`;
+            ctx.textAlign = 'right';
+            ctx.fillText(Math.floor(deathToll), width - 40, 80);
+            
+            ctx.font = `300 1rem 'Roboto Mono', monospace`;
+            ctx.fillStyle = 'rgba(179, 58, 58, 0.8)';
+            ctx.fillText("GLOBAL DEATHS", width - 40, 110);
+            
+            deathToll += Math.random() * 20;
+             if (deathToll > 25000 && Math.random() < 0.01) {
+                deathToll = 20000; // Reset periodically
+            }
+
+            // Static from mouse activity
+            if (mouse.activity > 0) {
+                for (let i = 0; i < mouse.activity * 2; i++) {
+                    ctx.fillStyle = `rgba(210, 200, 182, ${Math.random() * 0.2})`;
+                    ctx.fillRect(Math.random() * width, Math.random() * height, 2, Math.random() * 10);
+                }
+                
+                if (Math.random() < 0.1) {
+                    ctx.font = `500 ${10 + mouse.activity * 2}px 'Roboto Mono', monospace`;
+                    ctx.fillStyle = `rgba(210, 200, 182, ${0.2 + mouse.activity / 50})`;
+                    ctx.textAlign = 'center';
+                    const text = protestSnippets[Math.floor(Math.random() * protestSnippets.length)];
+                    ctx.fillText(text, Math.random() * width, Math.random() * height);
+                }
+                mouse.activity *= 0.95;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        window.addEventListener('mousemove', (e) => {
+            const speed = Math.hypot(e.x - lastMouseX, e.y - lastMouseY);
+            mouse.activity = Math.min(mouse.activity + speed/10, 30);
+            lastMouseX = e.x;
+            lastMouseY = e.y;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

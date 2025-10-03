@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022.12: The Bifurcated Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(220, 210, 230, 0.7);
+            --heading-color: rgba(220, 210, 230, 0.9);
+            --fusion-color: #00f6ff;
+            --chaos-color: #ff3b3b;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #signalCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 14, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 14, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(220, 210, 230, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(220, 210, 230, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 246, 255, 0.08) 0%, rgba(0, 246, 255, 0) 60%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        body:hover #cursor-glow {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="cursor-glow"></div>
+    <canvas id="signalCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Dec 2022 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: December 2022</h2>
+            <p><strong>Historic Breakthrough in Nuclear Fusion:</strong> The US Department of Energy announced the achievement of fusion ignition, the first time a fusion reaction produced more energy than was put into it, marking a crucial step toward unlimited clean energy.</p>
+            <p><strong>Peru's Political Crisis Escalates After Self-Coup:</strong> President Pedro Castillo's attempt to dissolve Congress failed, leading to his impeachment and arrest. Mass protests erupted, with at least 25 killed as the government declared a nationwide state of emergency.</p>
+            <p><strong>Argentina Wins Historic World Cup:</strong> Argentina, led by Lionel Messi, won the FIFA World Cup for the first time since 1986 in a dramatic final against France, providing a moment of global celebration.</p>
+            <p><strong>Russia Intensifies Ukraine Energy War:</strong> Russian forces launched a barrage of at least 76 missiles across Ukraine, targeting power stations and critical infrastructure in a continued campaign to destroy the nation's energy grid during winter.</p>
+            <p><strong>China Abandons Zero-COVID Policy:</strong> After nearly three years of stringent lockdowns and rare public protests, China effectively ended its "zero-COVID" policy, a dramatic reversal with massive social and economic implications.</p>
+            <div class="modal-footer">
+                <a href="22.12.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Bifurcated Signal</h2>
+            <p>December 2022 ended a tumultuous year with a signal that was violently split. In one reality, humanity achieved a monumental scientific breakthrough with fusion ignition—a signal of near-infinite possibility. In the other, a nation's democracy collapsed into a state of emergency, a brutal winter war intensified, and a massive, disruptive policy shift was enacted in China. The two signals did not merge; they coexisted in profound, jarring contradiction.</p>
+            <p>The glitch for this era is this "Bifurcated Signal." It is the experience of receiving two perfectly clear, but mutually exclusive, transmissions at once. It's the paradox of a species that can create a star in a lab but cannot prevent the collapse of its own civic systems.</p>
+            <p>This artifact simulates this split data stream. At the center is the stable, powerful core of the fusion signal, a beacon of order. Radiating outwards is the chaotic static of the month's other crises. The ghost in this machine is the tension between creation and decay. Your cursor is an attractor; as you move it, you pull the chaotic particles into the orbit of the central core, momentarily imposing the order of the fusion breakthrough onto the surrounding chaos. It is a fleeting, interactive attempt to resolve an unresolvable signal.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('signalCanvas');
+        const ctx = canvas.getContext('2d');
+        const cursorGlow = document.getElementById('cursor-glow');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const mouse = { x: width / 2, y: height / 2 };
+        
+        const chaosSnippets = ["STATE OF EMERGENCY", "SELF-COUP", "MISSILE BARRAGE", "ZERO-COVID ENDS", "25 DEAD", "WINTER STORM"];
+        let particles = [];
+        
+        class Particle {
+            constructor() {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.min(width, height) / 2 + Math.random() * 100;
+                this.x = width/2 + Math.cos(angle) * radius;
+                this.y = height/2 + Math.sin(angle) * radius;
+                this.vx = 0;
+                this.vy = 0;
+                this.text = chaosSnippets[Math.floor(Math.random() * chaosSnippets.length)];
+            }
+            update() {
+                const mouse_dx = mouse.x - this.x;
+                const mouse_dy = mouse.y - this.y;
+                const mouse_dist = Math.hypot(mouse_dx, mouse_dy);
+                
+                const core_dx = width/2 - this.x;
+                const core_dy = height/2 - this.y;
+                
+                // Constant weak pull to the center core
+                this.vx += core_dx * 0.0002;
+                this.vy += core_dy * 0.0002;
+
+                // Stronger pull towards the mouse cursor when it's close
+                if(mouse_dist < 200) {
+                    const pullForce = (1 - mouse_dist / 200) * 0.1; // Force increases as cursor gets closer
+                    this.vx += mouse_dx * pullForce * 0.1;
+                    this.vy += mouse_dy * pullForce * 0.1;
+
+                    // Add repulsion from other particles when near the mouse to "unravel"
+                    for (const other of particles) {
+                        if (other === this) continue;
+                        const repel_dx = this.x - other.x;
+                        const repel_dy = this.y - other.y;
+                        const repel_dist = Math.hypot(repel_dx, repel_dy);
+                        
+                        if (repel_dist < 50) { // Increased distance for better unraveling
+                            const repelForce = (1 - repel_dist / 50);
+                            this.vx += (repel_dx / repel_dist) * repelForce * 0.25; // Stronger force
+                            this.vy += (repel_dy / repel_dist) * repelForce * 0.25;
+                        }
+                    }
+                }
+
+                this.vx *= 0.95; // Damping/friction
+                this.vy *= 0.95;
+                
+                this.x += this.vx;
+                this.y += this.vy;
+            }
+            draw() {
+                ctx.font = `500 12px 'Roboto Mono'`;
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--chaos-color').trim();
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+        
+        function init() {
+            particles = [];
+            for(let i=0; i<150; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function drawCore() {
+             const centerX = width / 2;
+             const centerY = height / 2;
+             
+             ctx.save();
+             ctx.translate(centerX, centerY);
+             
+             // Core glow
+             const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, 100);
+             gradient.addColorStop(0, `rgba(0, 246, 255, 0.5)`);
+             gradient.addColorStop(1, `rgba(0, 246, 255, 0)`);
+             ctx.fillStyle = gradient;
+             ctx.fillRect(-100, -100, 200, 200);
+
+             // Core text
+             ctx.font = `700 14px 'Roboto Mono'`;
+             ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--fusion-color').trim();
+             ctx.textAlign = 'center';
+             ctx.textBaseline = 'middle';
+             ctx.fillText("FUSION IGNITION", 0, 0);
+
+             // Core geometric shape (non-circle)
+             const sides = 6;
+             const radius = 30;
+             ctx.strokeStyle = `rgba(0, 246, 255, 0.8)`;
+             ctx.lineWidth = 2;
+             ctx.beginPath();
+             for(let i=0; i<sides; i++){
+                 let angle = (i/sides) * Math.PI * 2 + (Date.now()/2000);
+                 const r = radius + Math.sin(angle*3 + Date.now()/1000) * 5;
+                 const x = Math.cos(angle) * r;
+                 const y = Math.sin(angle) * r;
+                 if (i === 0) ctx.moveTo(x, y);
+                 else ctx.lineTo(x, y);
+             }
+             ctx.closePath();
+             ctx.stroke();
+
+             ctx.restore();
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(12, 10, 14, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+            
+            drawCore();
+            
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            cursorGlow.style.left = `${e.clientX}px`;
+            cursorGlow.style.top = `${e.clientY}px`;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+                cursorGlow.style.opacity = '0';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+                cursorGlow.style.opacity = '1';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                    cursorGlow.style.opacity = '1';
+                }
+            });
+        }
+        
+        init();
+        animate();
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>
+
+
+

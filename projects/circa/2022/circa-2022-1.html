@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022: Modulated Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Using the Hesperian palette for continuity */
+            --hesperian-1: #6b5b95;
+            --hesperian-2: #878f99;
+            --hesperian-3: #c8b560;
+            --hesperian-4: #a2b9bc;
+            --background-color: #0a090c;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            color: var(--hesperian-4);
+            font-family: 'Roboto Mono', monospace;
+            cursor: none;
+        }
+
+        /* The main container for the glitch effect */
+        .glitch-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* This canvas will hold the generative, pixel-sorted image */
+        #glitchCanvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            /* A subtle filter to mimic CRT displays */
+            filter: saturate(1.2) contrast(1.1);
+        }
+
+        /* CSS-based glitch effect using pseudo-elements for chromatic aberration */
+        .glitch-wrapper::before,
+        .glitch-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            mix-blend-mode: screen;
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+            pointer-events: none;
+        }
+
+        .glitch-wrapper::before {
+            background-color: var(--hesperian-1);
+            animation-delay: -1s;
+        }
+
+        .glitch-wrapper::after {
+            background-color: var(--hesperian-3);
+        }
+        
+        /* Keyframe animation for the chromatic aberration jitter */
+        @keyframes glitch-anim {
+            0% { transform: translate(0, 0); }
+            10% { transform: translate(-2px, 2px); }
+            20% { transform: translate(2px, -2px); }
+            30% { transform: translate(0, 0); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* Scanline overlay for that retro-digital feel */
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(0,0,0,0) 0,
+                rgba(0,0,0,0) 1px,
+                rgba(0,0,0,0.1) 2px,
+                rgba(0,0,0,0.1) 3px
+            );
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Info box to guide the user */
+        .info {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            background-color: rgba(10, 9, 12, 0.6);
+            padding: 5px 15px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="glitch-wrapper">
+        <canvas id="glitchCanvas"></canvas>
+        <div class="scanlines"></div>
+    </div>
+    <div class="info">Modulate the signal with your cursor</div>
+
+    <script>
+        const canvas = document.getElementById('glitchCanvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+        // --- Configurable Parameters ---
+        const imageWidth = 800;
+        const imageHeight = 600;
+        let sortThreshold = 0.25; // Initial brightness threshold for sorting
+
+        // Set canvas dimensions
+        canvas.width = imageWidth;
+        canvas.height = imageHeight;
+
+        // --- Base Image Generation ---
+        // This function creates the initial, "uncorrupted" landscape.
+        function drawBaseImage() {
+            // Sky Gradient
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, imageHeight * 0.6);
+            skyGradient.addColorStop(0, '#0a090c');
+            skyGradient.addColorStop(1, '#6b5b95'); // Hesperian-1
+            ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, imageWidth, imageHeight);
+
+            // Celestial Body (not a perfect circle)
+            ctx.fillStyle = '#a2b9bc'; // Hesperian-4
+            ctx.beginPath();
+            // Using quadratic curves to create an imperfectly round shape
+            ctx.moveTo(imageWidth * 0.7, imageHeight * 0.2);
+            ctx.quadraticCurveTo(imageWidth * 0.85, imageHeight * 0.2, imageWidth * 0.85, imageHeight * 0.35);
+            ctx.quadraticCurveTo(imageWidth * 0.85, imageHeight * 0.5, imageWidth * 0.7, imageHeight * 0.5);
+            ctx.quadraticCurveTo(imageWidth * 0.55, imageHeight * 0.5, imageWidth * 0.55, imageHeight * 0.35);
+            ctx.quadraticCurveTo(imageWidth * 0.55, imageHeight * 0.2, imageWidth * 0.7, imageHeight * 0.2);
+            ctx.fill();
+            
+            // Foreground
+            ctx.fillStyle = '#0a090c';
+            ctx.fillRect(0, imageHeight * 0.6, imageWidth, imageHeight * 0.4);
+        }
+
+        // --- Pixel Sorting Algorithm ---
+        // This is the core of the glitch effect.
+        function pixelSort() {
+            const imageData = ctx.getImageData(0, 0, imageWidth, imageHeight);
+            const data = imageData.data;
+
+            // Horizontal Sort
+            for (let y = 0; y < imageHeight; y++) {
+                let rowStart = -1;
+                for (let x = 0; x < imageWidth; x++) {
+                    const i = (y * imageWidth + x) * 4;
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+                    const brightness = (r + g + b) / (255 * 3);
+
+                    if (brightness > sortThreshold) {
+                        if (rowStart < 0) {
+                            rowStart = x;
+                        }
+                    } else {
+                        if (rowStart >= 0) {
+                            sortRow(y, rowStart, x - 1, data);
+                            rowStart = -1;
+                        }
+                    }
+                }
+                if (rowStart >= 0) {
+                    sortRow(y, rowStart, imageWidth - 1, data);
+                }
+            }
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        // Helper function to sort a segment of pixels in a row
+        function sortRow(y, startX, endX, data) {
+            const segment = [];
+            for (let x = startX; x <= endX; x++) {
+                const i = (y * imageWidth + x) * 4;
+                segment.push({
+                    r: data[i],
+                    g: data[i + 1],
+                    b: data[i + 2],
+                    a: data[i + 3]
+                });
+            }
+
+            // Sort by brightness
+            segment.sort((a, b) => (a.r + a.g + a.b) - (b.r + b.g + b.b));
+
+            for (let x = startX; x <= endX; x++) {
+                const i = (y * imageWidth + x) * 4;
+                const pixel = segment[x - startX];
+                data[i] = pixel.r;
+                data[i + 1] = pixel.g;
+                data[i + 2] = pixel.b;
+                data[i + 3] = pixel.a;
+            }
+        }
+
+        // --- Interactivity and Animation Loop ---
+        window.addEventListener('mousemove', (e) => {
+            // Mouse X position controls the brightness threshold for sorting
+            sortThreshold = e.clientX / window.innerWidth;
+        });
+
+        function animate() {
+            drawBaseImage(); // Redraw the original scene
+            pixelSort();     // Apply the glitch based on the current threshold
+            requestAnimationFrame(animate);
+        }
+
+        // Start the animation loop
+        animate();
+    </script>
+</body>
+</html>

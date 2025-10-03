@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2020.03: The Shutdown Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --accent-color: #b33a3a;
+            --secondary-color: #555;
+            --grid-color: rgba(210, 200, 182, 0.1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calendar-container {
+            width: 90%;
+            max-width: 1200px;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-header {
+            text-align: center;
+            color: var(--heading-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 2rem;
+            animation: fadeIn 2s ease-out;
+        }
+
+        .calendar-grid {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border-top: 1px solid var(--grid-color);
+            border-left: 1px solid var(--grid-color);
+        }
+
+        .calendar-day {
+            border-right: 1px solid var(--grid-color);
+            border-bottom: 1px solid var(--grid-color);
+            padding: 0.5rem;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .day-number {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .event {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            text-decoration: line-through;
+            color: var(--secondary-color);
+        }
+
+        .cancellation {
+            color: var(--accent-color);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .day-11 .cancellation {
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: none;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.95);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong {
+            color: var(--accent-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar-header">March 2020</div>
+        <div class="calendar-grid">
+            <!-- Grid generated by JS -->
+        </div>
+    </div>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Mar 2020 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: March 2020</h2>
+            <p><strong>COVID-19 Declared Global Pandemic</strong>: On <strong>March 11</strong>, the WHO officially declared a pandemic. On the same day, the NBA suspended its season, the US banned travel from Europe, and Tom Hanks tested positive, signaling the end of normal life.</p>
+            <p><strong>Global Lockdowns Begin</strong>: Italy's death toll surpassed <strong>10,000</strong>. Spain, Denmark, Hungary, and India implemented lockdowns. By March 24, nearly a <strong>quarter of the world's population</strong> was under quarantine.</p>
+            <p><strong>US Becomes Epicenter</strong>: On March 26, the US surpassed China with the most confirmed cases, reaching over <strong>82,000</strong>. By the end of the month, there were over 192,000 cases and 5,300 deaths in the US.</p>
+            <p><strong>Economic Collapse</strong>: Global markets plummeted as the pandemic's economic impact became clear, triggering the worst drop since 2008.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Shutdown Signal</h2>
+            <p>March 2020 was the month the system was unplugged. The glitch was not a distortion of the signal, but its abrupt and total cancellation. This artifact is a reflection of that moment: a digital calendar, a tool for organizing a future that suddenly ceased to exist.</p>
+            <p>Before March 11, the calendar shows a semblance of normalcy. Events are planned, a future is assumed. After March 11—"the day everything changed"—the future is overwritten. A single, repeating event dominates: <em>PANDEMIC DECLARED</em>. All other plans become irrelevant, struck through, their data corrupted by the new reality.</p>
+            <p>The ghost in this machine is the absence of interaction. Unlike previous artifacts, your cursor has no effect here. You are a passive observer. This is intentional. It reflects the helplessness of the moment, the feeling of being a spectator to a global shutdown, unable to influence the outcome. The system is frozen, and so are you.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.querySelector('.calendar-grid');
+            const daysInMonth = 31;
+            const startDay = 0; // March 1, 2020 was a Sunday
+
+            const events = {
+                2: "Tornado Outbreak",
+                5: "Schools Close (Italy)",
+                6: "Kabul Attack",
+                10: "St. Patrick's Day Parades Canceled",
+                11: "NBA Season Suspended",
+                13: "Travel Ban (EU)",
+                17: "Markets Crash",
+                24: "Prince Charles Positive",
+                26: "US Leads in Cases",
+            };
+            
+            // Add blank days for the start of the month
+            for (let i = 0; i < startDay; i++) {
+                grid.innerHTML += `<div class="calendar-day"></div>`;
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const day = document.createElement('div');
+                day.classList.add('calendar-day', `day-${i}`);
+                day.style.animationDelay = `${i * 50}ms`;
+
+                let eventHTML = `<div class="day-number">${i}</div>`;
+                
+                if (events[i]) {
+                    eventHTML += `<div class="event">${events[i]}</div>`;
+                }
+
+                if (i >= 11) {
+                    eventHTML += `<div class="cancellation">PANDEMIC DECLARED</div>`;
+                }
+
+                day.innerHTML = eventHTML;
+                grid.appendChild(day);
+            }
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>

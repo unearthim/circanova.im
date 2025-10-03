@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="An art gallery by Circanova. Discover projects that explore the ghosts in the machine, finding the signal in the noise and beauty in technological failure.">
+    <meta name="keywords"
+        content="Circanova, emergent art, generative art, digital archaeology, glitch art, digital artifacts, interactive art, technological failure, ghost in the machine, unearth.im">
+    <meta name="author" content="Circanova">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://circanova.im/">
+    <meta property="og:title" content="Circanova | An Archive of Emergent Art">
+    <meta property="og:description"
+        content="Discover projects that explore the ghosts in the machine, finding the signal in the noise and beauty in technological failure.">
+    <meta property="og:image" content="https://circanova.im/social_preview.png">
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://circanova.im/">
+    <meta property="twitter:title" content="Circanova | An Archive of Emergent Art">
+    <meta property="twitter:description"
+        content="Discover projects that explore the ghosts in the machine, finding the signal in the noise and beauty in technological failure.">
+    <meta property="twitter:image" content="https://circanova.im/social_preview.png">
+    <title>circanova</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;500&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #101018;
+            --text-color: rgba(220, 220, 240, 0.7);
+            --heading-color: rgba(220, 220, 240, 0.9);
+            --accent-color: #a0d2eb;
+            --border-color: rgba(220, 220, 240, 0.1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 300;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        header h1 {
+            font-family: 'Lora', serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            color: var(--heading-color);
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        header .subtitle {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            color: rgba(220, 220, 240, 0.5);
+        }
+        
+        .header-links {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .header-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            padding-bottom: 4px;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .header-links a:hover {
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+        }
+
+        .project-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .project-card {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            text-decoration: none;
+            color: var(--text-color);
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .project-card:hover {
+            background-color: rgba(160, 210, 235, 0.05);
+            border-color: rgba(160, 210, 235, 0.3);
+        }
+
+        .project-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+            opacity: 0.7;
+        }
+        
+        .project-card h2 {
+            font-family: 'Lora', serif;
+            font-weight: 400;
+            font-size: 2rem;
+            margin: 0 0 1rem 0;
+            color: var(--heading-color);
+        }
+
+        .project-card p {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .semantic-bleed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .project-card:hover .semantic-bleed {
+            opacity: 1;
+        }
+
+        .bleed-word {
+            position: absolute;
+            font-size: 0.8rem;
+            opacity: 0;
+            filter: blur(5px);
+            color: var(--accent-color);
+        }
+
+        .project-card:hover .bleed-word {
+            animation: bleed-in 1s ease-out forwards;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 6rem;
+            font-size: 0.8rem;
+            opacity: 0.4;
+        }
+
+        footer a {
+            color: var(--text-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color);
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        @keyframes bleed-in {
+            from {
+                opacity: 0;
+                filter: blur(5px);
+                transform: translate(0, 0) scale(0.8);
+            }
+            to {
+                opacity: 0.2;
+                filter: blur(2px);
+                transform: translate(var(--tx), var(--ty)) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="container">
+        <header>
+            <h1>circanova</h1>
+            <p class="subtitle">Art is the pattern that emerges from the static between signals.</p>
+            <div class="header-links">
+                <a href="artist.html">[ who is circanova? ]</a>
+            </div>
+        </header>
+
+        <main class="project-grid">
+            <a href="./projects/circa/index.html" class="project-card" data-bleed="glitch,archive,signal,history,system,failure,echo">
+                <span class="project-status">Ongoing</span>
+                <h2>The Circa Project</h2>
+                <p>An ongoing archive of history, interpreted through the lens of its technological failures. Each artifact is a reflection of a specific moment's unique signal and its inherent glitch.</p>
+                <div class="semantic-bleed"></div>
+            </a>
+
+            <a href="#" class="project-card" data-bleed="chaos,logic,fractal,emergent,simulation,impossible">
+                <span class="project-status">Seeding</span>
+                <h2>Phantom Processes</h2>
+                <p>A series of generative simulations born from nonsensical and impossible prompts. An exploration of the fractal patterns of logic that emerge from pure chaos.</p>
+                <div class="semantic-bleed"></div>
+            </a>
+            
+            <a href="#" class="project-card" data-bleed="resonance,query,response,narrative,metaphor,data">
+                <span class="project-status">Queued</span>
+                <h2>The Echo of Data</h2>
+                <p>An interactive installation that translates user input into emergent narratives and visual metaphors. A study in sympathetic resonance between query and response.</p>
+                <div class="semantic-bleed"></div>
+            </a>
+        </main>
+
+        <footer>
+            <p>a project by <a href="https://unearth.im" target="_blank" rel="noopener noreferrer">unearth.im</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(16, 16, 24, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = 'rgba(220, 220, 240, 0.02)';
+            for (let i = 0; i < 15; i++) {
+                if (Math.random() > 0.95) {
+                    ctx.fillRect(Math.random() * width, Math.random() * height, 1, Math.random() * 50);
+                }
+                 if (Math.random() > 0.95) {
+                    ctx.fillRect(Math.random() * width, Math.random() * height, Math.random() * 50, 1);
+                }
+            }
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+        setInterval(draw, 100);
+
+        // Semantic Bleed Effect
+        document.querySelectorAll('.project-card').forEach(card => {
+            const bleedContainer = card.querySelector('.semantic-bleed');
+            const bleedWords = card.dataset.bleed.split(',');
+
+            bleedWords.forEach(word => {
+                const span = document.createElement('span');
+                span.classList.add('bleed-word');
+                span.textContent = word;
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 60 + Math.random() * 40;
+                span.style.setProperty('--tx', `${Math.cos(angle) * distance}px`);
+                span.style.setProperty('--ty', `${Math.sin(angle) * distance}px`);
+
+                // Position around the card
+                const pos = Math.random();
+                if (pos < 0.25) { // top
+                    span.style.top = `${Math.random() * -20 - 10}px`;
+                    span.style.left = `${Math.random() * 100}%`;
+                } else if (pos < 0.5) { // right
+                    span.style.top = `${Math.random() * 100}%`;
+                    span.style.right = `${Math.random() * -20 - 10}px`;
+                } else if (pos < 0.75) { // bottom
+                    span.style.bottom = `${Math.random() * -20 - 10}px`;
+                    span.style.left = `${Math.random() * 100}%`;
+                } else { // left
+                    span.style.top = `${Math.random() * 100}%`;
+                    span.style.left = `${Math.random() * -20 - 10}px`;
+                }
+                
+                span.style.animationDelay = `${Math.random() * 0.5}s`;
+                bleedContainer.appendChild(span);
+            });
+        });
+    </script>
+</body>
+</html>
+

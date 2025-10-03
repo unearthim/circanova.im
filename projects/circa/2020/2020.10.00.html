@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2020.10: The Corrupted Transmission</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --crt-glow: rgba(100, 255, 150, 0.2);
+            --text-color: rgba(150, 255, 200, 0.8);
+            --interference-color: #ff3b3b;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #tv-screen {
+            width: 95vw;
+            height: 95vh;
+            max-width: 1200px;
+            max-height: 800px;
+            background-color: #080808;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 0 50px var(--crt-glow), inset 0 0 30px rgba(0,0,0,0.8);
+            border: 5px solid #1a1a1a;
+        }
+
+        #tv-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.3) 0, rgba(0,0,0,0.3) 1px, transparent 1px, transparent 2px);
+            z-index: 3;
+            pointer-events: none;
+            animation: scanlines 10s linear infinite;
+        }
+        
+        #staticCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            opacity: 0.1;
+        }
+
+        .headline, .interference {
+            position: absolute;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 700;
+            color: var(--text-color);
+            text-shadow: 0 0 5px var(--text-color);
+            opacity: 0;
+            transition: opacity 0.05s linear;
+            z-index: 1;
+        }
+        
+        .interference {
+            color: var(--interference-color);
+            text-shadow: 0 0 10px var(--interference-color);
+            font-size: 3rem;
+            z-index: 4;
+            text-transform: uppercase;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: none;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(150, 255, 200, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+        }
+
+        .modal-content strong {
+            color: white;
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        @keyframes scanlines {
+            from { transform: translateY(0); }
+            to { transform: translateY(2px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="tv-screen">
+        <canvas id="staticCanvas"></canvas>
+    </div>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Oct 2020 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: October 2020</h2>
+            <p><strong>President Trump Contracts COVID-19</strong>: In a shocking "October surprise," the US President tested positive for the virus, leading to a chaotic news cycle filled with conflicting reports about his health, experimental treatments, and a controversial drive-by appearance outside Walter Reed hospital.</p>
+            <p><strong>Amy Coney Barrett Confirmed to Supreme Court</strong>: In a contentious process just days before the election, the Senate confirmed President Trump's nominee to replace Ruth Bader Ginsburg, solidifying a conservative majority on the court.</p>
+            <p><strong>#EndSARS Protests in Nigeria</strong>: A major youth-led movement against police brutality escalated, culminating in the Lekki toll gate massacre where Nigerian armed forces opened fire on peaceful protesters.</p>
+            <p><strong>Nagorno-Karabakh War Escalates</strong>: A full-scale war erupted between Armenia and Azerbaijan over the disputed territory, with multiple ceasefire agreements collapsing almost immediately.</p>
+            <p><strong>Terrorist Attacks in France</strong>: A series of attacks, including the beheading of teacher Samuel Paty and a deadly stabbing at a church in Nice, shocked the nation and sparked a debate on extremism and secularism.</p>
+            <p><strong>Second COVID Wave Triggers New Lockdowns</strong>: Countries like France and Germany announced new national lockdowns as a second wave of the coronavirus surged across Europe.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Corrupted Transmission</h2>
+            <p>October 2020 was a month of profound informational chaos. The signal wasn't just noisy; it felt actively corrupted. The central story—the US President's COVID-19 diagnosis—unleashed a storm of unreliable and contradictory information. This chaotic transmission became the lens through which all other global events were viewed.</p>
+            <p>The glitch of this era is this "corrupted transmission." It's the feeling of watching a state-run broadcast during a coup, where the information is unreliable by design. The static is not just an error; it's a feature.</p>
+            <p>This artifact simulates that experience. The screen is an unstable CRT monitor, struggling to hold a signal. Your cursor attempts to tune into the month's headlines, but the broadcast is constantly hijacked by the primary, corrupted signal, which distorts the screen with its own chaotic narrative. The ghost in this machine is the very concept of objective truth, flickering and failing under the weight of deliberate disinformation.</p>
+        </div>
+    </div>
+
+    <script>
+        const tvScreen = document.getElementById('tv-screen');
+        const staticCanvas = document.getElementById('staticCanvas');
+        const ctx = staticCanvas.getContext('2d');
+        let width = staticCanvas.width = tvScreen.clientWidth;
+        let height = staticCanvas.height = tvScreen.clientHeight;
+
+        const mainHeadlines = ["#ENDSARS", "ACB CONFIRMED", "LOCKDOWN 2.0", "CEASEFIRE BROKEN", "SAMUEL PATY"];
+        const interferenceWords = ["HOAX", "RECOVERED", "EXPERIMENTAL", "INFECTED", "STRONG", "FAKE NEWS"];
+        
+        let headlineElements = [];
+        let interferenceElements = [];
+
+        function createTextElements() {
+            mainHeadlines.forEach(text => {
+                const el = document.createElement('div');
+                el.classList.add('headline');
+                el.textContent = text;
+                el.style.fontSize = `${Math.random() * 2 + 1.5}rem`;
+                el.style.top = `${Math.random() * 80 + 10}%`;
+                el.style.left = `${Math.random() * 70 + 15}%`;
+                tvScreen.appendChild(el);
+                headlineElements.push(el);
+            });
+            
+             interferenceWords.forEach(text => {
+                const el = document.createElement('div');
+                el.classList.add('interference');
+                el.textContent = text;
+                tvScreen.appendChild(el);
+                interferenceElements.push(el);
+            });
+        }
+
+        function drawStatic() {
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4) {
+                const shade = Math.random() * 255;
+                data[i] = shade;
+                data[i + 1] = shade;
+                data[i + 2] = shade;
+                data[i + 3] = 255;
+            }
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        let lastInterference = 0;
+        function animate(time) {
+            drawStatic();
+
+            headlineElements.forEach(el => {
+                el.style.opacity = Math.random() > 0.95 ? '1' : '0';
+                if (Math.random() > 0.98) {
+                     el.style.transform = `translate(${(Math.random() - 0.5) * 10}px, ${(Math.random() - 0.5) * 10}px)`;
+                }
+            });
+            
+            if(time - lastInterference > 300 + Math.random() * 500) {
+                 const el = interferenceElements[Math.floor(Math.random() * interferenceElements.length)];
+                 el.style.top = `${Math.random() * 80 + 10}%`;
+                 el.style.left = `${Math.random() * 70 + 15}%`;
+                 el.style.opacity = '1';
+                 el.style.transform = `scale(${Math.random() * 1.5 + 1}) skew(${(Math.random() - 0.5) * 20}deg)`;
+                 setTimeout(() => { el.style.opacity = '0'; }, 100 + Math.random() * 200);
+                 lastInterference = time;
+            }
+
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = staticCanvas.width = tvScreen.clientWidth;
+            height = staticCanvas.height = tvScreen.clientHeight;
+        });
+        
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        createTextElements();
+        animate(0);
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>

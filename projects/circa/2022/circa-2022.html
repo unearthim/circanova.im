@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022: Modulated Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(200, 210, 240, 0.7);
+            --heading-color: rgba(200, 210, 240, 0.9);
+            --accent-color: #d0bdf4;
+            --border-color: rgba(200, 210, 240, 0.1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: crosshair;
+        }
+
+        #glitchCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Modal and Button styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 20, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 20, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            color: var(--text-color);
+        }
+
+        .modal-content {
+            max-width: 720px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            font-family: 'Lora', serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-content h2 {
+            font-family: 'Lora', serif;
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <canvas id="glitchCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Source Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: Circa 2022</h2>
+            <p><strong>War in Ukraine:</strong> Russia's full-scale invasion on February 24 becomes the year's defining geopolitical event. The conflict is heavily documented on social media, producing its own raw digital artifacts and glitches from drone footage, satellite imagery, and open-source intelligence.</p>
+            <p><strong>The AI Art Explosion:</strong> Generative AI models like DALL-E 2, Midjourney, and Stable Diffusion become widely accessible, flooding the internet with surreal, uncanny, and often beautiful imagery. The "glitch" aesthetic is now often a deliberate choice, an AI's hallucination or misinterpretation of a prompt.</p>
+            <p><strong>End of an Era:</strong> The death of Queen Elizabeth II marks the end of a 70-year reign, prompting global reflection on history, legacy, and the passage of time.</p>
+             <p><strong>Economic Instability:</strong> Global inflation and an energy crisis, exacerbated by the war in Ukraine, create a persistent feeling of systems under strain.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Modulated Signal</h2>
+            <p>The glitch of 2022 was a "nostalgic corruption." It was a moment defined by the explosion of generative AI, a technology that often learned from, mimicked, and romanticized the digital and analog errors of the past—film grain, VHS static, JPEG artifacts. This clean, synthetic nostalgia ran in parallel to the raw, real-time digital corruption produced by the war in Ukraine, seen in low-quality drone footage and satellite feeds.</p>
+            <p>This artifact simulates that duality. It begins with a simple, clean, generative landscape, like an AI's initial output. This pristine image is then actively corrupted by a pixel-sorting algorithm—a technique that directly and destructively manipulates pixel data, echoing the aesthetics of failing hardware and corrupted files.</p>
+            <p>The ghost in this machine is the act of deliberate decay. Your cursor modulates the signal, controlling the intensity and location of the corruption. You are not just a viewer; you are a participant in this act of nostalgic destruction, pushing a clean signal into a beautiful, chaotic state of failure.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('glitchCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        let originalImageData;
+        const mouse = { x: width / 2, y: height / 2 };
+
+        function generateLandscape() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = width;
+            tempCanvas.height = height;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            // Sky gradient
+            const sky = tempCtx.createLinearGradient(0, 0, 0, height * 0.6);
+            sky.addColorStop(0, '#1a2a6c');
+            sky.addColorStop(1, '#b21f1f');
+            tempCtx.fillStyle = sky;
+            tempCtx.fillRect(0, 0, width, height * 0.6);
+
+            // Ground gradient
+            const ground = tempCtx.createLinearGradient(0, height * 0.6, 0, height);
+            ground.addColorStop(0, '#0f0c29');
+            ground.addColorStop(1, '#302b63');
+            tempCtx.fillStyle = ground;
+            tempCtx.fillRect(0, height * 0.6, width, height * 0.4);
+
+            // Horizon line glow
+            tempCtx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            tempCtx.fillRect(0, height * 0.6 - 1, width, 2);
+
+            originalImageData = tempCtx.getImageData(0, 0, width, height);
+        }
+
+        function pixelSort(imageData, x, y, w, h) {
+            const data = imageData.data;
+            const threshold = (mouse.y / height) * 255; // Mouse Y controls brightness threshold
+
+            for (let j = y; j < y + h; j++) {
+                let startX = -1;
+                for (let i = x; i < x + w; i++) {
+                    const index = (i + j * width) * 4;
+                    const r = data[index];
+                    const g = data[index + 1];
+                    const b = data[index + 2];
+                    const brightness = (r + g + b) / 3;
+
+                    if (brightness > threshold && startX === -1) {
+                        startX = i;
+                    }
+
+                    if (brightness < threshold && startX !== -1) {
+                        sortRow(data, startX, j, i - startX);
+                        startX = -1;
+                    }
+                }
+                 if (startX !== -1) {
+                    sortRow(data, startX, j, x + w - startX);
+                }
+            }
+        }
+
+        function sortRow(data, x, y, len) {
+            const pixels = [];
+            for (let i = 0; i < len; i++) {
+                const index = (x + i + y * width) * 4;
+                pixels.push({
+                    r: data[index],
+                    g: data[index + 1],
+                    b: data[index + 2],
+                    a: data[index + 3],
+                    brightness: (data[index] + data[index+1] + data[index+2])/3
+                });
+            }
+            pixels.sort((a, b) => a.brightness - b.brightness);
+            for (let i = 0; i < len; i++) {
+                const index = (x + i + y * width) * 4;
+                data[index] = pixels[i].r;
+                data[index + 1] = pixels[i].g;
+                data[index + 2] = pixels[i].b;
+                data[index + 3] = pixels[i].a;
+            }
+        }
+
+        function animate() {
+            // Copy original image to canvas
+            ctx.putImageData(originalImageData, 0, 0);
+
+            // Get current canvas data to modify
+            const currentImageData = ctx.getImageData(0, 0, width, height);
+
+            // Apply pixel sorting
+            const sortWidth = Math.max(50, (mouse.x / width) * 400); // Mouse X controls sort width
+            const sortHeight = 200;
+            const sortX = Math.floor(Math.random() * (width - sortWidth));
+            const sortY = Math.floor(Math.random() * (height - sortHeight));
+            pixelSort(currentImageData, sortX, sortY, sortWidth, sortHeight);
+
+            // Draw modified data back
+            ctx.putImageData(currentImageData, 0, 0);
+            
+            // Chromatic aberration effect
+            if(Math.random() > 0.9) {
+                const shift = (Math.random() - 0.5) * 10;
+                ctx.globalCompositeOperation = 'lighter';
+                ctx.drawImage(canvas, shift, 0);
+                ctx.globalCompositeOperation = 'source-over';
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // --- EVENT LISTENERS ---
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            generateLandscape();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'crosshair';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'crosshair';
+                }
+            });
+        }
+
+        // Initialize
+        generateLandscape();
+        animate();
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>
+

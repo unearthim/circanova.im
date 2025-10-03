@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2020.02: The Quarantine Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --accent-color: #c94f4f; /* A more urgent, alarming red */
+            --secondary-color: #5a7d7c;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #glitchCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: none;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.95);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong {
+            color: var(--accent-color);
+        }
+        
+        .modal-content em {
+            color: var(--secondary-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="glitchCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Feb 2020 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: February 2020</h2>
+            <p><strong>COVID-19 Pandemic Accelerates Globally</strong>: February saw a critical escalation as the virus spread beyond China. The <strong>first American citizen died</strong> in Wuhan, total cases surpassed 20,000 with 425 deaths in China, and companies like Apple began closing all stores there.</p>
+            <p><strong>Trump Impeachment Trial Concludes</strong>: On February 5, the Senate <strong>acquitted President Trump</strong> on both articles of impeachment, with Mitt Romney being the only Republican to vote for conviction on one charge.</p>
+            <p><strong>Deadly Violence</strong>: A Thai soldier killed <strong>20 people in a mall shooting spree</strong>. Violent protests over India's new citizenship law erupted in Delhi, leaving at least <strong>53 dead</strong>. Escalation in the Syrian Civil War led to the deaths of Turkish soldiers and Syrian troops.</p>
+            <p><strong>US-Taliban Peace Agreement</strong>: The United States and the Taliban signed a historic peace agreement, aiming to end America's longest war.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Quarantine Signal</h2>
+            <p>February 2020 was the month the signal collapsed. The background noise of January coalesced into a single, overwhelming frequency: the pandemic. The glitch of this era is the feeling of withdrawal, of the world flattening into data points on a screen.</p>
+            <p>This artifact simulates the ubiquitous <em>pandemic tracker maps</em> of the time. The red nodes represent the primary signal—the virus spreading, connecting, and dominating the feed. They are active, growing, and urgent.</p>
+            <p>The other major world events of the month—impeachments, peace treaties, riots—appear as <em>corrupted data</em>. They are the secondary signals, struggling to be seen, their text glitching and decaying as the main signal overwhelms them. They are important, but they are being drowned out.</p>
+            <p>Your cursor is the ghost in this machine. It is the human element, revealing the names and numbers—the individual lives—that make up the cold, abstract data of the map. It is a reminder of the reality behind the screen.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('glitchCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const secondarySignals = [
+            "SENATE ACQUITS TRUMP", "ROMNEY VOTES GUILTY", "US-TALIBAN PEACE DEAL",
+            "DELHI RIOTS - 53 DEAD", "THAI MALL SHOOTING", "SYRIAN WAR ESCALATES"
+        ];
+        
+        const humanData = [
+            "FIRST US CITIZEN DIES", "425 DEATHS IN CHINA", "20 DEAD", "53 KILLED", "62 CIVILIANS KILLED"
+        ];
+
+        let nodes = [];
+        let dataPoints = [];
+        const mouse = { x: width / 2, y: height / 2, radius: 150 };
+
+        class Node {
+            constructor(x, y, parent = null) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 0.1;
+                this.vy = (Math.random() - 0.5) * 0.1;
+                this.parent = parent;
+                this.children = [];
+                this.connections = [parent];
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                // Connect to nearby nodes
+                if (Math.random() < 0.01) {
+                    let closest = null;
+                    let closestDist = Infinity;
+                    for (const other of nodes) {
+                        if (other === this || this.connections.includes(other)) continue;
+                        const dist = Math.hypot(this.x - other.x, this.y - other.y);
+                        if (dist < closestDist && dist < 200) {
+                            closestDist = dist;
+                            closest = other;
+                        }
+                    }
+                    if (closest && !this.connections.includes(closest)) {
+                        this.connections.push(closest);
+                    }
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(201, 79, 79, 0.8)';
+                ctx.fill();
+
+                for (const connection of this.connections) {
+                    if (!connection) continue;
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(connection.x, connection.y);
+                    ctx.strokeStyle = 'rgba(201, 79, 79, 0.1)';
+                    ctx.stroke();
+                }
+            }
+        }
+
+        class DataPoint {
+            constructor() {
+                this.text = secondarySignals[Math.floor(Math.random() * secondarySignals.length)];
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.fontSize = 10;
+            }
+
+            draw() {
+                ctx.font = `300 ${this.fontSize}px 'Roboto Mono', monospace`;
+                ctx.fillStyle = `rgba(90, 125, 124, 0.4)`;
+                
+                let displayText = this.text;
+                if (Math.random() < 0.05) {
+                    const i = Math.floor(Math.random() * displayText.length);
+                    displayText = displayText.substring(0, i) + '░' + displayText.substring(i + 1);
+                }
+                ctx.fillText(displayText, this.x, this.y);
+            }
+        }
+
+        function init() {
+            nodes = [];
+            dataPoints = [];
+            const nodeCount = Math.floor(width / 30);
+            for (let i = 0; i < nodeCount; i++) {
+                nodes.push(new Node(Math.random() * width, Math.random() * height, (i > 0) ? nodes[Math.floor(Math.random()*nodes.length)] : null));
+            }
+             const dataPointCount = 20;
+            for (let i = 0; i < dataPointCount; i++) {
+                dataPoints.push(new DataPoint());
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 9, 12, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            nodes.forEach(node => {
+                node.update();
+                node.draw();
+            });
+            
+            dataPoints.forEach(point => point.draw());
+
+            // Human data revealed by mouse
+            const distance = Math.hypot(nodes[0].x - mouse.x, nodes[0].y - mouse.y); // Example
+            if (distance < mouse.radius) {
+                ctx.font = `500 1rem 'Roboto Mono', monospace`;
+                ctx.fillStyle = 'rgba(210, 200, 182, 0.9)';
+                ctx.textAlign = 'center';
+                const textToDisplay = humanData[Math.floor(performance.now()/3000) % humanData.length];
+                ctx.fillText(textToDisplay, mouse.x, mouse.y - 20);
+                ctx.textAlign = 'left';
+            }
+
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

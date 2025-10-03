@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022.08: The Contested Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --conflict-red: #d94848;
+            --nuclear-green: #8AE234;
+            --climate-blue: #4a90e2;
+            --grid-color: rgba(210, 200, 182, 0.1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: crosshair;
+        }
+
+        #contestedCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(10, 9, 12, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+
+        .modal-content strong {
+            font-weight: bold;
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(210, 200, 182, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="contestedCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Aug 2022 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: August 2022</h2>
+            <p><strong>China-Taiwan Crisis Reaches Dangerous New Heights:</strong> US House Speaker Nancy Pelosi's visit to Taiwan triggered China's largest-ever military exercises around the island. The PLA fired ballistic missiles over Taiwan for the first time, raising fears of military miscalculation between the superpowers.</p>
+            <p><strong>Ukraine Nuclear Plant Becomes Flashpoint:</strong> The Zaporizhzhia Nuclear Power Plant became a major international crisis as Russian rockets damaged the facility. Both Russia and Ukraine blamed each other for shelling attacks, with international inspectors warning of a potential nuclear catastrophe.</p>
+            <p><strong>Pakistan Faces Climate Catastrophe:</strong> Pakistan declared a "climate catastrophe" as devastating floods killed more than 1,000 people and caused an estimated \$30 billion in damage, in what became the world's deadliest flood since 2017.</p>
+            <p><strong>FBI Searches Trump's Mar-a-Lago Residence:</strong> In an unprecedented move, the FBI executed a search warrant at former President Trump's Florida residence as part of a Justice Department investigation into classified documents, triggering intense political controversy.</p>
+            <p><strong>Mikhail Gorbachev Dies at 91:</strong> The final leader of the Soviet Union, who presided over its peaceful dissolution and helped end the Cold War, died, marking the end of an era.</p>
+            <div class="modal-footer">
+               <a href="22.08.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Contested Signal</h2>
+            <p>The signal of August 2022 was not a single narrative but a violent competition for bandwidth. Three distinct, system-level crises unfolded simultaneously: a military crisis in the Taiwan Strait, a nuclear crisis at Zaporizhzhia, and a climate crisis in Pakistan. Each demanded the world's full attention, creating an overload condition where reality itself felt contested.</p>
+            <p>The glitch for this era is this "Contested Signal." It is the experience of being caught in the crossfire of multiple, overlapping emergencies, where focusing on one means losing sight of the others.</p>
+            <p>This artifact simulates that signal war. The screen is a tactical display overwhelmed with conflicting data streams. The ghost in this machine is the finite nature of attention. Your cursor acts as a tuner. As you move it, you amplify one crisis signal, bringing its terrifying clarity into focus, but this action actively corrupts and degrades the signals of the other concurrent disasters. It is a reflection of a world where you cannot watch everything at once, and every choice of focus is also an act of omission.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('contestedCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const mouse = { x: width / 2, y: height / 2 };
+
+        const crises = {
+            taiwan: {
+                x: width * 0.5, y: height * 0.5, radius: width * 0.3,
+                color: getComputedStyle(document.documentElement).getPropertyValue('--conflict-red').trim(),
+                snippets: ["TAIWAN STRAIT", "LIVE-FIRE DRILLS", "PELOSI VISIT", "MISCALCULATION"]
+            },
+            zaporizhzhia: {
+                x: width * 0.8, y: height * 0.2, radius: width * 0.25,
+                color: getComputedStyle(document.documentElement).getPropertyValue('--nuclear-green').trim(),
+                snippets: ["NPP SHELLED", "CATASTROPHE", "RADIATION LEAK RISK"]
+            },
+            pakistan: {
+                x: width * 0.2, y: height * 0.8, radius: width * 0.25,
+                color: getComputedStyle(document.documentElement).getPropertyValue('--climate-blue').trim(),
+                snippets: ["CLIMATE CATASTROPHE", "MONSOON ON STEROIDS", "1000+ DEAD"]
+            }
+        };
+
+        let particles = [];
+        for (let i = 0; i < 20; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 2,
+                vy: (Math.random() - 0.5) * 2,
+                type: 'taiwan'
+            });
+        }
+        
+        function getIntensity(crisis) {
+            const dist = Math.hypot(mouse.x - crisis.x, mouse.y - crisis.y);
+            return Math.max(0, 1 - dist / crisis.radius);
+        }
+
+        function drawTaiwan(intensity) {
+            if (intensity < 0.1) return;
+            const crisis = crises.taiwan;
+            ctx.strokeStyle = `rgba(217, 72, 72, ${intensity * 0.5})`;
+            ctx.lineWidth = 1 + intensity * 2;
+            
+            for (let i = 0; i < 10 * intensity; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const startRadius = Math.random() * 50 + 100;
+                const endRadius = startRadius - (20 + Math.random() * 30);
+                
+                const sx = crisis.x + Math.cos(angle) * startRadius;
+                const sy = crisis.y + Math.sin(angle) * startRadius;
+                const ex = crisis.x + Math.cos(angle) * endRadius;
+                const ey = crisis.y + Math.sin(angle) * endRadius;
+                
+                ctx.beginPath();
+                ctx.moveTo(sx, sy);
+                ctx.lineTo(ex, ey);
+                ctx.stroke();
+            }
+
+            if (intensity > 0.5 && Math.random() < intensity) {
+                const snippet = crisis.snippets[Math.floor(Math.random() * crisis.snippets.length)];
+                ctx.font = `700 ${12 + intensity * 8}px 'Roboto Mono', monospace`;
+                ctx.fillStyle = crisis.color;
+                ctx.fillText(snippet, crisis.x + (Math.random() - 0.5) * 200, crisis.y + (Math.random() - 0.5) * 200);
+            }
+        }
+
+        function drawZaporizhzhia(intensity) {
+             if (intensity < 0.1) return;
+             const crisis = crises.zaporizhzhia;
+             ctx.fillStyle = `rgba(138, 226, 52, ${intensity * 0.1})`;
+             ctx.fillRect(crisis.x - 150, crisis.y - 150, 300, 300);
+
+             ctx.font = `500 12px 'Roboto Mono', monospace`;
+             ctx.fillStyle = crisis.color;
+             for (let i = 0; i < 20 * intensity; i++) {
+                 let text = Math.random() > 0.5 ? "WARNING" : crisis.snippets[Math.floor(Math.random() * crisis.snippets.length)];
+                 if (Math.random() < intensity) {
+                     text = text.split('').map(c => Math.random() > 0.3 ? c : '█').join('');
+                 }
+                 ctx.fillText(text, crisis.x + (Math.random() - 0.5) * 300, crisis.y + (Math.random() - 0.5) * 300);
+             }
+        }
+        
+        function drawPakistan(intensity) {
+            if (intensity < 0.1) return;
+            const crisis = crises.pakistan;
+            ctx.strokeStyle = `rgba(74, 144, 226, ${intensity * 0.3})`;
+            ctx.lineWidth = 0.5;
+            for(let i=0; i<500 * intensity; i++){
+                ctx.beginPath();
+                let x = crisis.x + (Math.random()-0.5) * 400;
+                let y = crisis.y + (Math.random()-0.5) * 400;
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + (Math.random()-0.5) * 20, y + 5 + Math.random() * 10);
+                ctx.stroke();
+            }
+            if (intensity > 0.5 && Math.random() < intensity) {
+                const snippet = crisis.snippets[Math.floor(Math.random() * crisis.snippets.length)];
+                ctx.font = `700 ${12 + intensity * 6}px 'Roboto Mono', monospace`;
+                ctx.fillStyle = crisis.color;
+                ctx.fillText(snippet, crisis.x + (Math.random() - 0.5) * 200, crisis.y + (Math.random() - 0.5) * 200);
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 9, 12, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            const intensities = {
+                taiwan: getIntensity(crises.taiwan),
+                zaporizhzhia: getIntensity(crises.zaporizhzhia),
+                pakistan: getIntensity(crises.pakistan)
+            };
+            
+            // Draw background grid, corrupted by the most active signal
+            const totalIntensity = intensities.taiwan + intensities.zaporizhzhia + intensities.pakistan;
+            ctx.strokeStyle = `rgba(210, 200, 182, ${0.1 - totalIntensity * 0.05})`;
+            ctx.lineWidth = 0.5;
+            for(let i=0; i < width; i+=50) {
+                 ctx.beginPath(); ctx.moveTo(i + (Math.random()-0.5) * totalIntensity * 5, 0); ctx.lineTo(i + (Math.random()-0.5) * totalIntensity * 5, height); ctx.stroke();
+            }
+            for(let i=0; i < height; i+=50) {
+                 ctx.beginPath(); ctx.moveTo(0, i + (Math.random()-0.5) * totalIntensity * 5); ctx.lineTo(width, i + (Math.random()-0.5) * totalIntensity * 5); ctx.stroke();
+            }
+
+            drawTaiwan(intensities.taiwan);
+            drawZaporizhzhia(intensities.zaporizhzhia);
+            drawPakistan(intensities.pakistan);
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            crises.taiwan.x = width * 0.5; crises.taiwan.y = height * 0.5; crises.taiwan.radius = width * 0.3;
+            crises.zaporizhzhia.x = width * 0.8; crises.zaporizhzhia.y = height * 0.2; crises.zaporizhzhia.radius = width * 0.25;
+            crises.pakistan.x = width * 0.2; crises.pakistan.y = height * 0.8; crises.pakistan.radius = width * 0.25;
+        });
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'crosshair';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'crosshair';
+                }
+            });
+        }
+        
+        animate();
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>
+

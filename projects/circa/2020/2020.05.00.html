@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2020.05: The Fractured Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --monitor-glow: #3d9a98;
+            --alert-color: #b33a3a;
+            --protest-color: rgba(230, 230, 230, 0.9);
+            --crack-color: rgba(255, 255, 255, 0.2);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #fractureCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: none;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.95);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong {
+            color: var(--protest-color);
+        }
+         .modal-content em {
+            color: var(--alert-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fractureCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View May 2020 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: May 2020</h2>
+            <p><strong>George Floyd's Death Sparks Global Movement</strong>: The defining event of the month was the death of George Floyd in Minneapolis police custody, igniting nationwide protests against racial injustice and police brutality that quickly spread across the world.</p>
+            <p><strong>COVID-19 Pandemic Accelerates in New Hotspots</strong>: While protests grew, the pandemic continued. <em>Brazil emerged as a new global hotspot</em>, becoming second only to the US in case numbers. US unemployment soared to <em>14.7%</em>, the highest level since the Great Depression.</p>
+            <p><strong>Devastating Attacks in Afghanistan</strong>: Gunmen attacked a <strong>maternity ward in Kabul</strong>, killing 24 people including two newborns. A suicide bomber killed 32 at a funeral on the same day.</p>
+            <p><strong>Hong Kong Protests Resume</strong>: Pro-democracy protests returned to Hong Kong as China announced plans for a controversial new national security law.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Fractured Signal</h2>
+            <p>May 2020 was the month the signal fractured. The monolithic, all-consuming narrative of the pandemic was shattered by a raw, powerful, and righteous cry for justice. The glitch is this very rupture—a crack in the screen of our collective reality, revealing that one crisis does not wait for another to end.</p>
+            <p>This artifact visualizes that fracture. In the background, the grim, fading signal of the pandemic monitor from April still flickers, a reminder of the ongoing crisis. But the screen itself is broken. A new signal—the words and energy of the global protest movement—burns through the cracks.</p>
+            <p>The ghost in this machine is the transfer of focus. Your cursor is an agent of this transfer. As you move it, you agitate the new signal, making it burn brighter and break through more forcefully. It demonstrates how our collective attention, once fixed on one point, can be violently wrenched towards another, changing the narrative for everyone.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('fractureCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const protestSnippets = [
+            "I CAN'T BREATHE", "BLACK LIVES MATTER", "NO JUSTICE NO PEACE",
+            "SAY HIS NAME", "GEORGE FLOYD", "ENOUGH IS ENOUGH"
+        ];
+        
+        let cracks = [];
+        let particles = [];
+        const mouse = { x: 0, y: 0, activity: 0 };
+
+        class Crack {
+            constructor(x, y, angle, length, depth) {
+                this.x = x;
+                this.y = y;
+                this.angle = angle;
+                this.length = length;
+                this.depth = depth;
+                this.segments = [];
+                this.generate();
+            }
+
+            generate() {
+                let currentX = this.x;
+                let currentY = this.y;
+                let currentAngle = this.angle;
+
+                for (let i = 0; i < this.length; i++) {
+                    const segmentLength = Math.random() * 5 + 2;
+                    const nextX = currentX + Math.cos(currentAngle) * segmentLength;
+                    const nextY = currentY + Math.sin(currentAngle) * segmentLength;
+                    this.segments.push({ x1: currentX, y1: currentY, x2: nextX, y2: nextY });
+                    currentX = nextX;
+                    currentY = nextY;
+                    currentAngle += (Math.random() - 0.5) * 0.5;
+
+                    if (Math.random() < 0.05 && this.depth > 0) {
+                        const newCrack = new Crack(currentX, currentY, currentAngle + (Math.random() > 0.5 ? 1 : -1) * (Math.PI / 2), this.length / 2, this.depth - 1);
+                        cracks.push(newCrack);
+                    }
+                }
+            }
+
+            draw() {
+                ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 + this.depth * 0.05})`;
+                ctx.lineWidth = 1 + this.depth;
+                ctx.beginPath();
+                this.segments.forEach(seg => {
+                    ctx.moveTo(seg.x1, seg.y1);
+                    ctx.lineTo(seg.x2, seg.y2);
+                });
+                ctx.stroke();
+            }
+        }
+        
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 1;
+                this.vy = (Math.random() - 0.5) * 1;
+                this.text = protestSnippets[Math.floor(Math.random() * protestSnippets.length)];
+                this.life = 100;
+                this.fontSize = 10 + Math.random() * 10;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life -= 1;
+            }
+
+            draw() {
+                ctx.font = `500 ${this.fontSize}px 'Roboto Mono', monospace`;
+                ctx.fillStyle = `rgba(230, 230, 230, ${this.life / 100})`;
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+
+        function drawBackgroundMonitor() {
+             ctx.fillStyle = `rgba(10, 9, 12, ${0.1 + Math.random()*0.1})`;
+             ctx.fillRect(0,0,width,height);
+
+             ctx.font = `bold 700 clamp(2rem, 5vw, 4rem) 'Roboto Mono', monospace`;
+             ctx.fillStyle = `rgba(61, 154, 152, ${0.05 + Math.random() * 0.1})`;
+             ctx.textAlign = 'right';
+             ctx.fillText(Math.floor(80000 + Math.random()*10000), width - 40, 80);
+        }
+
+        function init() {
+            cracks = [];
+            particles = [];
+            const centerCrack = new Crack(width / 2, height / 2, Math.random() * Math.PI * 2, 200, 3);
+            cracks.push(centerCrack);
+        }
+
+        function animate() {
+            drawBackgroundMonitor();
+            
+            cracks.forEach(c => c.draw());
+
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                if (p.life <= 0) {
+                    particles.splice(index, 1);
+                }
+            });
+
+            if (mouse.activity > 1 && particles.length < 100) {
+                 for (let i = 0; i < Math.floor(mouse.activity / 5); i++) {
+                     const randomCrack = cracks[Math.floor(Math.random()*cracks.length)];
+                     const randomSegment = randomCrack.segments[Math.floor(Math.random()*randomCrack.segments.length)];
+                     if(randomSegment) particles.push(new Particle(randomSegment.x1, randomSegment.y1));
+                 }
+            }
+            mouse.activity *= 0.95;
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        window.addEventListener('mousemove', (e) => {
+            const speed = Math.hypot(e.x - lastMouseX, e.y - lastMouseY);
+            mouse.activity = Math.min(mouse.activity + speed, 50);
+            lastMouseX = e.x;
+            lastMouseY = e.y;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

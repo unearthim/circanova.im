@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circanova - Circa 2020</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --accent-color: #a2b9bc;
+            --glitch-red: #ff3b3b;
+            --glitch-blue: #00aaff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 300;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            color: var(--heading-color);
+            margin: 0;
+            font-weight: 400;
+        }
+        
+        header .subtitle {
+            font-style: italic;
+            font-family: 'Cormorant Garamond', serif;
+            color: rgba(210, 200, 182, 0.6);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .artist-statement-link {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(162, 185, 188, 0.3);
+            padding-bottom: 0.2rem;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .artist-statement-link:hover {
+            color: white;
+            border-color: white;
+        }
+
+        .timeline {
+            margin-top: 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .entry-link {
+            display: block;
+            text-decoration: none;
+            color: var(--text-color);
+            border: 1px solid rgba(210, 200, 182, 0.1);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .entry-link:hover {
+            background-color: rgba(162, 185, 188, 0.05);
+            border-color: rgba(162, 185, 188, 0.3);
+        }
+        
+        .entry-link::before, .entry-link::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background-color);
+            overflow: hidden;
+            opacity: 0;
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
+        
+        .entry-link:hover::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--glitch-red);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+        
+        .entry-link:hover::after {
+            left: -2px;
+            text-shadow: -2px 0 var(--glitch-blue), 2px 2px var(--glitch-red);
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
+
+        .entry-link .month {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .entry-link .title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: var(--heading-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .entry-link .description {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            line-height: 1.5;
+            font-size: 1.1rem;
+        }
+        
+        .year-in-review {
+            border-color: var(--glitch-red);
+            margin-top: 2rem;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(210, 200, 182, 0.5);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-color);
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(3% 0 94% 0); opacity: 1; }
+            20% { clip-path: inset(86% 0 8% 0); }
+            40% { clip-path: inset(51% 0 21% 0); }
+            60% { clip-path: inset(18% 0 71% 0); }
+            80% { clip-path: inset(89% 0 8% 0); }
+            100% { clip-path: inset(45% 0 46% 0); opacity: 1; }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(72% 0 13% 0); opacity: 1; }
+            20% { clip-path: inset(18% 0 65% 0); }
+            40% { clip-path: inset(88% 0 3% 0); }
+            60% { clip-path: inset(4% 0 83% 0); }
+            80% { clip-path: inset(62% 0 19% 0); }
+            100% { clip-path: inset(35% 0 51% 0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="container">
+        <header>
+            <h1>Circa 2020</h1>
+            <p class="subtitle">An Archive of a Year in Overload</p>
+            <a href="./00_circanova-artist-statement.html" class="artist-statement-link">Read the Artist Statement</a>
+        </header>
+
+        <main class="timeline">
+            <a href="./2020.01.00.html" class="entry-link" data-text="JANUARY: The Unstable Signal">
+                <div class="month">January</div>
+                <div class="title">The Unstable Signal</div>
+                <p class="description">A failing news broadcast from the precipice of a global shift, struggling to process overlapping crises.</p>
+            </a>
+            <a href="./2020.02.00.html" class="entry-link" data-text="FEBRUARY: The Quarantine Signal">
+                <div class="month">February</div>
+                <div class="title">The Quarantine Signal</div>
+                <p class="description">The world flattens into a screen as the virus becomes the dominant signal, corrupting all other news.</p>
+            </a>
+            <a href="./2020.03.00.html" class="entry-link" data-text="MARCH: The Shutdown Signal">
+                <div class="month">March</div>
+                <div class="title">The Shutdown Signal</div>
+                <p class="description">The system is unplugged. A digital calendar of a future that was abruptly cancelled, leaving a frozen void.</p>
+            </a>
+            <a href="./2020.04.00.html" class="entry-link" data-text="APRIL: The Mortality Signal">
+                <div class="month">April</div>
+                <div class="title">The Mortality Signal</div>
+                <p class="description">A vital signs monitor glitches, no longer tracking a heartbeat, but the relentless, climbing death toll.</p>
+            </a>
+            <a href="./2020.05.00.html" class="entry-link" data-text="MAY: The Fractured Signal">
+                <div class="month">May</div>
+                <div class="title">The Fractured Signal</div>
+                <p class="description">The pandemic's narrative is shattered by a new signal of protest, breaking through the cracks of a fractured reality.</p>
+            </a>
+            <a href="./2020.06.00.html" class="entry-link" data-text="JUNE: The Signal Bleed">
+                <div class="month">June</div>
+                <div class="title">The Signal Bleed</div>
+                <p class="description">A global data map is overwhelmed and stained by the signal of a worldwide protest movement.</p>
+            </a>
+            <a href="./2020.07.00.html" class="entry-link" data-text="JULY: The Dissonant Signal">
+                <div class="month">July</div>
+                <div class="title">The Dissonant Signal</div>
+                <p class="description">A geopolitical monitor fractures under the strain of competing global crises, creating a jammed, incoherent signal.</p>
+            </a>
+            <a href="./2020.08.00.html" class="entry-link" data-text="AUGUST: The Shockwave Signal">
+                <div class="month">August</div>
+                <div class="title">The Shockwave Signal</div>
+                <p class="description">A catastrophic explosion becomes a glitch in reality, its shockwave corrupting all other news signals in its path.</p>
+            </a>
+            <a href="./2020.09.00.html" class="entry-link" data-text="SEPTEMBER: The Corrupted Atmosphere">
+                <div class="month">September</div>
+                <div class="title">The Corrupted Atmosphere</div>
+                <p class="description">The world is viewed through a toxic, orange haze as wildfires and political poisonings corrupt the very medium of perception.</p>
+            </a>
+             <a href="./2020.10.00.html" class="entry-link" data-text="OCTOBER: The Corrupted Transmission">
+                <div class="month">October</div>
+                <div class="title">The Corrupted Transmission</div>
+                <p class="description">An unstable news broadcast is hijacked by a chaotic, unreliable narrator, making truth impossible to discern.</p>
+            </a>
+            <a href="./2020.11.00.html" class="entry-link" data-text="NOVEMBER: The Contested Reality">
+                <div class="month">November</div>
+                <div class="title">The Contested Reality</div>
+                <p class="description">An electoral map becomes unstable, flickering between a declared result and a contested one.</p>
+            </a>
+             <a href="./2020.12.00.html" class="entry-link" data-text="DECEMBER: The Mutating Signal">
+                <div class="month">December</div>
+                <div class="title">The Mutating Signal</div>
+                <p class="description">A clean signal of hope—the vaccine—is immediately infected by a new variant, a cure corrupted at its creation.</p>
+            </a>
+
+            <a href="./2020.00.00.html" class="entry-link year-in-review" data-text="SYNTHESIS: The System Overload">
+                <div class="month">The Year 2020</div>
+                <div class="title">The System Overload</div>
+                <p class="description">A synthesis of a year defined by simultaneous crises. A 3D memory dump of a world where all signals turned to static at once.</p>
+            </a>
+            <a href="./2020.xx.00.html" class="entry-link year-in-review" data-text="COUNTER-NARRATIVE: The Reconstructed Signal" style="border-color: #33ffdd;">
+                <div class="month">The Year 2020</div>
+                <div class="title">The Reconstructed Signal</div>
+                <p class="description">A counter-narrative of resilience and repair. An interactive simulation of a corrupted data file being healed in real-time.</p>
+            </a>
+        </main>
+        
+        <footer>
+            <a href="../index.html" class="back-link">[ Return to the Main Gallery ]</a>
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(10, 9, 12, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = 'rgba(210, 200, 182, 0.05)';
+            for (let i = 0; i < 20; i++) {
+                // Horizontal glitch lines
+                if (Math.random() > 0.98) {
+                    ctx.fillRect(0, Math.random() * height, Math.random() * width, 1);
+                }
+                // Vertical glitch lines
+                if (Math.random() > 0.98) {
+                    ctx.fillRect(Math.random() * width, 0, 1, Math.random() * height);
+                }
+            }
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+        setInterval(draw, 50);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022.04: The Signal of Atrocity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --glitch-red: #b33a3a;
+            --glitch-cyan: #00ffff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #atrocityCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(10, 9, 12, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+
+        .modal-content strong {
+            font-weight: bold;
+            color: var(--glitch-red);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(210, 200, 182, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="atrocityCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Apr 2022 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: April 2022</h2>
+            <p><strong>Ukraine War Reaches New Levels of Brutality:</strong> The world witnessed evidence of systematic war crimes as Ukrainian forces recaptured Bucha and Irpin, revealing horrific civilian massacres. The <strong>Kramatorsk railway station attack</strong> became one of the war's most devastating single incidents, when Russian missiles killed at least 50 civilians trying to evacuate. President Zelenskyy announced that Mariupol had been <strong>"completely destroyed,"</strong> with the death toll reaching "tens of thousands."</p>
+            <p><strong>Global Economic Warfare Intensifies:</strong> The United States voted nearly unanimously to suspend normal trade relations with Russia and Belarus. In retaliation, Russia cut gas supplies to Poland and Bulgaria, marking a major energy supply disruption to the EU.</p>
+            <p><strong>Ketanji Brown Jackson Confirmed to Supreme Court:</strong> In a historic moment, Ketanji Brown Jackson was confirmed to the US Supreme Court, becoming the first Black woman justice in the court's history.</p>
+            <p><strong>Pope Francis Apologizes for Residential Schools:</strong> Pope Francis made a historic apology for the Catholic Church's role in Canada's residential school system, acknowledging institutional responsibility for cultural genocide against Indigenous peoples.</p>
+            <div class="modal-footer">
+                <a href="22.04.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Signal of Atrocity</h2>
+            <p>April 2022 was the month the world was forced to bear witness. The signal was no longer just about the kinetic force of an invasion, but the horrific, static images of its consequences. The massacres in Bucha and the deliberate targeting of civilians at the Kramatorsk train station were not events in motion; they were the terrible, silent evidence left in the aftermath.</p>
+            <p>The glitch of this era is this "Signal of Atrocity." It is the experience of viewing a corrupted image file—a record of an event so horrific that the data itself seems to protest, refusing to render cleanly. The system's own revulsion is made visible through the corruption.</p>
+            <p>This artifact simulates a satellite image of an urban area that is being actively corrupted. As you move your cursor, you are not interacting with the image, but with the data layer beneath it. Your movement reveals the fragmented, redacted text of the month's headlines, and this act of revelation causes the image to datamosh, tear, and glitch. The ghost in this machine is the truth of the event, a truth so terrible that the system itself cannot process it without breaking.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('atrocityCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const mouse = { x: width / 2, y: height / 2 };
+        
+        const headlines = ["BUCHA MASSACRE", "KRAMATORSK STATION", "MARIUPOL DESTROYED", "WAR CRIMES", "CIVILIANS KILLED", "TENS OF THOUSANDS DEAD"];
+        
+        let baseImage;
+        let particles = [];
+
+        function generateBaseImage() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = width;
+            tempCanvas.height = height;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            tempCtx.fillStyle = '#1a1a1d';
+            tempCtx.fillRect(0,0,width,height);
+
+            for(let i=0; i<500; i++) {
+                tempCtx.fillStyle = `rgba(255,255,255,${Math.random() * 0.05})`;
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                if(Math.random() > 0.5) {
+                    tempCtx.fillRect(x, y, Math.random() * 50 + 10, 1);
+                } else {
+                     tempCtx.fillRect(x, y, 1, Math.random() * 50 + 10);
+                }
+            }
+            baseImage = new Image();
+            baseImage.src = tempCanvas.toDataURL();
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.text = headlines[Math.floor(Math.random() * headlines.length)];
+            }
+
+            draw() {
+                const dist = Math.hypot(this.x - mouse.x, this.y - mouse.y);
+                if(dist < 150) {
+                    const alpha = (1 - dist / 150);
+                    ctx.font = `700 14px 'Roboto Mono', monospace`;
+                    ctx.fillStyle = `rgba(210, 200, 182, ${alpha * 0.8})`;
+                    ctx.fillRect(this.x - 5, this.y - 12, this.text.length * 8 + 10, 20);
+                    ctx.fillStyle = `rgba(10, 9, 12, ${alpha})`;
+                    ctx.fillText(this.text, this.x, this.y);
+                }
+            }
+        }
+
+        function init() {
+            particles = [];
+            for(let i=0; i< 50; i++) {
+                particles.push(new Particle());
+            }
+            generateBaseImage();
+        }
+
+        let glitchIntensity = 0;
+        function animate() {
+            if (baseImage && baseImage.complete) {
+                ctx.drawImage(baseImage, 0, 0, width, height);
+            }
+
+            // Calculate glitch intensity based on mouse movement
+            const lastMouseX = mouse.lastX || mouse.x;
+            const lastMouseY = mouse.lastY || mouse.y;
+            const speed = Math.hypot(mouse.x - lastMouseX, mouse.y - lastMouseY);
+            glitchIntensity = Math.min(glitchIntensity + speed, 50);
+            mouse.lastX = mouse.x;
+            mouse.lastY = mouse.y;
+
+            if (glitchIntensity > 1) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                const w = Math.random() * (width - x);
+                const h = Math.random() * 20 + 5;
+                const x2 = x + (Math.random() - 0.5) * glitchIntensity;
+                const y2 = y + (Math.random() - 0.5) * glitchIntensity;
+                
+                if (x2 > 0 && x2 < width && y2 > 0 && y2 < height) {
+                    ctx.drawImage(canvas, x, y, w, h, x2, y2, w, h);
+                }
+
+                // Chromatic aberration
+                ctx.globalCompositeOperation = 'lighter';
+                ctx.drawImage(canvas, (Math.random() - 0.5) * glitchIntensity * 0.5, 0);
+                ctx.globalCompositeOperation = 'source-over';
+            }
+            
+            glitchIntensity *= 0.9;
+
+
+            particles.forEach(p => p.draw());
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        init();
+        animate();
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>

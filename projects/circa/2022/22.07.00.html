@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022.07: The Signal of Collapse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --assassination-color: #b33a3a;
+            --collapse-color: #8B4513;
+            --heatwave-color: #ff6a00;
+            --science-color: #40c9c9;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #collapseCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(10, 9, 12, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+
+        .modal-content strong {
+            font-weight: bold;
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(210, 200, 182, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="collapseCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Jul 2022 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: July 2022</h2>
+            <p><strong>Assassination of Shinzo Abe:</strong> Former Japanese Prime Minister Shinzo Abe was assassinated while giving a campaign speech, sending shockwaves through Japan and the world.</p>
+            <p><strong>British Government in Complete Crisis:</strong> Boris Johnson's premiership collapsed as 61 ministers and aides resigned. Johnson resigned as Conservative Party leader but remained as caretaker Prime Minister.</p>
+            <p><strong>Sri Lankan Government Falls Amid Economic Collapse:</strong> President Gotabaya Rajapaksa fled his residence after protesters stormed the building. Both the president and prime minister agreed to resign amid the country's worst economic crisis since 1948.</p>
+            <p><strong>Ukraine War and European Heat Wave:</strong> Russian missile strikes killed at least 23 civilians in Vinnytsia. Simultaneously, Europe experienced its most severe heat wave in centuries, with Portugal issuing warnings of temperatures as high as 43°C (109°F) amid devastating wildfires.</p>
+            <p><strong>James Webb Space Telescope:</strong> NASA released the first stunning full-color image from the James Webb Space Telescope, a major milestone in astronomy.</p>
+            <div class="modal-footer">
+             <a href="22.07.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Signal of Collapse</h2>
+            <p>The signal for July 2022 is one of profound and cascading failure. It is not a single crisis, but the simultaneous collapse of multiple pillars of the global order. A former world leader is assassinated; a major G7 government implodes; a nation's entire government falls amidst economic ruin. These political collapses are set against the backdrop of a brutal war and an existential, record-shattering heat wave.</p>
+            <p>The glitch of this era is this "Signal of Collapse." It is the experience of watching established structures of power—political, economic, and even environmental—disintegrate at the same time, creating a power vacuum.</p>
+            <p>This artifact simulates that vacuum. The screen is a dark void, and the headlines of the month fall into it like shattered fragments. The ghost in this machine is the memory of order. Your cursor is a disruptive force, a gravitational anomaly in the void. As you move it, you pull the fragments of collapse toward you, revealing the chaos and instability of a world where the old certainties are falling apart.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('collapseCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const mouse = { x: width / 2, y: height / 2 };
+        
+        const headlines = [
+            { text: "SHINZO ABE ASSASSINATED", color: '#b33a3a' },
+            { text: "BORIS JOHNSON RESIGNS", color: '#8B4513' },
+            { text: "SRI LANKA COLLAPSES", color: '#8B4513' },
+            { text: "RAJAPAKSA FLEES", color: '#8B4513' },
+            { text: "EUROPEAN HEAT WAVE", color: '#ff6a00' },
+            { text: "VINNYTSIA STRIKE", color: '#b33a3a' },
+            { text: "JAMES WEBB TELESCOPE", color: '#40c9c9' }
+        ];
+        
+        let particles = [];
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = -Math.random() * height; // Start off-screen
+                this.vx = (Math.random() - 0.5) * 0.1;
+                this.vy = Math.random() * 0.5 + 0.1;
+                const headline = headlines[Math.floor(Math.random() * headlines.length)];
+                this.text = headline.text;
+                this.color = headline.color;
+                this.size = 12 + Math.random() * 4;
+            }
+
+            update() {
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const dist = Math.hypot(dx, dy);
+                
+                if (dist < 200) {
+                    const angle = Math.atan2(dy, dx);
+                    this.vx += Math.cos(angle) * (1 - dist / 200) * 0.1;
+                    this.vy += Math.sin(angle) * (1 - dist / 200) * 0.1;
+                }
+
+                this.vy += 0.01; // Gravity
+                
+                this.x += this.vx;
+                this.y += this.vy;
+
+                this.vx *= 0.99;
+                this.vy *= 0.99;
+
+                if (this.y > height + 50) {
+                     this.y = -50;
+                     this.x = Math.random() * width;
+                     this.vy = Math.random() * 0.5 + 0.1;
+                }
+            }
+
+            draw() {
+                ctx.font = `700 ${this.size}px 'Roboto Mono', monospace`;
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 0.8;
+                ctx.fillText(this.text, this.x, this.y);
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 70; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 9, 12, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+        
+        init();
+        animate();
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>
+

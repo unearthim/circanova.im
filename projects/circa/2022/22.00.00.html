@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022: The Overloaded Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(220, 210, 230, 0.7);
+            --heading-color: rgba(220, 210, 230, 0.9);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #signalCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 14, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 14, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(220, 210, 230, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(220, 210, 230, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="signalCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View 2022 Signal Synthesis ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: A Synthesis of 2022</h2>
+            <p><strong>Russia's Invasion of Ukraine:</strong> The year was defined by the largest military conflict in Europe since WWII, triggering global food and energy crises and fundamentally redefining the geopolitical order.</p>
+            <p><strong>Climate Catastrophes Accelerate:</strong> Unprecedented climate extremes became undeniable, from Europe's worst drought in 500 years to catastrophic flooding in Pakistan that affected 33 million people.</p>
+            <p><strong>Democracy Under Siege:</strong> Iran was rocked by a women-led uprising against the government, Britain cycled through three Prime Ministers amid political chaos, and Peru's president attempted a self-coup before being arrested.</p>
+            <p><strong>Economic Turmoil & Global Inflation:</strong> Inflation reached levels not seen in decades, fueled by the war and supply chain disruptions, creating a cost-of-living crisis across the globe.</p>
+            <p><strong>Scientific Breakthroughs Amid Chaos:</strong> In moments of profound hope, the James Webb Space Telescope delivered its first stunning images of the cosmos, and scientists achieved a historic breakthrough in nuclear fusion ignition.</p>
+            <div class="modal-footer">
+                <a href="./22.00.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Overloaded Signal</h2>
+            <p>2022 was the year the world's signal became overloaded. It was a chaotic transmission of simultaneous, high-stakes crises: a major European war, accelerating climate disasters, democratic upheavals, and rampant inflation. Yet, running parallel to this static were signals of profound wonder—humanity receiving its first images from the James Webb Space Telescope and achieving a breakthrough in nuclear fusion.</p>
+            <p>The glitch for this era is this "Overloaded Signal." It is the experience of a system trying to process too much contradictory information at once, leading to a state of perpetual, unresolved crisis. It is the visual equivalent of listening to every news broadcast in the world at the same time.</p>
+            <p>This artifact simulates that overwhelmed broadcast. Multiple data streams, each representing a core crisis or breakthrough of the year, are layered on top of each other. The ghost in this machine is the viewer's own focus. Your cursor is a lens, and as you move it across the canvas, you bring one of the layers into focus, momentarily giving it coherence while the others dissolve back into noise. It is a reflection on the impossibility of processing a year where humanity reached for the stars while its foundations on Earth trembled.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('signalCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const mouse = { x: width / 2, y: height / 2 };
+
+        const layers = [
+            { name: 'war', color: '#ff3b3b', snippets: ["INVASION", "KHERSON", "SANCTIONS", "WAR CRIMES"] },
+            { name: 'climate', color: '#4a90e2', snippets: ["DROUGHT", "FLOODS", "HURRICANE IAN", "EXTREME HEAT"] },
+            { name: 'politics', color: '#f5a623', snippets: ["MAHSA AMINI", "QUEEN ELIZABETH II", "LIZ TRUSS", "PERU COUP"] },
+            { name: 'science', color: '#00f6ff', snippets: ["FUSION IGNITION", "JAMES WEBB", "BREAKTHROUGH", "COSMOS"] }
+        ];
+
+        let particles = [];
+
+        class Particle {
+            constructor(layer) {
+                this.layer = layer;
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.text = layer.snippets[Math.floor(Math.random() * layer.snippets.length)];
+            }
+
+            update(activeLayer) {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x > width || this.x < 0) this.vx *= -1;
+                if (this.y > height || this.y < 0) this.vy *= -1;
+            }
+
+            draw(activeLayer) {
+                let alpha = 0.1;
+                let fontSize = 10;
+                let fontWeight = 300;
+                
+                if (this.layer.name === activeLayer.name) {
+                    const dist = Math.hypot(this.x - mouse.x, this.y - mouse.y);
+                    if (dist < 200) {
+                         alpha = Math.max(0.1, 1 - dist / 200);
+                         fontSize = 14;
+                         fontWeight = 700;
+                    }
+                }
+                
+                ctx.font = `${fontWeight} ${fontSize}px 'Roboto Mono', monospace`;
+                ctx.fillStyle = `rgba(${parseInt(this.layer.color.slice(1,3), 16)}, ${parseInt(this.layer.color.slice(3,5), 16)}, ${parseInt(this.layer.color.slice(5,7), 16)}, ${alpha})`;
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+
+        function init() {
+            particles = [];
+            layers.forEach(layer => {
+                for (let i = 0; i < 100; i++) {
+                    particles.push(new Particle(layer));
+                }
+            });
+        }
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(12, 10, 14, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Determine active layer based on mouse position
+            const quadrantX = mouse.x / width;
+            const quadrantY = mouse.y / height;
+            let activeLayer;
+            if (quadrantX < 0.5 && quadrantY < 0.5) activeLayer = layers[0]; // top-left: war
+            else if (quadrantX >= 0.5 && quadrantY < 0.5) activeLayer = layers[1]; // top-right: climate
+            else if (quadrantX < 0.5 && quadrantY >= 0.5) activeLayer = layers[2]; // bottom-left: politics
+            else activeLayer = layers[3]; // bottom-right: science
+            
+            particles.forEach(p => {
+                p.update(activeLayer);
+                p.draw(activeLayer);
+            });
+            
+            // Draw quadrant lines
+            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+            ctx.beginPath();
+            ctx.moveTo(mouse.x, 0); ctx.lineTo(mouse.x, height);
+            ctx.moveTo(0, mouse.y); ctx.lineTo(width, mouse.y);
+            ctx.stroke();
+
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+        
+        init();
+        animate();
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>

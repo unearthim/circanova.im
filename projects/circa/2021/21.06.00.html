@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2021.06: The Divergent Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(210, 220, 225, 0.7);
+            --heading-color: rgba(210, 220, 225, 0.9);
+            --centralized-color: #4a90e2;
+            --decentralized-color: #f5a623;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: ew-resize;
+        }
+
+        #signalCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: none;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 20, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 220, 225, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content .centralized { color: var(--centralized-color); }
+        .modal-content .decentralized { color: var(--decentralized-color); }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="signalCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Jun 2021 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: June 2021</h2>
+            <p><strong class="decentralized">First "Bitcoin Nation"</strong>: El Salvador became the first country in the world to adopt Bitcoin as legal tender, a radical, disruptive experiment in decentralized finance.</p>
+            <p><strong class="centralized">G7 Summit & "Vaccine Diplomacy"</strong>: Leaders of the world's wealthiest democracies met, pledging to donate 1 billion COVID-19 vaccine doses to poorer nations, while also confronting the rise of China.</p>
+            <p><strong class="decentralized">Miami Condo Collapse</strong>: The sudden, catastrophic structural failure of the Champlain Towers South building in Surfside, Florida, killed 98 people, becoming one of the deadliest structural collapses in US history.</p>
+            <p><strong class="centralized">NATO Labels China a "Security Challenge"</strong>: For the first time, NATO formally identified China as a persistent security challenge, signaling a major strategic shift for the Western military alliance.</p>
+            <p><strong class="decentralized">Canada Residential School Graves</strong>: The discovery of hundreds of unmarked graves at the sites of former residential schools for Indigenous children forced a national reckoning with Canada's colonial history.</p>
+            <p><strong class="centralized">COVID's "World's Deadliest Day"</strong>: While the G7 pledged vaccines, Brazil reported its highest-ever single-day death toll from COVID-19, highlighting the stark reality of "vaccine apartheid."</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Divergent Signal</h2>
+            <p>June 2021 was a month of profound divergence. The signal was not a single, coherent crisis, but a schism between two opposing worldviews operating simultaneously. One was the signal of the old world: centralized, top-down control, represented by the G7 and NATO making pacts and pledges. The other was the signal of a new world: decentralized, disruptive, and chaotic, epitomized by El Salvador's Bitcoin gamble and the literal, physical collapse of an old structure in Miami.</p>
+            <p>The glitch for this era is this "Divergent Signal." It is the visual representation of a system being pulled in two directions at once, unable to resolve which reality is dominant.</p>
+            <p>This artifact simulates a data stream fracturing under this strain. On one side, the data of the centralized world flows in an orderly, predictable manner. On the other, the data of the decentralized world is emergent and chaotic. The ghost in this machine is the tension between these two futures. Your cursor controls the focus of this conflict; as you move it, you give power to one signal, causing the other to corrupt and glitch. It is a reflection of a world that has not yet decided which path it will follow.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('signalCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const centralizedSnippets = ["G7 PLEDGE", "NATO ALLIANCE", "SECURITY CHALLENGE", "VACCINE DIPLOMACY", "TOP-DOWN"];
+        const decentralizedSnippets = ["BITCOIN NATION", "STRUCTURAL FAILURE", "UNMARKED GRAVES", "DECENTRALIZED", "BOTTOM-UP"];
+        
+        let particles = [];
+        const mouse = { x: width / 2 };
+
+        class Particle {
+            constructor(type) {
+                this.type = type;
+                this.y = Math.random() * height;
+                this.vy = 0.5 + Math.random() * 1.5;
+                this.life = 100 + Math.random() * 100;
+                
+                if (type === 'centralized') {
+                    this.x = Math.random() * (width / 2);
+                    this.text = centralizedSnippets[Math.floor(Math.random() * centralizedSnippets.length)];
+                    this.color = getComputedStyle(document.documentElement).getPropertyValue('--centralized-color').trim();
+                } else {
+                    this.x = width / 2 + Math.random() * (width / 2);
+                    this.text = decentralizedSnippets[Math.floor(Math.random() * decentralizedSnippets.length)];
+                    this.color = getComputedStyle(document.documentElement).getPropertyValue('--decentralized-color').trim();
+                }
+            }
+            
+            reset() {
+                this.y = -20;
+                this.life = 100 + Math.random() * 100;
+                 if (this.type === 'centralized') {
+                    this.x = Math.random() * (width / 2);
+                } else {
+                    this.x = width / 2 + Math.random() * (width / 2);
+                }
+            }
+
+            update(balance) {
+                this.y += this.vy;
+                if (this.y > height) this.reset();
+                
+                let chanceToGlitch = 0;
+                if(this.type === 'centralized') {
+                    chanceToGlitch = Math.max(0, 1 - balance);
+                } else {
+                    chanceToGlitch = Math.max(0, balance);
+                }
+                
+                if (Math.random() < chanceToGlitch * 0.1) {
+                    this.isGlitching = true;
+                } else {
+                    this.isGlitching = false;
+                }
+            }
+
+            draw() {
+                ctx.font = `500 12px 'Roboto Mono', monospace`;
+                ctx.fillStyle = this.color;
+                
+                let displayText = this.text;
+                if (this.isGlitching) {
+                    const i = Math.floor(Math.random() * displayText.length);
+                    const glitchChar = '░▒▓█'[Math.floor(Math.random() * 4)];
+                    displayText = displayText.substring(0, i) + glitchChar + displayText.substring(i + 1);
+                    ctx.fillText(displayText, this.x + (Math.random()-0.5) * 5, this.y);
+                } else {
+                     ctx.fillText(displayText, this.x, this.y);
+                }
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 150; i++) {
+                particles.push(new Particle(i < 75 ? 'centralized' : 'decentralized'));
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(12, 10, 20, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            // balance is 1 for fully centralized, 0 for fully decentralized
+            const balance = mouse.x / width;
+
+            particles.forEach(p => {
+                p.update(balance);
+                p.draw();
+            });
+            
+            // Draw dividing line
+            ctx.strokeStyle = `rgba(210, 220, 225, ${0.2 + Math.abs(balance - 0.5) * 0.5})`;
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(width / 2 + (balance - 0.5) * 200, 0);
+            ctx.lineTo(width / 2 + (balance - 0.5) * 200, height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'pointer';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'ew-resize';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'ew-resize';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

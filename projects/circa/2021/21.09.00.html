@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2021.09: The Imposed Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(210, 220, 225, 0.7);
+            --heading-color: rgba(210, 220, 225, 0.9);
+            --chaos-color: rgba(221, 61, 87, 0.4);
+            --order-color: #ffffff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #impositionCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 20, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 20, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 220, 225, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content .chaos { color: var(--chaos-color); }
+        .modal-content .order { color: var(--order-color); }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="impositionCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Sep 2021 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: September 2021</h2>
+            <p><strong class="order">Taliban Consolidates Power in Afghanistan</strong>: The Taliban captured Panjshir Province, the final pocket of resistance, completing their takeover. They held a military parade showcasing captured US military equipment, solidifying their new rule.</p>
+            <p><strong class="order">Guinea's Government Overthrown in Military Coup</strong>: Special forces arrested President Alpha Condé, dissolved the government, and seized power, ending his controversial third term and imposing a new military order.</p>
+            <p><strong class="chaos">Germany's Election Marks End of Merkel Era</strong>: Federal elections to replace Angela Merkel after 16 years were too close to call, signaling a period of political uncertainty and a fractured power structure in Europe's largest economy.</p>
+            <p><strong class="order">Lebanon Forms Government After 13-Month Crisis</strong>: After more than a year of political paralysis and economic collapse following the Beirut blast, a new government was finally formed under billionaire Najib Mikati.</p>
+            <p><strong class="chaos">Ecuador Prison Riot Kills 116</strong>: A horrific prison riot attributed to gang warfare resulted in a massacre, prompting a state of emergency and highlighting the state's failure to maintain order.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Imposed Signal</h2>
+            <p>September 2021 was a month of consequences, the aftershock of August's collapses. The signal was one of imposition—of new, rigid orders being forcibly written over the top of chaotic, failing systems. It was a month of takeovers, both violent and political, a time of forced overwrites.</p>
+            <p>The glitch for this era is this "Imposed Signal." It is the experience of watching a corrupted, noisy landscape being paved over by a stark, new geometry of power. This artifact simulates that process. The background is a field of chaotic data, the remnants of the old, failed signal. Over this, a clean, rigid grid is being drawn.</p>
+            <p>The ghost in this machine is the act of erasure. Your cursor is the focal point of this imposition, the lens of the world's attention. As you move, you reveal and strengthen the new order, but in doing so, you obscure the chaos underneath. It is a reflection of how a new regime, a new government, or a new reality is built directly upon the ruins of the last, often hiding the very instability it claims to have solved.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('impositionCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const chaosSnippets = ["RESISTANCE CRUMBLES", "STATE OF EMERGENCY", "ECONOMIC COLLAPSE", "TOO CLOSE TO CALL", "GANG WARFARE"];
+        let chaosParticles = [];
+        const mouse = { x: width / 2, y: height / 2, radius: 150 };
+        const gridSize = 50;
+
+        class ChaosParticle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.text = chaosSnippets[Math.floor(Math.random() * chaosSnippets.length)];
+                this.vx = (Math.random() - 0.5) * 0.2;
+                this.vy = (Math.random() - 0.5) * 0.2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.font = `500 10px 'Roboto Mono', monospace`;
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--chaos-color').trim();
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+
+        function init() {
+            chaosParticles = [];
+            for (let i = 0; i < 100; i++) {
+                chaosParticles.push(new ChaosParticle());
+            }
+        }
+
+        function drawOrderGrid() {
+            for (let x = 0; x <= width; x += gridSize) {
+                for (let y = 0; y <= height; y += gridSize) {
+                    const dist = Math.hypot(x - mouse.x, y - mouse.y);
+                    const opacity = Math.max(0, 1 - dist / (mouse.radius * 2));
+
+                    if (opacity > 0.05) {
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.5})`;
+                        ctx.lineWidth = 1;
+                        // Draw horizontal line
+                        ctx.beginPath();
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(x + gridSize, y);
+                        ctx.stroke();
+                        // Draw vertical line
+                        ctx.beginPath();
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(x, y + gridSize);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(12, 10, 20, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            chaosParticles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            
+            drawOrderGrid();
+
+            // Draw cursor representation
+            ctx.strokeStyle = `rgba(255, 255, 255, 0.5)`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(mouse.x, mouse.y, mouse.radius, 0, Math.PI * 2);
+            ctx.stroke();
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        
+         window.addEventListener('mouseout', (e) => {
+            mouse.x = -1000; // Move mouse off-screen
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'pointer';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

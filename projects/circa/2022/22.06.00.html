@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022.06: The Reversal Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --delete-color: #b33a3a;
+            --write-color: #40c9c9;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: text;
+        }
+
+        #codeCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(10, 9, 12, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+
+        .modal-content strong {
+            font-weight: bold;
+            color: var(--delete-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(210, 200, 182, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="codeCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Jun 2022 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: June 2022</h2>
+            <p><strong>US Supreme Court Overturns Roe v. Wade:</strong> In a seismic 6-3 ruling, the court ended nearly 50 years of constitutional protection for abortion rights, allowing individual states to ban or severely restrict access. The landmark decision triggered immediate protests and fundamentally altered the American legal landscape.</p>
+            <p><strong>Ukraine War Intensifies in Eastern Front:</strong> The battle for the strategic city of Sievierodonetsk became the focal point of the war, with massive fires reported at the Azot chemical plant following Russian shelling. In a grim turn, a court in the self-proclaimed Donetsk People's Republic sentenced two Britons and one Moroccan to death.</p>
+            <p><strong>Queen Elizabeth II Celebrates Platinum Jubilee:</strong> The Queen marked 70 years on the English throne, one of the longest reigns in world history. The celebrations provided a moment of national unity for the UK.</p>
+            <p><strong>NATO Expansion Advances:</strong> Finland and Sweden accelerated their NATO membership applications, prompting stern warnings of "military-technical" retaliation from Vladimir Putin. The historic shift away from neutrality represented a major strategic consequence of Russia's invasion.</p>
+            <div class="modal-footer">
+                <a href="22.06.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Reversal Signal</h2>
+            <p>June 2022 was a month of profound, systemic reversal. In the United States, fifty years of established legal code were deleted in a single keystroke. In Europe, the long-held stability represented by the Queen's Jubilee was a poignant counterpoint to the brutal, grinding reality of the war. The signal was one of foundational pillars being actively and deliberately dismantled.</p>
+            <p>The glitch for this era is this "Reversal Signal." It is the experience of watching a system's core programming being rewritten—a live feed of established code being deleted and overwritten, causing the entire structure to flicker between its past and its new, uncertain future.</p>
+            <p>This artifact simulates that process. The screen is a terminal displaying the "source code" of the month's events. The ghost in this machine is the act of revision. Your cursor is the editor's hand. As you move it, you "delete" the old code—the established precedents and norms—and "write" the new, disruptive realities in their place. You are not just a viewer; you are a participant in the act of reversal, revealing how quickly a stable system can be fundamentally and irrevocably rewritten.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('codeCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const mouse = { x: width / 2, y: height / 2 };
+        
+        const lines = [
+            "function checkPrecedent() { return ROE_V_WADE_ESTABLISHED; } // 1973",
+            "const EUROPEAN_SECURITY = new Alliance(NATO, NEUTRALITY_FINLAND);",
+            "let monarchReign = 70; // PLATINUM_JUBILEE",
+            "logStatus('Peace in Donbas');",
+            "let prisonerStatus = 'protected_by_geneva_convention';",
+            "if (global.food_supply.status == 'stable') { continue; }",
+            "// Systems nominal"
+        ];
+        
+        let chars = [];
+
+        class Char {
+            constructor(char, x, y, isOriginal) {
+                this.char = char;
+                this.x = x;
+                this.y = y;
+                this.isOriginal = isOriginal;
+                this.life = 255;
+            }
+
+            draw() {
+                const dist = Math.hypot(this.x - mouse.x, this.y - mouse.y);
+                if (this.isOriginal && dist < 100) {
+                    this.life -= 10;
+                }
+                
+                let color;
+                if(this.life < 255 && this.isOriginal) {
+                    color = `rgba(179, 58, 58, ${this.life / 255})`;
+                } else if (!this.isOriginal) {
+                     color = `rgba(64, 201, 201, ${Math.random()})`;
+                } else {
+                    color = `rgba(210, 200, 182, 0.5)`;
+                }
+
+                ctx.fillStyle = color;
+                ctx.fillText(this.char, this.x, this.y);
+            }
+        }
+
+        function init() {
+            chars = [];
+            ctx.font = "14px 'Roboto Mono', monospace";
+            const lineHeight = 20;
+            const startY = height / 2 - (lines.length / 2) * lineHeight;
+            
+            lines.forEach((line, i) => {
+                const y = startY + i * lineHeight;
+                const startX = width / 2 - (line.length * 8) / 2;
+                for (let j = 0; j < line.length; j++) {
+                    chars.push(new Char(line[j], startX + j * 8, y, true));
+                }
+            });
+        }
+        
+        const newCode = ["ROE_V_WADE_OVERTURNED", "NATO_EXPANSION", "DEATH_SENTENCE", "SIEGE_OF_SIEVIERODONETSK"];
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 9, 12, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            chars.forEach((c, index) => {
+                c.draw();
+                if (c.life <= 0) {
+                    chars.splice(index, 1);
+                }
+            });
+
+            // Add new code fragments near mouse
+            if (Math.random() < 0.3) {
+                 const text = newCode[Math.floor(Math.random() * newCode.length)];
+                 const char = text[Math.floor(Math.random() * text.length)];
+                 const x = mouse.x + (Math.random() - 0.5) * 150;
+                 const y = mouse.y + (Math.random() - 0.5) * 150;
+                 chars.push(new Char(char, x, y, false));
+                 if (chars.length > 500) chars.shift();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'text';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'text';
+                }
+            });
+        }
+        
+        init();
+        animate();
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>

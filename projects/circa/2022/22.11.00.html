@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022.11: The Failing Grid</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0c0a14;
+            --text-color: rgba(220, 210, 230, 0.7);
+            --heading-color: rgba(220, 210, 230, 0.9);
+            --grid-color: rgba(74, 144, 226, 0.2);
+            --fail-color: #ff3b3b;
+            --stable-color: #4a90e2;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #gridCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(12, 10, 14, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 10, 14, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(220, 210, 230, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(220, 210, 230, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gridCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Nov 2022 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: November 2022</h2>
+            <p><strong>Russia Escalates Infrastructure War Against Ukraine:</strong> In a systematic campaign, massive nationwide missile strikes destroyed Ukraine's energy infrastructure, leaving most of the country without electricity and causing "critical" damage to power facilities.</p>
+            <p><strong>Polish Missile Explosion Creates NATO Crisis:</strong> A missile explosion in a Polish village killed two people, creating a potential NATO Article 5 crisis. The missile was later identified as Ukrainian, fired in defense against a Russian barrage, highlighting the risk of spillover.</p>
+            <p><strong>Iranian Protests Continue Amid Brutal Crackdown:</strong> The nationwide protests entered their second month, with the government cracking down on dissent and imposing new restrictions on women's freedoms.</p>
+            <p><strong>UK Supreme Court Denies Scottish Independence Referendum:</strong> The court unanimously denied Scotland's right to hold a new independence referendum without UK government approval, a major blow to the Scottish independence movement.</p>
+            <p><strong>G20 Summit Proceeds Without Putin:</strong> The European Parliament designated Russia as a state sponsor of terrorism as world leaders met in Bali, with Putin notably absent.</p>
+            <div class="modal-footer">
+                <a href="22.11.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Failing Grid</h2>
+            <p>November 2022 was the month the war in Ukraine mutated from a war on territory to a war on systems. The signal was one of deliberate, systemic degradation—a targeted campaign to short-circuit the networks that sustain modern life. The widespread blackouts were not collateral damage; they were the primary objective.</p>
+            <p>The glitch for this era is this "Failing Grid." It is the experience of watching a stable, interconnected network being attacked until its nodes flicker and die, plunging the system into a cascading failure.</p>
+            <p>This artifact simulates that energy grid under attack. The network of nodes represents a national power system. Periodically, a wave of missile strikes—the ghost in this machine—assaults the grid, knocking nodes offline. Your cursor is a point of instability. As you move it over the fragile connections, you cause them to spark and short-circuit, revealing the inherent vulnerability of the system. It is a reflection of a moment when the lights began to go out, one by one.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gridCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const mouse = { x: width / 2, y: height / 2 };
+        
+        let nodes = [];
+        let sparks = [];
+        const gridSize = 60;
+
+        class Node {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 3;
+                this.state = 'online'; // online, offline, recovering
+                this.offlineTimer = 0;
+            }
+
+            update() {
+                if (this.state === 'offline') {
+                    this.offlineTimer--;
+                    if (this.offlineTimer <= 0) {
+                        this.state = 'recovering';
+                    }
+                }
+                if (this.state === 'recovering') {
+                     if(Math.random() > 0.99) {
+                         this.state = 'online';
+                     }
+                }
+            }
+
+            draw() {
+                let color;
+                switch(this.state) {
+                    case 'online': color = getComputedStyle(document.documentElement).getPropertyValue('--stable-color').trim(); break;
+                    case 'offline': color = getComputedStyle(document.documentElement).getPropertyValue('--fail-color').trim(); break;
+                    case 'recovering': color = `rgba(255, 59, 59, 0.3)`; break;
+                }
+                
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y - this.radius);
+                ctx.lineTo(this.x + this.radius, this.y + this.radius);
+                ctx.lineTo(this.x - this.radius, this.y + this.radius);
+                ctx.closePath();
+                ctx.fillStyle = color;
+                ctx.fill();
+            }
+        }
+        
+        function init() {
+            nodes = [];
+            for (let y = gridSize; y < height; y += gridSize) {
+                for (let x = gridSize; x < width; x += gridSize) {
+                    nodes.push(new Node(x, y));
+                }
+            }
+        }
+        
+        function missileStrike() {
+            const strikeCount = 5 + Math.floor(Math.random() * 10);
+            for(let i=0; i < strikeCount; i++) {
+                const node = nodes[Math.floor(Math.random() * nodes.length)];
+                node.state = 'offline';
+                node.offlineTimer = 100 + Math.random() * 200;
+            }
+            // Trigger next strike
+            setTimeout(missileStrike, 5000 + Math.random() * 5000);
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(12, 10, 14, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw connections
+            nodes.forEach(nodeA => {
+                nodes.forEach(nodeB => {
+                    if (nodeA === nodeB) return;
+                    if(nodeA.state === 'online' && nodeB.state === 'online') {
+                        const dist = Math.hypot(nodeA.x - nodeB.x, nodeA.y - nodeB.y);
+                        if (dist < gridSize * 1.5) {
+                            const mouseDist = Math.hypot( (nodeA.x + nodeB.x)/2 - mouse.x, (nodeA.y + nodeB.y)/2 - mouse.y);
+                            let alpha = 0.2;
+                            if (mouseDist < 50) {
+                                alpha = 0.8;
+                                if (Math.random() > 0.95) {
+                                     sparks.push({x: (nodeA.x+nodeB.x)/2, y: (nodeA.y+nodeB.y)/2, life: 20});
+                                }
+                            }
+
+                            ctx.beginPath();
+                            ctx.moveTo(nodeA.x, nodeA.y);
+                            ctx.lineTo(nodeB.x, nodeB.y);
+                            ctx.strokeStyle = `rgba(74, 144, 226, ${alpha})`;
+                            ctx.stroke();
+                        }
+                    }
+                });
+            });
+            
+            nodes.forEach(node => {
+                node.update();
+                node.draw();
+            });
+
+            sparks.forEach((spark, index) => {
+                spark.life--;
+                if(spark.life <= 0) sparks.splice(index, 1);
+                ctx.fillStyle = `rgba(255, 59, 59, ${spark.life / 20})`;
+                ctx.fillRect(spark.x + (Math.random()-0.5)*5, spark.y + (Math.random()-0.5)*5, 2, 2);
+            });
+
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        });
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+        
+        init();
+        animate();
+        setTimeout(missileStrike, 2000);
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+    </script>
+</body>
+</html>

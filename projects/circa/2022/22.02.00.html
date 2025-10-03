@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2022.02: The Broken Transmission</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --ukraine-blue: #0057b7;
+            --ukraine-yellow: #ffd700;
+            --invasion-red: #b33a3a;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: none;
+        }
+
+        #broadcastCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: rgba(10, 9, 12, 0.5);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.97);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: var(--heading-color);
+        }
+
+        .modal-content strong {
+            font-weight: bold;
+            color: var(--invasion-red);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(210, 200, 182, 0.1);
+            text-align: right;
+        }
+
+        .modal-footer a {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .modal-footer a:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="broadcastCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Feb 2022 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: February 2022</h2>
+            <p><strong>Russia Launches Full-Scale Invasion of Ukraine:</strong> On February 24, Russia began the largest military conflict in Europe since World War II. The invasion followed weeks of escalating tensions, evacuations of embassies, and failed diplomatic efforts. The immediate impact was devastating, with nearly half a million people fleeing Ukraine in the first days.</p>
+            <p><strong>Omicron Variant Continues Global Spread:</strong> While war erupted, the pandemic continued. South Korea, Russia, and Hong Kong reported record-breaking daily case numbers. In contrast, countries like France, Italy, and England began easing or scrapping COVID restrictions, signaling a divergent global response.</p>
+            <p><strong>Canada Convoy Protests:</strong> A state of emergency was declared in Ontario over protest-related blockades in Ottawa and at the Ambassador Bridge, highlighting significant civil unrest over pandemic mandates.</p>
+            <p><strong>Queen Elizabeth II Tests Positive:</strong> The 95-year-old monarch tested positive for coronavirus, a high-profile case demonstrating the reach of the highly transmissible Omicron variant.</p>
+            <div class="modal-footer">
+                <a href="22.02.00_source.html" target="_blank">[ View Full Source Signal ]</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Broken Transmission</h2>
+            <p>February 2022 was the month the signal of a stable, post-Cold War Europe was violently and irrevocably broken. The tension of January did not de-escalate; it snapped. The full-scale invasion of Ukraine became a raw, overwhelming signal that hijacked the global broadcast, corrupting all other narratives with its terrible urgency.</p>
+            <p>This artifact simulates that broken transmission. The screen is a satellite feed of Eastern Europe, attempting to display the world's other news. But the signal is failing. It is constantly being interrupted by the static and noise of the invasion.</p>
+            <p>The ghost in this machine is the memory of a peace that no longer exists. Your cursor is an attempt to tune the receiver, to find a moment of clarity. As you move, you can momentarily reveal the other headlines of the month, but the broadcast is inevitably and violently torn apart by the primary signal of the war—a new, brutal reality that cannot be ignored.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('broadcastCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const mouse = { x: width / 2, y: height / 2 };
+        
+        const otherSignals = ["OMICRON SPREADS", "STATE OF EMERGENCY", "QUEEN TESTS POSITIVE", "RESTRICTIONS LIFTED", "CONVOY PROTESTS"];
+        const invasionSignals = ["INVASION", "KYIV", "ZELENSKYY", "AIR RAID SIRENS", "WAR IN EUROPE"];
+        
+        let particles = [];
+        let noise;
+
+        function startAudio() {
+            if (Tone.context.state !== 'running') {
+                Tone.start();
+            }
+            noise = new Tone.Noise("white").toDestination();
+            noise.volume.value = -40; // very quiet initially
+        }
+        
+        canvas.addEventListener('click', startAudio, { once: true });
+
+        class Particle {
+            constructor(x,y, text) {
+                this.x = x;
+                this.y = y;
+                this.text = text;
+                this.life = 100;
+                this.color = `rgba(210, 200, 182, ${Math.random() * 0.5 + 0.3})`;
+            }
+            draw() {
+                ctx.font = `300 12px 'Roboto Mono', monospace`;
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.life / 100;
+                ctx.fillText(this.text, this.x, this.y);
+                ctx.globalAlpha = 1;
+                this.life -= 1;
+            }
+        }
+        
+        let lastGlitchTime = 0;
+        let glitchIntensity = 0;
+
+        function animate(time) {
+            ctx.fillStyle = 'rgba(10, 9, 12, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw faint grid
+            ctx.strokeStyle = 'rgba(0, 87, 183, 0.1)';
+            for(let i=0; i<width; i+=40) {
+                ctx.beginPath();
+                ctx.moveTo(i,0);
+                ctx.lineTo(i,height);
+                ctx.stroke();
+            }
+             for(let i=0; i<height; i+=40) {
+                ctx.beginPath();
+                ctx.moveTo(0,i);
+                ctx.lineTo(width,i);
+                ctx.stroke();
+            }
+
+            // Spawn particles near mouse
+            if (Math.random() > 0.8 && particles.length < 50) {
+                const text = otherSignals[Math.floor(Math.random() * otherSignals.length)];
+                particles.push(new Particle(mouse.x + (Math.random()-0.5)*100, mouse.y + (Math.random()-0.5)*100, text));
+            }
+
+            particles.forEach((p, index) => {
+                p.draw();
+                if(p.life <= 0) particles.splice(index, 1);
+            });
+
+            // Invasion Glitch
+            if(time - lastGlitchTime > 2000 + Math.random() * 3000) {
+                glitchIntensity = 10 + Math.random() * 30;
+                if(noise) {
+                    noise.volume.rampTo(-20, 0.01);
+                    noise.start().stop("+0.2");
+                }
+                lastGlitchTime = time;
+            }
+            
+            if(glitchIntensity > 0) {
+                const y = Math.random() * height;
+                const h = Math.random() * 50 + 10;
+                ctx.drawImage(canvas, 0, y, width, h, (Math.random()-0.5)*20, y, width, h);
+                
+                ctx.fillStyle = `rgba(179, 58, 58, ${0.3 + Math.random() * 0.4})`;
+                ctx.fillRect(0, Math.random() * height, width, Math.random() * 2);
+
+                const text = invasionSignals[Math.floor(Math.random() * invasionSignals.length)];
+                ctx.font = `700 ${20 + Math.random() * 40}px 'Roboto Mono', monospace`;
+                ctx.fillStyle = `rgba(255, 215, 0, ${0.5 + Math.random() * 0.5})`;
+                ctx.fillText(text, Math.random()*width, Math.random()*height);
+
+                glitchIntensity--;
+                 if(noise && glitchIntensity <= 1) {
+                    noise.volume.rampTo(-40, 0.2);
+                }
+            }
+
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'none';
+            });
+
+            modal.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'none';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        animate(0);
+    </script>
+</body>
+</html>

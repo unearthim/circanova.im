@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circa 2020.08: The Shockwave Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #0a090c;
+            --text-color: rgba(210, 200, 182, 0.7);
+            --heading-color: rgba(210, 200, 182, 0.9);
+            --blast-color: #ff6a00;
+            --protest-color: #b33a3a;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            cursor: crosshair;
+        }
+
+        #shockwaveCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1rem 2rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-button {
+            background: none;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .overlay-button:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 9, 12, 0.95);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 2rem;
+            border: 1px solid rgba(210, 200, 182, 0.2);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+
+        .modal-content strong {
+            color: var(--blast-color);
+        }
+         .modal-content em {
+            color: var(--protest-color);
+        }
+        
+        .modal-close-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="shockwaveCanvas"></canvas>
+    
+    <div class="overlay">
+        <button id="sourceButton" class="overlay-button">[ View Aug 2020 Signal ]</button>
+        <button id="commentaryButton" class="overlay-button">[ Read Artist Commentary ]</button>
+    </div>
+
+    <div id="sourceModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Source Signal: August 2020</h2>
+            <p><strong>Devastating Beirut Port Explosion</strong>: The month was defined by a catastrophic explosion at the port of Beirut, caused by 2,750 tons of improperly stored ammonium nitrate. The blast killed <strong>135 people, injured over 5,000</strong>, and sparked massive anti-government protests that led to the resignation of the entire Lebanese government.</p>
+            <p><strong>Belarus Election Sparks Nationwide Uprising</strong>: <em>Alexander Lukashenko's disputed presidential election victory triggered the largest protests in Belarus's modern history</em>. One protester was killed as police fired rubber bullets and beat demonstrators.</p>
+            <p><strong>COVID-19 Pandemic Reaches New Milestones</strong>: Germany saw its highest daily case numbers since May. <em>Melbourne entered a strict Stage 4 lockdown</em>. India reported its largest single-day death toll, and the Philippines became the new hotspot in Southeast Asia.</p>
+            <p><strong>Escalating US-China Tensions</strong>: The US Treasury Department <strong>imposed sanctions on 11 Chinese and Hong Kong officials</strong>, including Chief Executive Carrie Lam, over the new national security law.</p>
+        </div>
+    </div>
+
+    <div id="commentaryModal" class="modal">
+        <button class="modal-close-button">&times;</button>
+        <div class="modal-content">
+            <h2>Commentary: The Shockwave Signal</h2>
+            <p>August 2020 was dominated by a single, physical event of such magnitude it felt like a glitch in reality itself. The Beirut explosion was not a slow-moving crisis; it was an instantaneous rupture. The glitch of this era is that shockwave—a catastrophic failure that propagates outward, violently disrupting every other signal in its path.</p>
+            <p>This artifact simulates a system trying to process the news of the month. The other headlines exist as fragile data points in the periphery. At the center is the source of the shockwave. When you move your cursor, you trigger this blast.</p>
+            <p>The ghost in this machine is the ripple effect of tragedy. The shockwave doesn't just erase the other signals; it corrupts them, scrambling their data with its own destructive energy. It's a reflection of how a singular, overwhelming event can momentarily render all other news incoherent, forcing the entire world to process its aftershocks.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('shockwaveCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const otherHeadlines = [
+            "BELARUS UPRISING", "LUKASHENKO DISPUTED", "STAGE 4 LOCKDOWN",
+            "SANCTIONS IMPOSED", "CARRIE LAM", "INDIA PEAKS",
+            "PRISONER RELEASE", "AFGHANISTAN VIOLENCE"
+        ];
+        let particles = [];
+        let shockwaves = [];
+        const blastCenter = { x: width / 2, y: height / 2 };
+
+        class Particle {
+            constructor() {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = width * 0.4 + Math.random() * 100;
+                this.x = blastCenter.x + Math.cos(angle) * radius;
+                this.y = blastCenter.y + Math.sin(angle) * radius;
+                this.ox = this.x;
+                this.oy = this.y;
+                this.text = otherHeadlines[Math.floor(Math.random() * otherHeadlines.length)];
+                this.life = 255;
+                this.glitchAmount = 0;
+            }
+
+            update() {
+                this.glitchAmount *= 0.9;
+                if (this.glitchAmount < 1) {
+                    this.x = this.ox;
+                    this.y = this.oy;
+                } else {
+                    this.x = this.ox + (Math.random() - 0.5) * this.glitchAmount;
+                    this.y = this.oy + (Math.random() - 0.5) * this.glitchAmount;
+                }
+            }
+
+            draw() {
+                ctx.font = `500 12px 'Roboto Mono', monospace`;
+                const alpha = Math.min(1, this.life / 255);
+                ctx.fillStyle = `rgba(210, 200, 182, ${alpha * 0.7})`;
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+
+        class Shockwave {
+            constructor() {
+                this.radius = 0;
+                this.life = 100;
+            }
+            update() {
+                this.radius += 15;
+                this.life -= 1;
+
+                particles.forEach(p => {
+                    const dist = Math.hypot(p.x - blastCenter.x, p.y - blastCenter.y);
+                    if (Math.abs(dist - this.radius) < 20) {
+                        p.glitchAmount = 50;
+                    }
+                });
+            }
+            draw() {
+                ctx.strokeStyle = `rgba(255, 106, 0, ${this.life / 100 * 0.8})`;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(blastCenter.x, blastCenter.y, this.radius, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        let lastTrigger = 0;
+        function animate(time) {
+            ctx.fillStyle = 'rgba(10, 9, 12, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = `rgba(255, 106, 0, ${0.05 + Math.random() * 0.1})`;
+            ctx.beginPath();
+            ctx.arc(blastCenter.x, blastCenter.y, 20 + Math.random() * 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            
+            shockwaves.forEach((sw, index) => {
+                sw.update();
+                sw.draw();
+                if (sw.life <= 0) {
+                    shockwaves.splice(index, 1);
+                }
+            });
+            
+            if (time - lastTrigger > 300 && Math.random() < 0.1) {
+                 if (shockwaves.length < 5) {
+                    shockwaves.push(new Shockwave());
+                    lastTrigger = time;
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+        
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            blastCenter.x = width / 2;
+            blastCenter.y = height / 2;
+            init();
+        });
+
+        window.addEventListener('mousemove', () => {
+             if (shockwaves.length < 5 && Math.random() < 0.2) {
+                shockwaves.push(new Shockwave());
+            }
+        });
+
+        function setupModal(buttonId, modalId) {
+            const button = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = modal.querySelector('.modal-close-button');
+
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            });
+
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.cursor = 'crosshair';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.cursor = 'crosshair';
+                }
+            });
+        }
+
+        setupModal('sourceButton', 'sourceModal');
+        setupModal('commentaryButton', 'commentaryModal');
+
+        init();
+        requestAnimationFrame(animate);
+    </script>
+</body>
+</html>
